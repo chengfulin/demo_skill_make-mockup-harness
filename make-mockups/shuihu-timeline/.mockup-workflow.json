@@ -2,7 +2,7 @@
   "feature": "shuihu-timeline",
   "title": "水滸傳角色事件時間軸",
   "currentVersion": 1,
-  "stage": "export",
+  "stage": "review",
   "mockup": {
     "artifactUrl": "https://claude.ai/artifact/QguSvUAW5m94kgoF3Wzds9",
     "source": "mockup-src/index.html"
@@ -22,7 +22,7 @@
       "sourceFile": "https://claude.ai/artifact/QguSvUAW5m94kgoF3Wzds9",
       "sourceVersion": "1792469247-98f6",
       "sha256": "aa21720e5b3b6ae3da9df9d9c8c24c05aa55924eea9565d3594342a924488f81",
-      "review": null,
+      "review": "reviews/v1-consistency.md",
       "feedback": null,
       "commit": null,
       "handoff": null
