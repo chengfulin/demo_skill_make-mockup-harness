@@ -1,0 +1,31 @@
+{
+  "feature": "shuihu-timeline",
+  "title": "水滸傳角色事件時間軸",
+  "currentVersion": 1,
+  "stage": "storyboard",
+  "mockup": {
+    "artifactUrl": null,
+    "source": "mockup-src/index.html"
+  },
+  "claudeDesign": null,
+  "designSystem": {
+    "source": null,
+    "name": null
+  },
+  "versions": [
+    {
+      "v": 1,
+      "storyboardDate": "2026-10-20",
+      "brief": null,
+      "publishedAt": null,
+      "mockup": null,
+      "sourceFile": null,
+      "sourceVersion": null,
+      "sha256": null,
+      "review": null,
+      "feedback": null,
+      "commit": null,
+      "handoff": null
+    }
+  ]
+}
