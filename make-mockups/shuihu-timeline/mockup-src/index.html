@@ -1,0 +1,593 @@
+<title>水滸時間軸</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: 書頁式頁首＋篩選列，下方三視圖分頁；明細以右側抽屜疊上。色調取宋版書的竹紙、墨、石青石綠與朱印。 */
+:root{
+  --paper:#eceee8; --paper-2:#e1e5dd; --card:#f7f8f4; --ink:#1c2227; --ink-2:#55605f; --line:#c3cbc2;
+  --accent:#2c5a86; --accent-soft:#d5e0ea; --seal:#a8382a;
+  --g-tg:#2c5a86; --g-ds:#3f7550; --g-ot:#86683f;
+  --st-none:#d5dad2; --st-wild:#c4943d; --st-liang:#2c5a86; --st-gone:#5b6164;
+  --r-jie:#2c5a86; --r-zhu:#3f7550; --r-xd:#86683f; --r-fq:#a2557a; --r-ch:#a8382a;
+  --shadow:0 10px 30px rgb(28 34 39 / .14);
+  --f-display:"LXGW WenKai TC","Kaiti TC","BiauKai","STKaiti","KaiTi",serif;
+  --f-ui:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#14181b; --paper-2:#1b2125; --card:#20272b; --ink:#e3e6df; --ink-2:#a1aaa6; --line:#343d41;
+  --accent:#86afd8; --accent-soft:#25384a; --seal:#e07563;
+  --g-tg:#86afd8; --g-ds:#86bc95; --g-ot:#c9a97c;
+  --st-none:#2b3236; --st-wild:#d6a95a; --st-liang:#86afd8; --st-gone:#8a9195;
+  --r-jie:#86afd8; --r-zhu:#86bc95; --r-xd:#c9a97c; --r-fq:#d38fb0; --r-ch:#e07563;
+  --shadow:0 10px 30px rgb(0 0 0 / .45); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#14181b; --paper-2:#1b2125; --card:#20272b; --ink:#e3e6df; --ink-2:#a1aaa6; --line:#343d41;
+  --accent:#86afd8; --accent-soft:#25384a; --seal:#e07563;
+  --g-tg:#86afd8; --g-ds:#86bc95; --g-ot:#c9a97c;
+  --st-none:#2b3236; --st-wild:#d6a95a; --st-liang:#86afd8; --st-gone:#8a9195;
+  --r-jie:#86afd8; --r-zhu:#86bc95; --r-xd:#c9a97c; --r-fq:#d38fb0; --r-ch:#e07563;
+  --shadow:0 10px 30px rgb(0 0 0 / .45); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.55}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1440px;margin:0 auto}
+
+/* masthead */
+.mast{padding-block:22px 10px;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.seal{width:46px;height:46px;border:2px solid var(--seal);color:var(--seal);border-radius:4px;display:grid;grid-template-columns:1fr 1fr;place-items:center;font-family:var(--f-display);font-size:17px;line-height:1;padding:3px;flex:none}
+.mast h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,40px);margin:0;letter-spacing:.06em;text-wrap:balance}
+.mast p{margin:0;color:var(--ink-2);font-size:13px;letter-spacing:.04em}
+
+/* S1 filter */
+.filter{border-block:1px solid var(--line);background:var(--paper-2)}
+.filter .wrap{padding-block:12px;display:grid;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.search{position:relative;flex:1 1 240px;min-width:0;max-width:360px}
+.search input{width:100%;padding:8px 12px 8px 34px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font:inherit}
+.search svg{position:absolute;left:10px;top:50%;translate:0 -50%;width:16px;height:16px;stroke:var(--ink-2)}
+.tog{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font-size:13px}
+.tog[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tog .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+select{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);max-width:100%}
+.label{font-size:12px;color:var(--ink-2);letter-spacing:.08em}
+.chars{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--card);overflow:hidden}
+.chip .pick{display:flex;align-items:center;gap:7px;border:0;background:none;padding:3px 10px 3px 3px}
+.chip .nm{font-size:14px}
+.chip .nk{font-size:11.5px;color:var(--ink-2)}
+.chip .info{border:0;border-left:1px solid var(--line);background:none;padding:0 9px;align-self:stretch;color:var(--ink-2);font-size:12px;font-family:var(--f-display)}
+.chip.on{border-color:var(--accent);background:var(--accent-soft)}
+.chip.on .info{border-color:var(--accent)}
+.empty-note{color:var(--ink-2);font-size:13px;padding:6px 0}
+.av{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-size:14px;color:var(--paper);flex:none;line-height:1}
+.av.tg{background:var(--g-tg)} .av.ds{background:var(--g-ds)} .av.ot{background:var(--g-ot)}
+.av.ring{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--seal)}
+.sel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--paper);border-radius:999px;padding:3px 4px 3px 10px;font-size:13px}
+.tag button{border:0;background:rgb(255 255 255 / .16);color:inherit;border-radius:50%;width:20px;height:20px;line-height:1;padding:0}
+.link{border:0;background:none;color:var(--accent);padding:2px 4px;text-decoration:underline;text-underline-offset:3px;font-size:13px}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.tabs{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+.tabs button{border:0;background:none;padding:7px 16px;font-size:14px}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.count{font-family:var(--f-display);font-size:18px}
+.count b{font-variant-numeric:tabular-nums;color:var(--accent);font-size:22px;padding:0 3px}
+
+/* S2 timeline */
+.view{padding-block:18px 40px}
+.tl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.tl{position:relative}
+.arcs{position:relative;height:52px;border-bottom:1px solid var(--line)}
+.arc{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);padding:5px 8px;text-align:left;background:none;border-top:0;border-right:0;border-bottom:0;overflow:hidden;white-space:nowrap}
+.arc:nth-child(odd){background:var(--paper-2)}
+.arc b{display:block;font-family:var(--f-display);font-size:14px;font-weight:400}
+.arc span{font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.arc:hover b{color:var(--accent);text-decoration:underline}
+.ruler{position:relative;height:26px;border-bottom:1px solid var(--line)}
+.tick{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);font-size:11px;color:var(--ink-2);padding-left:3px;font-variant-numeric:tabular-nums}
+.tick.minor{top:16px;border-color:var(--line);opacity:.6}
+.lanes{position:relative}
+.ev{position:absolute;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:6px;padding:0 9px 6px;display:flex;flex-direction:column;gap:2px;transition:border-color .15s,box-shadow .15s}
+.ev:hover{border-color:var(--accent);box-shadow:var(--shadow);z-index:2}
+.ev .span{height:5px;margin:0 -9px 4px;border-radius:5px 5px 0 0;background:var(--accent);opacity:.85}
+.ev .span.pt{width:11px;height:11px;border-radius:50%;margin:6px 0 2px -4px}
+.ev .t{font-family:var(--f-display);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev .m{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.avs{display:flex}
+.avs .av{width:20px;height:20px;font-size:11px;margin-left:-4px;box-shadow:0 0 0 1.5px var(--card)}
+.avs .av:first-child{margin-left:0}
+.avs .av.ring{box-shadow:0 0 0 1.5px var(--card),0 0 0 3px var(--seal)}
+.more{font-size:11px;color:var(--ink-2);margin-left:3px}
+.empty{padding:48px 16px;text-align:center;color:var(--ink-2)}
+.empty h3{font-family:var(--f-display);font-weight:400;font-size:20px;color:var(--ink);margin:0 0 6px}
+.vlist{display:none}
+@media (max-width:720px){
+  .chars{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}.chip{flex:none}
+  .tl-scroll{display:none}.vlist{display:grid;gap:18px}
+  .vgroup h3{font-family:var(--f-display);font-weight:400;font-size:18px;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .vgroup h3 button{all:unset;cursor:pointer}
+  .vgroup h3 small{font-family:var(--f-ui);font-size:12px;color:var(--ink-2)}
+  .vrow{display:grid;grid-template-columns:62px 1fr;gap:10px;align-items:start}
+  .vrow .ch{font-size:12px;color:var(--ink-2);text-align:right;padding-top:9px;font-variant-numeric:tabular-nums;border-right:2px solid var(--line);padding-right:9px;align-self:stretch}
+  .vrow .ev{position:static;width:auto!important}
+  .vgroup .stack{display:grid;gap:8px}
+}
+
+/* drawer S3/S4 */
+.scrim{position:fixed;inset:0;background:rgb(10 14 16 / .28);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--card);border-left:1px solid var(--line);box-shadow:var(--shadow);z-index:21;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (max-width:720px){.drawer{top:auto;width:100%;height:82%;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;padding-left:env(safe-area-inset-left,0px)}}
+.dh{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.dh .k{font-size:12px;letter-spacing:.1em;color:var(--ink-2)}
+.x{border:1px solid var(--line);background:none;border-radius:6px;width:32px;height:32px;font-size:18px;line-height:1}
+.db{overflow-y:auto;padding:18px;display:grid;gap:18px;align-content:start}
+.db h2{font-family:var(--f-display);font-weight:700;font-size:28px;margin:0;line-height:1.2;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--ink-2)}
+.meta b{color:var(--ink);font-weight:500}
+.sec h4{margin:0 0 8px;font-size:12px;letter-spacing:.12em;color:var(--ink-2);font-weight:500}
+.huimu{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-family:var(--f-display);font-size:15px}
+.huimu li{display:grid;grid-template-columns:58px 1fr;gap:8px}
+.huimu span{color:var(--ink-2);font-family:var(--f-ui);font-size:12px;padding-top:2px;font-variant-numeric:tabular-nums}
+.people{display:grid;gap:6px}
+.person{display:flex;align-items:center;gap:10px}
+.person .av{width:32px;height:32px;font-size:16px;border:0;cursor:pointer}
+.person .av:hover{filter:brightness(1.12)}
+.person .nmb{border:0;background:none;padding:0;font-size:15px;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.person small{color:var(--ink-2)}
+.person .added{font-size:11px;color:var(--ink-2);margin-left:auto}
+.summary{font-size:15px;line-height:1.75;margin:0;max-width:60ch}
+.place{border:1px solid var(--line);background:var(--paper-2);border-radius:6px;padding:4px 10px;font-size:14px}
+.pn{display:flex;gap:8px;border-top:1px solid var(--line);padding:12px 18px}
+.pn button{flex:1;border:1px solid var(--line);background:var(--paper-2);border-radius:6px;padding:8px;font-size:13px;text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn button:last-child{text-align:right}
+.pn button:disabled{opacity:.4;cursor:default}
+.hint{font-size:12px;color:var(--ink-2)}
+
+/* S4 status bar */
+.stbar{display:flex;height:16px;border-radius:3px;overflow:hidden}
+.stbar i{display:block;height:100%}
+.s-none{background:var(--st-none)} .s-wild{background:var(--st-wild)} .s-liang{background:var(--st-liang)} .s-gone{background:var(--st-gone)}
+.stwrap{position:relative;padding-top:40px}
+.stmk{position:absolute;font-size:11px;translate:-50% 0;white-space:nowrap;color:var(--ink);font-variant-numeric:tabular-nums;line-height:14px}
+.stln{position:absolute;top:30px;height:28px;border-left:1.5px solid var(--ink)}
+.stscale{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-2);margin-top:3px;font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--ink-2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.elist{list-style:none;padding:0;margin:0;display:grid;gap:2px}
+.elist button{width:100%;display:grid;grid-template-columns:72px 1fr;gap:8px;border:0;background:none;text-align:left;padding:5px 6px;border-radius:4px}
+.elist button:hover{background:var(--paper-2)}
+.elist span{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums;padding-top:1px}
+.elist b{font-family:var(--f-display);font-weight:400;font-size:15px}
+.rlist{display:flex;flex-wrap:wrap;gap:6px}
+.rlist button{border:1px solid var(--line);background:var(--paper-2);border-radius:999px;padding:3px 10px 3px 4px;display:flex;align-items:center;gap:6px;font-size:13px}
+.rlist .av{width:22px;height:22px;font-size:12px}
+.rt{font-size:11px;padding:1px 6px;border-radius:3px;border:1px solid currentColor}
+.primary{border:0;background:var(--ink);color:var(--paper);border-radius:6px;padding:9px 14px;font-size:14px;justify-self:start}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:3px;border:1px solid var(--line);color:var(--ink-2)}
+
+/* S5 map */
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px}
+@media (max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.mapbox{position:relative;border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+.mapbox svg{display:block;width:100%;height:auto}
+.sea{fill:var(--accent-soft)} .land{fill:var(--paper-2)}
+.river{fill:none;stroke:var(--accent);stroke-width:2;opacity:.45}
+.rlabel{font-size:11px;fill:var(--accent);opacity:.8}
+.marsh{fill:var(--accent);opacity:.25}
+.trail{fill:none;stroke:var(--seal);stroke-width:2;stroke-dasharray:6 5}
+.trailno{font-size:10px;fill:var(--paper);font-weight:700}
+.mk{cursor:pointer}
+.mk circle.o{fill:var(--accent);stroke:var(--card);stroke-width:2}
+.mk.hi circle.o{fill:var(--seal)}
+.mk text.n{fill:var(--paper);font-size:11px;font-weight:700;text-anchor:middle;dominant-baseline:central}
+.mk text.l{fill:var(--ink);font-size:12px;paint-order:stroke;stroke:var(--card);stroke-width:3px}
+.mapnote{position:absolute;left:10px;bottom:8px;font-size:11px;color:var(--ink-2);background:var(--card);padding:2px 6px;border-radius:3px}
+.unloc{position:absolute;right:10px;top:10px;font-size:12px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 10px}
+.side{display:grid;gap:12px;align-content:start}
+.panel{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:12px 14px}
+.panel h3{margin:0 0 6px;font-family:var(--f-display);font-weight:400;font-size:19px}
+.mini{position:relative;height:30px;margin-top:6px}
+.mini .base{position:absolute;left:0;right:0;top:12px;height:6px;background:var(--st-none);border-radius:3px}
+.mini .rng{position:absolute;top:12px;height:6px;background:var(--accent);opacity:.35;border-radius:3px}
+.mini .tk{position:absolute;top:8px;width:2px;height:14px;background:var(--accent)}
+.mini .lb{position:absolute;top:22px;font-size:10px;color:var(--ink-2);translate:-50% 0;font-variant-numeric:tabular-nums}
+
+/* S6 graph */
+.graphbox{border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+.graphbox svg{display:block;width:100%;height:min(76vh,720px)}
+.node{transition:transform .5s ease,opacity .3s}
+.node .c{stroke:var(--card);stroke-width:2.5;cursor:pointer}
+.node .c.tg{fill:var(--g-tg)} .node .c.ds{fill:var(--g-ds)} .node .c.ot{fill:var(--g-ot)}
+.node .ch{fill:var(--paper);font-family:var(--f-display);font-size:18px;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.node .nm{fill:var(--ink);font-size:13px;text-anchor:middle;paint-order:stroke;stroke:var(--card);stroke-width:4px;pointer-events:none}
+.node .plus{cursor:pointer}
+.node .plus circle{fill:var(--card);stroke:var(--ink-2)}
+.node .plus text{fill:var(--ink);font-size:14px;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.node.sel .c{stroke:var(--seal);stroke-width:3.5}
+.node.dim,.edge.dim{opacity:.12}
+.edge{transition:opacity .3s}
+.edge line{stroke-width:2.2;transition:all .5s ease}
+.e-結義{stroke:var(--r-jie)} .e-主僕{stroke:var(--r-zhu);stroke-dasharray:7 4} .e-兄弟{stroke:var(--r-xd);stroke-width:4!important}
+.e-夫妻{stroke:var(--r-fq);stroke-dasharray:2 4;stroke-linecap:round} .e-仇敵{stroke:var(--r-ch);stroke-dasharray:10 4 2 4} .e-師徒{stroke:var(--ink-2)}
+.glegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--ink-2);padding:10px 14px;border-top:1px solid var(--line)}
+.glegend svg{width:30px;height:10px;vertical-align:middle;margin-right:4px}
+.gdot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="wrap mast">
+  <div class="seal" aria-hidden="true"><span>水</span><span>滸</span><span>年</span><span>表</span></div>
+  <div>
+    <h1>水滸時間軸</h1>
+    <p>依百二十回本《水滸全傳》章回 · 收錄 22 位人物、54 件事</p>
+  </div>
+</header>
+
+<section class="filter" data-page="S1 角色篩選列">
+  <div class="wrap">
+    <div class="row">
+      <label class="search" for="q"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="q" type="search" placeholder="搜尋姓名或綽號，例如：黑旋風" autocomplete="off" aria-label="搜尋角色"></label>
+      <button class="tog" id="tgTG" aria-pressed="false"><span class="dot" style="background:var(--g-tg)"></span>天罡</button>
+      <button class="tog" id="tgDS" aria-pressed="false"><span class="dot" style="background:var(--g-ds)"></span>地煞</button>
+      <select id="arcSel" aria-label="大節"></select>
+    </div>
+    <div class="chars" id="chars"></div>
+    <div class="sel" id="sel"></div>
+    <div class="bar">
+      <div class="count" id="count" aria-live="polite"></div>
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-timeline" data-view="timeline">時間軸</button>
+        <button role="tab" id="tab-map" data-view="map">地圖</button>
+        <button role="tab" id="tab-graph" data-view="graph">關係圖</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="view" id="v-timeline" data-page="S2 時間軸">
+    <div class="tl-scroll" id="tlScroll"><div class="tl" id="tl"></div></div>
+    <div class="vlist" id="vlist"></div>
+  </section>
+  <section class="view" id="v-map" data-page="S5 地圖" hidden>
+    <div class="mapgrid">
+      <div class="mapbox" id="mapbox"></div>
+      <div class="side" id="mapside"></div>
+    </div>
+  </section>
+  <section class="view" id="v-graph" data-page="S6 關係圖" hidden>
+    <div class="graphbox"><div id="graph"></div>
+      <div class="glegend" id="glegend"></div></div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="dEvent" data-page="S3 事件明細面板" hidden aria-label="事件明細"></aside>
+<aside class="drawer" id="dChar" data-page="S4 角色資料面板" hidden aria-label="角色資料"></aside>
+
+<script>
+const DATA = {"arcs":[{"id":"arc-01","name":"誤走妖魔・魯智深與林沖","chapters":[1,12]},{"id":"arc-02","name":"智取生辰綱・晁蓋上山","chapters":[13,22]},{"id":"arc-03","name":"武松","chapters":[23,31]},{"id":"arc-04","name":"宋江上山","chapters":[32,42]},{"id":"arc-05","name":"三打祝家莊","chapters":[43,50]},{"id":"arc-06","name":"高唐州與大破連環馬","chapters":[51,59]},{"id":"arc-07","name":"曾頭市與盧俊義上山","chapters":[60,70]},{"id":"arc-08","name":"英雄排座次與招安","chapters":[71,82]},{"id":"arc-09","name":"征遼","chapters":[83,90]},{"id":"arc-10","name":"征田虎・征王慶","chapters":[91,110]},{"id":"arc-11","name":"征方臘","chapters":[111,119]},{"id":"arc-12","name":"魂聚蓼兒洼","chapters":[120,120]}],"chapters":[{"no":1,"title":"第一回 張天師祈禳瘟疫 洪太尉誤走妖魔"},{"no":2,"title":"第二回 王教頭私走延安府 九紋龍大鬧史家村"},{"no":3,"title":"第三回 史大郎夜走華陰縣 魯提轄拳打鎮關西"},{"no":4,"title":"第四回 趙員外重修文殊院 魯智深大鬧五台山"},{"no":5,"title":"第五回 小霸王醉入銷金帳 花和尚大鬧桃花村"},{"no":6,"title":"第六回 九紋龍翦徑赤松林 魯智深火燒瓦罐寺"},{"no":7,"title":"第七回 花和尚倒拔垂楊柳 豹子頭誤入白虎堂"},{"no":8,"title":"第八回 林教頭刺配滄州道 魯智深大鬧野豬林"},{"no":9,"title":"第九回 柴進門招天下客 林沖棒打洪教頭"},{"no":10,"title":"第十回 林教頭風雪山神廟 陸虞候火燒草料場"},{"no":11,"title":"第十一回 朱貴水亭施號箭 林沖雪夜上梁山"},{"no":12,"title":"第十二回 梁山泊林沖落草 汴京城楊志賣刀"},{"no":13,"title":"第十三回 青面獸北京鬥武 急先鋒東郭爭功"},{"no":14,"title":"第十四回 赤髮鬼醉臥靈官殿 晁天王認義東溪村"},{"no":15,"title":"第十五回 吳學究說三阮撞籌 公孫勝應七星聚義"},{"no":16,"title":"第十六回 楊志押送金銀擔 吳用智取生辰綱"},{"no":17,"title":"第十七回 花和尚單打二龍山 青面獸雙奪寶珠寺"},{"no":18,"title":"第十八回 美髯公智穩插翅虎 宋公明私放晁天王"},{"no":19,"title":"第十九回 林沖水寨大並火 晁蓋梁山小奪泊"},{"no":20,"title":"第二十回 梁山泊義士尊晁蓋 鄆城縣月夜走劉唐"},{"no":21,"title":"第二十一回 虔婆醉打唐牛兒 宋江怒殺閻婆惜"},{"no":22,"title":"第二十二回 閻婆大鬧鄆城縣 朱仝義釋宋公明"},{"no":23,"title":"第二十三回 橫海郡柴進留賓 景陽岡武松打虎"},{"no":24,"title":"第二十四回 王婆貪賄說風情 鄆哥不忿鬧茶肆"},{"no":25,"title":"第二十五回 王婆計啜西門慶 淫婦藥鴆武大郎"},{"no":26,"title":"第二十六回 偷骨殖何九叔送喪 供人頭武二郎設祭"},{"no":27,"title":"第二十七回 母夜叉孟州道賣人肉 武都頭十字坡遇張青"},{"no":28,"title":"第二十八回 武松威鎮安平寨 施恩義奪快活林"},{"no":29,"title":"第二十九回 施恩重霸孟州道 武松醉打蔣門神"},{"no":30,"title":"第三十回 施恩三入死囚牢 武松大鬧飛雲浦"},{"no":31,"title":"第三十一回 張都監血濺鴛鴦樓 武行者夜走蜈蚣嶺"},{"no":32,"title":"第三十二回 武行者醉打孔亮 錦毛虎義釋宋江"},{"no":33,"title":"第三十三回 宋江夜看小鰲山 花榮大鬧清風寨"},{"no":34,"title":"第三十四回 鎮三山大鬧青州道 霹靂火夜走瓦礫場"},{"no":35,"title":"第三十五回 石將軍村店寄書 小李廣梁山射雁"},{"no":36,"title":"第三十六回 梁山泊吳用舉戴宗 揭陽嶺宋江逢李俊"},{"no":37,"title":"第三十七回 沒遮攔追趕及時雨 船火兒夜鬧潯陽江"},{"no":38,"title":"第三十八回 及時雨會神行太保 黑旋風展浪裡白條"},{"no":39,"title":"第三十九回 潯陽樓宋江吟反詩 梁山泊戴宗傳假信"},{"no":40,"title":"第四十回 梁山泊好漢劫法場 白龍廟英雄小聚義"},{"no":41,"title":"第四十一回 宋江智取無為軍 張順活捉黃文炳"},{"no":42,"title":"第四十二回 還道村受三卷天書 宋公明遇九天玄女"},{"no":43,"title":"第四十三回 假李逵剪徑劫單身 黑旋風沂嶺殺四虎"},{"no":44,"title":"第四十四回 錦豹子小徑逢戴宗 病關索長街遇石秀"},{"no":45,"title":"第四十五回 楊雄醉罵潘巧雲 石秀智殺裴如海"},{"no":46,"title":"第四十六回 病關索大鬧翠屏山 拚命三火燒祝家店"},{"no":47,"title":"第四十七回 撲天雕兩修生死書 宋公明一打祝家莊"},{"no":48,"title":"第四十八回 一丈青單捉王矮虎 宋公明二打祝家莊"},{"no":49,"title":"第四十九回 解珍解寶雙越獄 孫立孫新大劫牢"},{"no":50,"title":"第五十回 吳學究雙掌連環計 宋公明三打祝家莊"},{"no":51,"title":"第五十一回 插翅虎枷打白秀英 美髯公誤失小衙內"},{"no":52,"title":"第五十二回 李逵打死殷天賜 柴進失陷高唐州"},{"no":53,"title":"第五十三回 戴宗二取公孫勝 李逵獨劈羅真人"},{"no":54,"title":"第五十四回 入雲龍鬥法破高廉 黑旋風下井救柴進"},{"no":55,"title":"第五十五回 高太尉大興三路兵 呼延灼擺布連環馬"},{"no":56,"title":"第五十六回 吳用使時遷盜甲 湯隆賺徐寧上山"},{"no":57,"title":"第五十七回 徐寧教使鉤鐮槍 宋江大破連環馬"},{"no":58,"title":"第五十八回 三山聚義打青州 眾虎同心歸水泊"},{"no":59,"title":"第五十九回 吳用賺金鈴吊掛 宋江鬧西嶽華山"},{"no":60,"title":"第六十回 公孫勝芒碭山降魔 晁天王曾頭市中箭"},{"no":61,"title":"第六十一回 吳用智賺玉麒麟 張順夜鬧金沙渡"},{"no":62,"title":"第六十二回 放冷箭燕青救主 劫法場石秀跳樓"},{"no":63,"title":"第六十三回 宋江兵打大名城 關勝議取梁山泊"},{"no":64,"title":"第六十四回 呼延灼月夜賺關勝 宋公明雪天擒索超"},{"no":65,"title":"第六十五回 托塔天王夢中顯聖 浪裡白條水上報冤"},{"no":66,"title":"第六十六回 時遷火燒翠雲樓 吳用智取大名府"},{"no":67,"title":"第六十七回 宋江賞馬步三軍 關勝降水火二將"},{"no":68,"title":"第六十八回 宋公明夜打曾頭市 盧俊義活捉史文恭"},{"no":69,"title":"第六十九回 東平府誤陷九紋龍 宋公明義釋雙槍將"},{"no":70,"title":"第七十回 沒羽箭飛石打英雄 宋公明棄糧擒壯士"},{"no":71,"title":"第七十一回 忠義堂石碣受天文 梁山泊英雄排座次"},{"no":72,"title":"第七十二回 柴進簪花入禁院 李逵元夜鬧東京"},{"no":73,"title":"第七十三回 黑旋風喬捉鬼 梁山泊雙獻頭"},{"no":74,"title":"第七十四回 燕青智撲擎天柱 李逵壽張喬坐衙"},{"no":75,"title":"第七十五回 活閻羅倒船偷御酒 黑旋風扯詔罵欽差"},{"no":76,"title":"第七十六回 吳加亮布四斗五方旗 宋公明排九宮八卦陣"},{"no":77,"title":"第七十七回 梁山泊十面埋伏 宋公明兩贏童貫"},{"no":78,"title":"第七十八回 十節度議取梁山泊 宋公明一敗高太尉"},{"no":79,"title":"第七十九回 劉唐放火燒戰船 宋江兩敗高太尉"},{"no":80,"title":"第八十回 張順鑿漏海鰍船 宋江三敗高太尉"},{"no":81,"title":"第八十一回 燕青月夜遇道君 戴宗定計出樂和"},{"no":82,"title":"第八十二回 梁山泊分金大買市 宋公明全夥受招安"},{"no":83,"title":"第八十三回 宋公明奉詔破大遼 陳橋驛滴淚斬小卒"},{"no":84,"title":"第八十四回 宋公明兵打薊州城 盧俊義大戰玉田縣"},{"no":85,"title":"第八十五回 宋公明夜度益津關 吳學究智取文安縣"},{"no":86,"title":"第八十六回 宋公明大戰獨鹿山 盧俊義兵陷青石峪"},{"no":87,"title":"第八十七回 宋公明大戰幽州 呼延灼力擒番將"},{"no":88,"title":"第八十八回 顏統軍陣列混天象 宋公明夢授玄女法"},{"no":89,"title":"第八十九回 宋公明破陣成功 宿太尉頒恩降詔"},{"no":90,"title":"第九十回 五台山宋江參禪 雙林鎮燕青遇故"},{"no":91,"title":"第九十一回 宋公明兵渡黃河 盧俊義賺城黑夜"},{"no":92,"title":"第九十二回 振軍威小李廣神箭 打蓋郡智多星密籌"},{"no":93,"title":"第九十三回 李逵夢鬧天池 宋江兵分兩路"},{"no":94,"title":"第九十四回 關勝義降三將 李逵莽陷眾人"},{"no":95,"title":"第九十五回 宋公明忠感后土 喬道清術敗宋兵"},{"no":96,"title":"第九十六回 幻魔君術窘五龍山 入雲龍兵圍百穀嶺"},{"no":97,"title":"第九十七回 陳觀諫官升安撫 瓊英處女做先鋒"},{"no":98,"title":"第九十八回 張清緣配瓊英 吳用計鴆鄔梨"},{"no":99,"title":"第九十九回 花和尚解脫緣纏井 混江龍水灌太原城"},{"no":100,"title":"第一百回 張清瓊英雙建功 陳觀宋江同奏捷"},{"no":101,"title":"第一百一回 謀墳地陰險產逆 蹈春陽妖豔生奸"},{"no":102,"title":"第一百二回 王慶因奸吃官司 龔端被打師軍犯"},{"no":103,"title":"第一百三回 張管營因妾弟喪身 范節級為表兄醫臉"},{"no":104,"title":"第一百四回 段家莊重招新女婿 房山寨雙併舊強人"},{"no":105,"title":"第一百五回 宋公明避暑療軍兵 喬道清迴風燒賊寇"},{"no":106,"title":"第一百六回 書生談笑卻強敵 水軍汩沒破堅城"},{"no":107,"title":"第一百七回 宋江大勝紀山軍 朱武打破六花陣"},{"no":108,"title":"第一百八回 喬道清興霧取城 小旋風藏炮擊賊"},{"no":109,"title":"第一百九回 王慶渡江被捉 宋江剿寇成功"},{"no":110,"title":"第一百十回 燕青秋林渡射雁 宋江東京城獻俘"},{"no":111,"title":"第一百十一回 張順夜伏金山寺 宋江智取潤州城"},{"no":112,"title":"第一百十二回 盧俊義分兵宣州道 宋公明大戰毗陵郡"},{"no":113,"title":"第一百十三回 混江龍太湖小結義 宋公明蘇州大會垓"},{"no":114,"title":"第一百十四回 寧海軍宋江弔孝 湧金門張順歸神"},{"no":115,"title":"第一百十五回 張順魂捉方天定 宋江智取寧海軍"},{"no":116,"title":"第一百十六回 盧俊義分兵歙州道 宋公明大戰烏龍嶺"},{"no":117,"title":"第一百十七回 睦州城箭射鄧元覺 烏龍嶺神助宋公明"},{"no":118,"title":"第一百十八回 盧俊義大戰昱嶺關 宋公明智取清溪洞"},{"no":119,"title":"第一百十九回 魯智深浙江坐化 宋公明衣錦還鄉"},{"no":120,"title":"第一百二十回 宋公明神聚蓼兒窪 徽宗帝夢游梁山泊"}],"characters":[{"id":"songjiang","name":"宋江","nickname":"及時雨（座次綽號：呼保義）","star":"天魁星","rank":1,"group":"天罡","firstChapter":18,"joinChapter":41,"fate":"受招安後任楚州安撫使，飲高俅、楊戩等所賜藥酒中毒而死，葬楚州蓼兒洼","fateChapter":120},{"id":"lujunyi","name":"盧俊義","nickname":"玉麒麟","star":"天罡星","rank":2,"group":"天罡","firstChapter":61,"joinChapter":67,"fate":"御膳中被高俅、楊戩暗下水銀，乘船回廬州途中醉後失足落淮河而死","fateChapter":120},{"id":"wuyong","name":"吳用","nickname":"智多星","star":"天機星","rank":3,"group":"天罡","firstChapter":14,"joinChapter":20,"fate":"與花榮同到蓼兒洼宋江墳前自縊而死","fateChapter":120},{"id":"gongsunsheng","name":"公孫勝","nickname":"入雲龍","star":"天閒星","rank":4,"group":"天罡","firstChapter":15,"joinChapter":20,"fate":"征王慶後、宋江還京時依羅真人囑咐拜別眾人，回薊州從師學道、侍養老母","fateChapter":110},{"id":"linchong","name":"林沖","nickname":"豹子頭","star":"天雄星","rank":6,"group":"天罡","firstChapter":7,"joinChapter":11,"fate":"征方臘後染風病癱瘓，留杭州六和寺由武松看視，半載後亡","fateChapter":119},{"id":"luzhishen","name":"魯智深","nickname":"花和尚","star":"天孤星","rank":13,"group":"天罡","firstChapter":3,"joinChapter":58,"fate":"生擒方臘後，於杭州六和寺聽潮信坐化","fateChapter":119},{"id":"wusong","name":"武松","nickname":"行者","star":"天傷星","rank":14,"group":"天罡","firstChapter":22,"joinChapter":58,"fate":"征方臘時被包道乙砍斷左臂，後於六和寺出家，八十善終","fateChapter":119},{"id":"yangzhi","name":"楊志","nickname":"青面獸","star":"天暗星","rank":17,"group":"天罡","firstChapter":12,"joinChapter":58,"fate":"征方臘途中患病寄留丹徒縣，後病故葬於當地","fateChapter":119},{"id":"likui","name":"李逵","nickname":"黑旋風","star":"天殺星","rank":22,"group":"天罡","firstChapter":38,"joinChapter":41,"fate":"被宋江召至楚州同飲藥酒，回潤州後毒發身亡，遺囑與宋江同葬蓼兒洼","fateChapter":120},{"id":"yanqing","name":"燕青","nickname":"浪子","star":"天巧星","rank":36,"group":"天罡","firstChapter":61,"joinChapter":67,"fate":"征方臘後勸盧俊義歸隱不成，拜辭後挑金珠不知所往","fateChapter":119},{"id":"chaogai","name":"晁蓋","nickname":"托塔天王","star":null,"rank":null,"group":"其他","firstChapter":14,"joinChapter":20,"fate":"攻打曾頭市時中史文恭毒箭，回山寨後身亡（不在一百單八將之列）","fateChapter":60},{"id":"huarong","name":"花榮","nickname":"小李廣","star":"天英星","rank":9,"group":"天罡","firstChapter":33,"joinChapter":35,"fate":"與吳用同在蓼兒洼宋江墳前自縊而死","fateChapter":120},{"id":"chaijin","name":"柴進","nickname":"小旋風","star":"天貴星","rank":10,"group":"天罡","firstChapter":9,"joinChapter":54,"fate":"見戴宗納還官誥、阮小七遭追奪官誥，亦託病辭官，回滄州為民","fateChapter":120},{"id":"ruanxiaoer","name":"阮小二","nickname":"立地太歲","star":"天劍星","rank":27,"group":"天罡","firstChapter":15,"joinChapter":20,"fate":"征方臘時於烏龍嶺水戰被撓鉤搭住，怕受辱自刎而亡","fateChapter":116},{"id":"ruanxiaoqi","name":"阮小七","nickname":"活閻羅","star":"天敗星","rank":31,"group":"天罡","firstChapter":15,"joinChapter":20,"fate":"因曾穿戴方臘衣冠被追奪官誥，回石碣村打魚奉母，壽至六十","fateChapter":120},{"id":"daizong","name":"戴宗","nickname":"神行太保","star":"天速星","rank":20,"group":"天罡","firstChapter":38,"joinChapter":41,"fate":"納還官誥，往泰安州嶽廟陪堂出家，數月後大笑而終","fateChapter":120},{"id":"shixiu","name":"石秀","nickname":"拚命三郎","star":"天慧星","rank":33,"group":"天罡","firstChapter":44,"joinChapter":47,"fate":"隨盧俊義攻昱嶺關，與史進等六人被亂箭射死關下","fateChapter":118},{"id":"yangxiong","name":"楊雄","nickname":"病關索","star":"天牢星","rank":32,"group":"天罡","firstChapter":44,"joinChapter":47,"fate":"征方臘後於杭州發背瘡而死","fateChapter":119},{"id":"husanniang","name":"扈三娘","nickname":"一丈青","star":"地慧星","rank":59,"group":"地煞","firstChapter":48,"joinChapter":50,"fate":"征方臘時欲為丈夫王英報仇，被鄭彪以鍍金銅磚打落馬下而死","fateChapter":117},{"id":"wangying","name":"王英","nickname":"矮腳虎","star":"地微星","rank":58,"group":"地煞","firstChapter":32,"joinChapter":35,"fate":"征方臘時被鄭彪戳死","fateChapter":117},{"id":"shiqian","name":"時遷","nickname":"鼓上蚤","star":"地賊星","rank":107,"group":"地煞","firstChapter":46,"joinChapter":50,"fate":"征方臘後於杭州感攪腸痧而死","fateChapter":119},{"id":"gaoqiu","name":"高俅","nickname":null,"star":null,"rank":null,"group":"其他","firstChapter":2,"joinChapter":null,"fate":"書中未受懲處：毒害宋江、盧俊義事後僅被徽宗當朝責罵，俯伏謝罪","fateChapter":null,"fateNote":"書中未死未離開，全書狀態為「在野」（storyboard US-05）"}],"relations":[{"a":"linchong","b":"luzhishen","type":"結義","note":"東京大相國寺菜園相識，林沖『就當結義智深為兄』（第7回）；後魯智深大鬧野豬林救林沖（第8回）"},{"a":"songjiang","b":"wusong","type":"結義","note":"柴進莊上相識，武松拜宋江為義兄（第23回）"},{"a":"songjiang","b":"likui","type":"結義","note":"江州相識，李逵稱『結拜得這位哥哥』（第38回）；臨終同飲藥酒、同葬蓼兒洼（第120回）"},{"a":"yangxiong","b":"shixiu","type":"結義","note":"薊州街頭相識，石秀拜楊雄為哥哥（第44回）"},{"a":"lujunyi","b":"yanqing","type":"主僕","note":"燕青為盧俊義家心腹人，稱盧為主人；放冷箭救主（第61–62回）"},{"a":"ruanxiaoer","b":"ruanxiaoqi","type":"兄弟","note":"石碣村阮氏三兄弟之老大與老三（另有阮小五）"},{"a":"husanniang","b":"wangying","type":"夫妻","note":"宋江主張一丈青與王英配為夫婦（第51回）；二人同在睦州陣亡（第117回）"},{"a":"chaogai","b":"wuyong","type":"結義","note":"吳用自述『晁蓋我都是自幼結交』（第14回），二人為七星聚義核心"},{"a":"songjiang","b":"chaogai","type":"結義","note":"宋江冒險私放晁蓋（第18回）；江州劫法場後晁蓋請宋江坐第一把交椅（第41回）"},{"a":"songjiang","b":"huarong","type":"結義","note":"花榮稱宋江為兄長，宋江往清風寨投奔（第33回）；花榮最終殉宋江而死（第120回）"},{"a":"gaoqiu","b":"linchong","type":"仇敵","note":"高俅義子高衙內調戲林妻，高俅設計陷林沖誤入白虎堂、刺配滄州（第7–8回）"},{"a":"gaoqiu","b":"songjiang","type":"仇敵","note":"高俅三敗於梁山並被活捉（第78–80回）；招安後與楊戩以藥酒毒殺宋江（第120回）"},{"a":"gaoqiu","b":"yangzhi","type":"仇敵","note":"楊志欲復職，遭高太尉不容，被迫賣刀（第12回）"}],"events":[{"id":"ev-01","title":"洪太尉誤走妖魔","chapters":[1,1],"arc":"arc-01","location":"信州龍虎山伏魔殿","characters":[],"summary":"洪太尉奉旨祈禳瘟疫，強開伏魔殿，放走三十六天罡、七十二地煞。","place":"龍虎山"},{"id":"ev-02","title":"高俅發跡","chapters":[2,2],"arc":"arc-01","location":"東京","characters":["gaoqiu"],"summary":"浮浪子弟高二因踢得好氣毬得端王賞識，發跡為殿帥府太尉，逼走王進。","place":"東京"},{"id":"ev-03","title":"魯提轄拳打鎮關西","chapters":[3,4],"arc":"arc-01","location":"渭州／五台山","characters":["luzhishen"],"summary":"魯達三拳打死鄭屠，逃往五台山出家為魯智深，又大鬧五台山。","place":"渭州"},{"id":"ev-04","title":"倒拔垂楊柳・林沖結義","chapters":[7,7],"arc":"arc-01","location":"東京大相國寺菜園","characters":["luzhishen","linchong"],"summary":"魯智深倒拔垂楊柳，與林沖相識結義。","place":"東京"},{"id":"ev-05","title":"林沖誤入白虎堂","chapters":[7,8],"arc":"arc-01","location":"東京殿帥府","characters":["linchong","gaoqiu"],"summary":"高俅設計誘林沖帶刀入白虎堂，林沖被刺配滄州。","place":"東京"},{"id":"ev-06","title":"大鬧野豬林","chapters":[8,8],"arc":"arc-01","location":"野豬林","characters":["luzhishen","linchong"],"summary":"公人欲在野豬林謀害林沖，魯智深暗中跟隨及時相救。","place":"野豬林"},{"id":"ev-07","title":"棒打洪教頭","chapters":[9,9],"arc":"arc-01","location":"滄州橫海郡柴進莊","characters":["linchong","chaijin"],"summary":"林沖途經柴進莊上，棒打洪教頭。","place":"滄州"},{"id":"ev-08","title":"風雪山神廟","chapters":[10,11],"arc":"arc-01","location":"滄州草料場／梁山泊","characters":["linchong"],"summary":"陸虞候火燒草料場，林沖殺仇人後雪夜投奔梁山。","place":"滄州"},{"id":"ev-09","title":"楊志賣刀","chapters":[12,12],"arc":"arc-01","location":"梁山泊／汴京","characters":["yangzhi","linchong","gaoqiu"],"summary":"林沖納投名狀遇楊志；楊志復職遭高俅不容，賣刀殺牛二。","place":"東京"},{"id":"ev-10","title":"七星聚義","chapters":[14,15],"arc":"arc-02","location":"東溪村／石碣村","characters":["chaogai","wuyong","gongsunsheng","ruanxiaoer","ruanxiaoqi"],"summary":"吳用說三阮入夥，公孫勝來投，七人聚義謀劫生辰綱。","place":"鄆城縣"},{"id":"ev-11","title":"智取生辰綱","chapters":[16,16],"arc":"arc-02","location":"黃泥岡","characters":["yangzhi","chaogai","wuyong","gongsunsheng","ruanxiaoer","ruanxiaoqi"],"summary":"吳用以蒙汗藥酒劫走楊志押送的生辰綱。","place":"黃泥岡"},{"id":"ev-12","title":"雙奪寶珠寺","chapters":[17,17],"arc":"arc-02","location":"青州二龍山","characters":["luzhishen","yangzhi"],"summary":"失陷生辰綱的楊志與魯智深合力奪下二龍山寶珠寺。","place":"二龍山"},{"id":"ev-13","title":"宋江私放晁天王","chapters":[18,18],"arc":"arc-02","location":"鄆城縣","characters":["songjiang","chaogai"],"summary":"押司宋江得知緝捕消息，飛馬報信放走晁蓋。","place":"鄆城縣"},{"id":"ev-14","title":"晁蓋梁山小奪泊","chapters":[19,20],"arc":"arc-02","location":"梁山泊","characters":["chaogai","linchong","wuyong","gongsunsheng","ruanxiaoer","ruanxiaoqi"],"summary":"林沖火併王倫，眾人推晁蓋為山寨之主。","place":"梁山泊"},{"id":"ev-15","title":"宋江怒殺閻婆惜","chapters":[21,22],"arc":"arc-02","location":"鄆城縣","characters":["songjiang"],"summary":"閻婆惜以招文袋要挾，宋江怒殺之後出逃。","place":"鄆城縣"},{"id":"ev-16","title":"柴進莊上會武松","chapters":[22,23],"arc":"arc-02","location":"滄州橫海郡柴進莊","characters":["songjiang","wusong","chaijin"],"summary":"宋江投奔柴進，與武松相識並結為兄弟。","place":"滄州"},{"id":"ev-17","title":"景陽岡打虎","chapters":[23,23],"arc":"arc-03","location":"景陽岡","characters":["wusong"],"summary":"武松酒後赤手空拳打死景陽岡大蟲，任陽穀縣都頭。","place":"景陽岡"},{"id":"ev-18","title":"武松殺嫂祭兄","chapters":[24,26],"arc":"arc-03","location":"陽穀縣","characters":["wusong"],"summary":"武大郎遭潘金蓮與西門慶毒殺，武松殺二人祭兄。","place":"陽穀縣"},{"id":"ev-19","title":"醉打蔣門神・血濺鴛鴦樓","chapters":[28,31],"arc":"arc-03","location":"孟州","characters":["wusong"],"summary":"武松醉打蔣門神，遭張都監陷害後血濺鴛鴦樓，扮行者出逃。","place":"孟州"},{"id":"ev-20","title":"清風寨之變","chapters":[32,34],"arc":"arc-04","location":"清風山／清風寨","characters":["songjiang","huarong","wangying"],"summary":"宋江在清風山遇王英等，後投花榮於清風寨，遭劉高陷害引發大鬧。","place":"清風寨"},{"id":"ev-21","title":"小李廣梁山射雁","chapters":[35,35],"arc":"arc-04","location":"梁山泊","characters":["huarong"],"summary":"花榮等上梁山，當眾一箭射中雁頭。","place":"梁山泊"},{"id":"ev-22","title":"江州結識戴宗・李逵","chapters":[38,38],"arc":"arc-04","location":"江州","characters":["songjiang","daizong","likui"],"summary":"刺配江州的宋江結識神行太保戴宗與黑旋風李逵。","place":"江州"},{"id":"ev-23","title":"潯陽樓吟反詩","chapters":[39,39],"arc":"arc-04","location":"江州潯陽樓","characters":["songjiang","daizong","wuyong"],"summary":"宋江醉題反詩被告發；戴宗帶回吳用所造假信敗露。","place":"江州"},{"id":"ev-24","title":"江州劫法場","chapters":[40,41],"arc":"arc-04","location":"江州／白龍廟／無為軍","characters":["songjiang","likui","daizong","chaogai","huarong"],"summary":"梁山好漢劫法場救宋江、戴宗，白龍廟小聚義，智取無為軍後上梁山。","place":"江州"},{"id":"ev-25","title":"九天玄女授天書","chapters":[42,42],"arc":"arc-04","location":"還道村","characters":["songjiang"],"summary":"宋江避難還道村，夢遇九天玄女受三卷天書。","place":null},{"id":"ev-26","title":"沂嶺殺四虎","chapters":[43,43],"arc":"arc-05","location":"沂州沂嶺","characters":["likui"],"summary":"李逵接母上山，途中母親被虎所食，李逵連殺四虎。","place":"沂嶺"},{"id":"ev-27","title":"楊雄石秀結義・翠屏山","chapters":[44,46],"arc":"arc-05","location":"薊州翠屏山","characters":["yangxiong","shixiu","daizong"],"summary":"石秀與楊雄結義，揭破潘巧雲私情，二人殺之於翠屏山。","place":"薊州"},{"id":"ev-28","title":"火燒祝家店","chapters":[46,46],"arc":"arc-05","location":"獨龍岡祝家店","characters":["shixiu","yangxiong","shiqian"],"summary":"時遷偷雞惹禍被擒，石秀放火燒祝家店。","place":"祝家莊"},{"id":"ev-29","title":"三打祝家莊","chapters":[47,50],"arc":"arc-05","location":"獨龍岡祝家莊","characters":["songjiang","wuyong","linchong","husanniang","wangying","shixiu","yangxiong","shiqian"],"summary":"宋江三打祝家莊，林沖活捉一丈青，吳用以連環計破莊。","place":"祝家莊"},{"id":"ev-30","title":"一丈青配王英","chapters":[51,51],"arc":"arc-06","location":"梁山泊","characters":["husanniang","wangying","songjiang"],"summary":"宋江主張扈三娘與王英配為夫婦。","place":"梁山泊"},{"id":"ev-31","title":"柴進失陷高唐州","chapters":[52,54],"arc":"arc-06","location":"高唐州","characters":["chaijin","likui","gongsunsheng","daizong"],"summary":"李逵打死殷天賜累柴進入獄；戴宗、李逵請公孫勝破高廉，李逵下井救柴進。","place":"高唐州"},{"id":"ev-32","title":"時遷盜甲・大破連環馬","chapters":[56,57],"arc":"arc-06","location":"東京／梁山泊","characters":["shiqian","wuyong","songjiang"],"summary":"時遷盜徐寧寶甲賺其上山，以鉤鐮槍破呼延灼連環馬。","place":"梁山泊"},{"id":"ev-33","title":"三山聚義打青州","chapters":[58,58],"arc":"arc-06","location":"青州","characters":["luzhishen","wusong","yangzhi","songjiang"],"summary":"二龍山、桃花山、白虎山三山聯合梁山攻青州，魯智深等歸水泊。","place":"青州"},{"id":"ev-34","title":"晁天王曾頭市中箭","chapters":[60,60],"arc":"arc-07","location":"曾頭市","characters":["chaogai","songjiang"],"summary":"晁蓋夜打曾頭市中史文恭毒箭，遺言捉得射死他者為梁山泊主。","place":"曾頭市"},{"id":"ev-35","title":"智賺玉麒麟","chapters":[61,62],"arc":"arc-07","location":"大名府","characters":["lujunyi","yanqing","wuyong","shixiu","yangxiong"],"summary":"吳用賺盧俊義出門，盧遭陷入獄；燕青放冷箭救主，石秀跳樓劫法場。","place":"大名府"},{"id":"ev-36","title":"火燒翠雲樓・智取大名府","chapters":[66,67],"arc":"arc-07","location":"大名府","characters":["shiqian","wuyong","lujunyi","yanqing"],"summary":"元宵時遷火燒翠雲樓為號，梁山攻破大名府，救出盧俊義上山。","place":"大名府"},{"id":"ev-37","title":"忠義堂排座次","chapters":[71,71],"arc":"arc-08","location":"梁山泊忠義堂","characters":["songjiang","lujunyi","wuyong","gongsunsheng","linchong","luzhishen","wusong","yangzhi","likui","yanqing","huarong","chaijin","ruanxiaoer","ruanxiaoqi","daizong","shixiu","yangxiong","husanniang","wangying","shiqian"],"summary":"石碣天書現世，一百單八將依天罡地煞排定座次。","place":"梁山泊"},{"id":"ev-38","title":"燕青智撲擎天柱","chapters":[74,74],"arc":"arc-08","location":"泰安州","characters":["yanqing","likui"],"summary":"燕青在泰安州相撲擂台摔敗擎天柱任原；李逵壽張縣喬坐衙。","place":"泰安州"},{"id":"ev-39","title":"三敗高太尉","chapters":[78,80],"arc":"arc-08","location":"梁山泊","characters":["songjiang","gaoqiu","wuyong"],"summary":"高俅親率十節度征剿，三戰皆敗，最終被活捉上山。","place":"梁山泊"},{"id":"ev-40","title":"燕青月夜遇道君","chapters":[81,81],"arc":"arc-08","location":"東京","characters":["yanqing","daizong"],"summary":"燕青經李師師面見徽宗陳情；戴宗定計救出樂和。","place":"東京"},{"id":"ev-41","title":"全夥受招安","chapters":[82,82],"arc":"arc-08","location":"梁山泊","characters":["songjiang","lujunyi","wuyong"],"summary":"梁山分金大買市，全夥接受朝廷招安。","place":"梁山泊"},{"id":"ev-42","title":"征遼","chapters":[83,89],"arc":"arc-09","location":"薊州／幽州","characters":["songjiang","lujunyi","wuyong","gongsunsheng"],"summary":"宋江奉詔破大遼，破混天象陣，遼國投降。","place":"幽州"},{"id":"ev-43","title":"五台山參禪","chapters":[90,90],"arc":"arc-09","location":"五台山／雙林鎮","characters":["songjiang","luzhishen","yanqing"],"summary":"宋江隨魯智深上五台山參禪，燕青於雙林鎮遇故人。","place":"五台山"},{"id":"ev-44","title":"征田虎","chapters":[91,100],"arc":"arc-10","location":"河北（威勝等地）","characters":["songjiang","lujunyi","gongsunsheng","wuyong","likui","luzhishen"],"summary":"宋江兵渡黃河征田虎；公孫勝鬥法喬道清，張清擒田虎。","place":"河北威勝"},{"id":"ev-45","title":"征王慶","chapters":[101,110],"arc":"arc-10","location":"淮西","characters":["songjiang","lujunyi","gongsunsheng"],"summary":"宋江征淮西王慶，王慶渡江被捉，押赴東京凌遲。","place":"淮西"},{"id":"ev-46","title":"公孫勝辭別歸山","chapters":[110,110],"arc":"arc-10","location":"東京","characters":["gongsunsheng","songjiang"],"summary":"公孫勝依羅真人囑咐，送宋江還京後拜別歸山學道。","place":"東京"},{"id":"ev-47","title":"楊志病留丹徒","chapters":[111,112],"arc":"arc-11","location":"潤州丹徒縣","characters":["yangzhi"],"summary":"征方臘之初楊志患病，寄留丹徒不能征進。","place":"丹徒"},{"id":"ev-48","title":"阮小二烏龍嶺自刎","chapters":[116,116],"arc":"arc-11","location":"烏龍嶺","characters":["ruanxiaoer"],"summary":"烏龍嶺水戰遭火排夾攻，阮小二被撓鉤搭住，自刎而亡。","place":"烏龍嶺"},{"id":"ev-49","title":"睦州血戰","chapters":[117,117],"arc":"arc-11","location":"睦州／烏龍嶺","characters":["wusong","luzhishen","husanniang","wangying"],"summary":"包道乙飛劍斬斷武松左臂；鄭彪戳死王英、銅磚打死扈三娘。","place":"睦州"},{"id":"ev-50","title":"昱嶺關之戰","chapters":[118,118],"arc":"arc-11","location":"昱嶺關","characters":["shixiu","lujunyi"],"summary":"盧俊義攻昱嶺關，史進、石秀等六將中伏被亂箭射死。","place":"昱嶺關"},{"id":"ev-51","title":"魯智深擒方臘・浙江坐化","chapters":[119,119],"arc":"arc-11","location":"杭州六和寺","characters":["luzhishen","wusong","linchong"],"summary":"魯智深禪杖打翻方臘，後聽潮信坐化；武松出家，林沖風癱留寺。","place":"杭州"},{"id":"ev-52","title":"燕青辭主・凱旋還京","chapters":[119,119],"arc":"arc-11","location":"杭州／東京","characters":["yanqing","lujunyi","yangxiong","shiqian","songjiang"],"summary":"楊雄、時遷病故，燕青辭別盧俊義不知所往，宋江衣錦還鄉。","place":"杭州"},{"id":"ev-53","title":"眾將散去","chapters":[120,120],"arc":"arc-12","location":"泰安州／石碣村／滄州","characters":["daizong","ruanxiaoqi","chaijin"],"summary":"戴宗納還官誥出家，阮小七被追奪官誥回鄉，柴進辭官為民。","place":"泰安州"},{"id":"ev-54","title":"宋公明神聚蓼兒洼","chapters":[120,120],"arc":"arc-12","location":"楚州蓼兒洼","characters":["songjiang","likui","wuyong","huarong","lujunyi","gaoqiu"],"summary":"高俅、楊戩以水銀害盧俊義、藥酒毒宋江；宋江鴆李逵，吳用、花榮自縊，同葬蓼兒洼。","place":"楚州"}],"places":[{"id":"東京","name":"東京","lon":114.3,"lat":34.8},{"id":"龍虎山","name":"龍虎山","lon":117.0,"lat":28.1},{"id":"渭州","name":"渭州","lon":106.7,"lat":35.5},{"id":"五台山","name":"五台山","lon":113.6,"lat":39.0},{"id":"滄州","name":"滄州","lon":116.8,"lat":38.3},{"id":"梁山泊","name":"梁山泊","lon":116.1,"lat":35.8},{"id":"鄆城縣","name":"鄆城縣","lon":115.9,"lat":35.6},{"id":"黃泥岡","name":"黃泥岡","lon":116.6,"lat":35.2},{"id":"二龍山","name":"二龍山","lon":118.6,"lat":36.8},{"id":"景陽岡","name":"景陽岡","lon":115.7,"lat":36.2},{"id":"陽穀縣","name":"陽穀縣","lon":115.8,"lat":36.0},{"id":"孟州","name":"孟州","lon":112.8,"lat":34.9},{"id":"清風寨","name":"清風寨","lon":118.2,"lat":36.5},{"id":"江州","name":"江州","lon":116.0,"lat":29.7},{"id":"沂嶺","name":"沂嶺","lon":118.3,"lat":35.1},{"id":"薊州","name":"薊州","lon":117.4,"lat":40.0},{"id":"祝家莊","name":"祝家莊","lon":116.4,"lat":36.0},{"id":"高唐州","name":"高唐州","lon":116.2,"lat":36.9},{"id":"曾頭市","name":"曾頭市","lon":116.6,"lat":37.5},{"id":"大名府","name":"大名府","lon":115.1,"lat":36.3},{"id":"泰安州","name":"泰安州","lon":117.1,"lat":36.2},{"id":"幽州","name":"幽州","lon":116.4,"lat":39.9},{"id":"河北威勝","name":"河北威勝","lon":112.7,"lat":36.8},{"id":"淮西","name":"淮西","lon":114.5,"lat":32.4},{"id":"丹徒","name":"丹徒","lon":119.4,"lat":32.2},{"id":"烏龍嶺","name":"烏龍嶺","lon":119.2,"lat":29.7},{"id":"睦州","name":"睦州","lon":119.4,"lat":29.5},{"id":"昱嶺關","name":"昱嶺關","lon":118.9,"lat":30.2},{"id":"杭州","name":"杭州","lon":120.2,"lat":30.3},{"id":"楚州","name":"楚州","lon":119.1,"lat":33.5},{"id":"野豬林","name":"野豬林","lon":115.2,"lat":35.9},{"id":"青州","name":"青州","lon":118.5,"lat":36.7}]};
+(() => {
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const C = Object.fromEntries(DATA.characters.map(c => [c.id, c]));
+const ARC = Object.fromEntries(DATA.arcs.map(a => [a.id, a]));
+const CH = Object.fromEntries(DATA.chapters.map(c => [c.no, c.title.replace(/^第\S+回\s*/, '')]));
+const PL = Object.fromEntries(DATA.places.map(p => [p.id, p]));
+const EVENTS = [...DATA.events].sort((a,b) => a.chapters[0]-b.chapters[0] || a.chapters[1]-b.chapters[1]);
+const NUM = n => { const d='〇一二三四五六七八九'; if(n<=10) return n===10?'十':d[n]; const t=Math.floor(n/10),o=n%10; if(n<20) return '十'+(o?d[o]:''); if(n<100) return d[t]+'十'+(o?d[o]:''); const h=Math.floor(n/100),r=n%100; return d[h]+'百'+(r===0?'':(r<10?'零'+d[r]:(r<20?'一':'')+NUM(r))); };
+const AVCH = {ruanxiaoer:'二', ruanxiaoqi:'七', yangzhi:'志', yangxiong:'雄'};
+const grp = c => c.group==='天罡'?'tg':c.group==='地煞'?'ds':'ot';
+const nick = c => c.nickname ? c.nickname.split('（')[0] : '';
+const av = (c, cls='') => `<span class="av ${grp(c)} ${cls}" aria-hidden="true">${AVCH[c.id]||c.name[0]}</span>`;
+const rng = e => e.chapters[0]===e.chapters[1] ? `第 ${e.chapters[0]} 回` : `第 ${e.chapters[0]}–${e.chapters[1]} 回`;
+
+const S = { sel: new Set(), arc: '', q: '', view: 'timeline', focusPlace: null };
+let lastOpenEvent = null;
+
+/* ---------- filtering ---------- */
+function filtered(){
+  return EVENTS.filter(e => (!S.arc || e.arc===S.arc) && (S.sel.size===0 || e.characters.some(id => S.sel.has(id))));
+}
+function status(c, ch){
+  if (c.fateChapter && ch >= c.fateChapter) return 'gone';
+  if (c.joinChapter && ch >= c.joinChapter) return 'liang';
+  if (ch >= c.firstChapter) return 'wild';
+  return 'none';
+}
+
+/* ---------- S1 ---------- */
+const arcSel = $('#arcSel');
+arcSel.innerHTML = `<option value="">全部大節（第 1–120 回）</option>` + DATA.arcs.map(a => `<option value="${a.id}">${esc(a.name)}（第 ${a.chapters[0]}–${a.chapters[1]} 回）</option>`).join('');
+arcSel.onchange = () => { S.arc = arcSel.value; render(); };
+$('#q').addEventListener('input', e => { S.q = e.target.value.trim(); renderChars(); });
+$('#q').addEventListener('keydown', e => { if (e.key==='Enter'){ const f = matchChars()[0]; if (f){ toggle(f.id); } } });
+function matchChars(){
+  const q = S.q; if (!q) return DATA.characters;
+  return DATA.characters.filter(c => c.name.includes(q) || (c.nickname||'').includes(q));
+}
+function renderChars(){
+  const list = matchChars();
+  $('#chars').innerHTML = list.length ? list.map(c => `
+    <div class="chip ${S.sel.has(c.id)?'on':''}">
+      <button class="pick" data-pick="${c.id}" aria-pressed="${S.sel.has(c.id)}">${av(c)}<span class="nm">${esc(c.name)}</span>${nick(c)?`<span class="nk">${esc(nick(c))}</span>`:''}</button>
+      <button class="info" data-info="${c.id}" aria-label="${esc(c.name)} 角色資料" title="角色資料">i</button>
+    </div>`).join('') : `<div class="empty-note">找不到符合的角色</div>`;
+}
+$('#chars').addEventListener('click', e => {
+  const p = e.target.closest('[data-pick]'); if (p) return toggle(p.dataset.pick);
+  const i = e.target.closest('[data-info]'); if (i) openChar(i.dataset.info);
+});
+function toggle(id){ S.sel.has(id) ? S.sel.delete(id) : S.sel.add(id); render(); }
+function groupToggle(g){
+  const ids = DATA.characters.filter(c => c.group===g).map(c => c.id);
+  const all = ids.every(id => S.sel.has(id));
+  ids.forEach(id => all ? S.sel.delete(id) : S.sel.add(id));
+  render();
+}
+$('#tgTG').onclick = () => groupToggle('天罡');
+$('#tgDS').onclick = () => groupToggle('地煞');
+function renderSel(){
+  const s = [...S.sel].map(id => C[id]);
+  $('#sel').innerHTML = s.length
+    ? `<span class="label">已選</span>` + s.map(c => `<span class="tag">${esc(c.name)}<button data-rm="${c.id}" aria-label="移除 ${esc(c.name)}">×</button></span>`).join('') + `<button class="link" id="clearAll">清除全部</button>`
+    : `<span class="label">未選角色，顯示全部角色的事件</span>`;
+  for (const g of [['天罡','#tgTG'],['地煞','#tgDS']]){
+    const ids = DATA.characters.filter(c => c.group===g[0]).map(c => c.id);
+    $(g[1]).setAttribute('aria-pressed', ids.every(id => S.sel.has(id)));
+  }
+}
+$('#sel').addEventListener('click', e => {
+  const r = e.target.closest('[data-rm]'); if (r){ S.sel.delete(r.dataset.rm); render(); }
+  if (e.target.id==='clearAll'){ S.sel.clear(); render(); }
+});
+document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => setView(b.dataset.view));
+function setView(v){
+  S.view = v;
+  for (const k of ['timeline','map','graph']){ $('#v-'+k).hidden = k!==v; $('#tab-'+k).setAttribute('aria-selected', k===v); }
+  try { history.replaceState(null,'','#'+v); } catch(e){}
+  renderView();
+}
+
+/* ---------- S2 timeline ---------- */
+const UNIT_MIN = 30, CARD_MIN = 170, LANE_H = 70, LANE_GAP = 8;
+function evCard(e, style=''){
+  const ids = [...e.characters].sort((a,b) => S.sel.has(b)-S.sel.has(a));
+  const shown = ids.slice(0,3), more = ids.length-3;
+  const single = e.chapters[0]===e.chapters[1];
+  return `<button class="ev" data-ev="${e.id}" style="${style}">
+    <i class="span ${single?'pt':''}" style="${single?'':'width:var(--sw)'}"></i>
+    <span class="t">${esc(e.title)}</span>
+    <span class="m">${rng(e)}<span class="avs">${shown.map(id => av(C[id], S.sel.has(id)?'ring':'')).join('')}</span>${more>0?`<span class="more">+${more}</span>`:''}${ids.length===0?'<span class="more">（無收錄角色）</span>':''}</span>
+  </button>`;
+}
+function emptyHTML(){ return `<div class="empty"><h3>沒有符合條件的事件</h3><p>目前的角色與大節組合下沒有事件。</p><button class="primary" data-clear>清除篩選</button></div>`; }
+function renderTimeline(){
+  const evs = filtered();
+  const [c0, c1] = S.arc ? ARC[S.arc].chapters : [1,120];
+  const span = c1 - c0 + 1;
+  const avail = $('#tlScroll').clientWidth || 1000;
+  const unit = Math.max(UNIT_MIN, Math.floor(avail / span));
+  const W = span * unit;
+  const x = ch => (ch - c0) * unit;
+  const arcs = DATA.arcs.filter(a => a.chapters[1] >= c0 && a.chapters[0] <= c1);
+  let html = `<div class="arcs" style="width:${W}px">` + arcs.map(a => {
+    const l = x(Math.max(a.chapters[0],c0)), w = (Math.min(a.chapters[1],c1)-Math.max(a.chapters[0],c0)+1)*unit;
+    return `<button class="arc" data-arc="${a.id}" style="left:${l}px;width:${w}px" title="${esc(a.name)}"><b>${esc(a.name)}</b><span>${a.chapters[0]}–${a.chapters[1]}</span></button>`;
+  }).join('') + `</div><div class="ruler" style="width:${W}px">`;
+  for (let ch = c0; ch <= c1; ch++){
+    if (ch===c0 || ch%10===0) html += `<span class="tick" style="left:${x(ch)}px">${ch}</span>`;
+    else if (unit >= 60 || ch%5===0) html += `<span class="tick minor" style="left:${x(ch)}px"></span>`;
+  }
+  html += `</div>`;
+  if (!evs.length){ $('#tl').innerHTML = html + emptyHTML(); $('#tl').style.width = W+'px'; }
+  else {
+    const laneEnd = [];
+    const placed = evs.map(e => {
+      const l = x(e.chapters[0]) + 4, sw = (e.chapters[1]-e.chapters[0]+1)*unit - 8;
+      const w = Math.max(CARD_MIN, sw);
+      let lane = laneEnd.findIndex(end => end <= l);
+      if (lane < 0){ lane = laneEnd.length; laneEnd.push(0); }
+      laneEnd[lane] = l + w + 6;
+      return {e, l, w, sw, lane};
+    });
+    const H = laneEnd.length * (LANE_H + LANE_GAP) + 16;
+    html += `<div class="lanes" style="width:${W}px;height:${H}px">` + placed.map(p =>
+      evCard(p.e, `left:${p.l}px;top:${8 + p.lane*(LANE_H+LANE_GAP)}px;width:${p.w}px;height:${LANE_H}px;--sw:${p.sw}px`)).join('') + `</div>`;
+    $('#tl').innerHTML = html; $('#tl').style.width = W+'px';
+  }
+  // vertical (phone)
+  const groups = DATA.arcs.map(a => ({a, list: evs.filter(e => e.arc===a.id)})).filter(g => g.list.length);
+  $('#vlist').innerHTML = evs.length ? groups.map(g => `<div class="vgroup"><h3><button data-arc="${g.a.id}">${esc(g.a.name)}</button><small>第 ${g.a.chapters[0]}–${g.a.chapters[1]} 回</small></h3>
+    <div class="stack">${g.list.map(e => `<div class="vrow"><div class="ch">${e.chapters[0]}${e.chapters[1]!==e.chapters[0]?'–'+e.chapters[1]:''}</div>${evCard(e)}</div>`).join('')}</div></div>`).join('') : emptyHTML();
+}
+document.addEventListener('click', e => {
+  const ev = e.target.closest('[data-ev]'); if (ev) return openEvent(ev.dataset.ev);
+  const ar = e.target.closest('[data-arc]'); if (ar){ S.arc = ar.dataset.arc; arcSel.value = S.arc; render(); $('#tlScroll').scrollLeft = 0; return; }
+  if (e.target.closest('[data-clear]')){ S.sel.clear(); S.arc=''; arcSel.value=''; render(); }
+});
+
+/* ---------- drawers S3 / S4 ---------- */
+function showDrawer(id){
+  $('#scrim').hidden = false;
+  $('#dEvent').hidden = id!=='dEvent'; $('#dChar').hidden = id!=='dChar';
+}
+function closeDrawers(){ $('#scrim').hidden = true; $('#dEvent').hidden = true; $('#dChar').hidden = true; }
+$('#scrim').onclick = closeDrawers;
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeDrawers(); });
+
+function openEvent(id){
+  const e = DATA.events.find(x => x.id===id); lastOpenEvent = id;
+  const f = filtered(); const list = f.some(x => x.id===id) ? f : EVENTS;
+  const i = list.findIndex(x => x.id===id), prev = list[i-1], next = list[i+1];
+  const chs = []; for (let n=e.chapters[0]; n<=e.chapters[1]; n++) chs.push(n);
+  const d = $('#dEvent');
+  d.innerHTML = `<div class="dh"><span class="k">事件 · ${esc(ARC[e.arc].name)}</span><button class="x" data-close aria-label="關閉">×</button></div>
+  <div class="db">
+    <div><h2>${esc(e.title)}</h2>
+      <div class="meta" style="margin-top:6px"><span><b>${rng(e)}</b></span><span>大節 <b>${esc(ARC[e.arc].name)}</b></span></div></div>
+    <p class="summary">${esc(e.summary)}</p>
+    <div class="sec"><h4>回目</h4><ul class="huimu">${chs.map(n => `<li><span>第${NUM(n)}回</span>${esc(CH[n])}</li>`).join('')}</ul></div>
+    <div class="sec"><h4>地點</h4>${e.place ? `<button class="place" data-goplace="${esc(e.place)}">${esc(e.location)} · 在地圖上看</button>` : `<span class="badge">${esc(e.location)}（無法在示意地圖上定位）</span>`}</div>
+    <div class="sec"><h4>參與角色</h4>${e.characters.length ? `<div class="people">${e.characters.map(cid => { const c=C[cid]; return `<div class="person"><button class="av ${grp(c)} ${S.sel.has(cid)?'ring':''}" data-add="${cid}" title="加入篩選" aria-label="將 ${esc(c.name)} 加入篩選">${AVCH[cid]||c.name[0]}</button><button class="nmb" data-char="${cid}">${esc(c.name)}</button><small>${esc(nick(c))}</small>${S.sel.has(cid)?'<span class="added">已在篩選中</span>':''}</div>`; }).join('')}</div><p class="hint">點頭像加入篩選，點名字看角色資料。</p>` : `<p class="hint">本事件沒有收錄名單中的角色。</p>`}</div>
+  </div>
+  <div class="pn"><button data-ev="${prev?prev.id:''}" ${prev?'':'disabled'}>← ${prev?esc(prev.title):'已是第一個'}</button><button data-ev="${next?next.id:''}" ${next?'':'disabled'}>${next?esc(next.title):'已是最後一個'} →</button></div>`;
+  showDrawer('dEvent');
+}
+function openChar(id){
+  const c = C[id];
+  const evs = EVENTS.filter(e => e.characters.includes(id));
+  const rels = DATA.relations.filter(r => r.a===id || r.b===id).map(r => ({o: C[r.a===id?r.b:r.a], t: r.type, note: r.note}));
+  let segs = [], cur = null;
+  for (let n=1; n<=120; n++){ const s = status(c,n); if (cur && cur.s===s) cur.n++; else segs.push(cur={s, n:1}); }
+  const mk = [['登場',c.firstChapter],['上梁山',c.joinChapter],['結局',c.fateChapter]].filter(m => m[1]);
+  const pos = n => ((n-1)/120*100).toFixed(2)+'%';
+  const d = $('#dChar');
+  d.innerHTML = `<div class="dh"><span class="k">角色資料</span><button class="x" data-close aria-label="關閉">×</button></div>
+  <div class="db">
+    <div style="display:flex;gap:14px;align-items:center">${av(c).replace('class="av','style="width:56px;height:56px;font-size:28px" class="av')}
+      <div><h2>${esc(c.name)}</h2><div class="meta">${nick(c)?`<span>綽號 <b>${esc(c.nickname)}</b></span>`:''}<span>${c.star?`<b>${esc(c.star)}</b>・第 ${c.rank} 位・${c.group}`:'<b>非一百單八將</b>'}</span></div></div></div>
+    <div class="sec"><h4>一百二十回中的狀態</h4>
+      <div class="stwrap">${mk.map((m,i) => { const prev = mk[i-1]; const up = prev && Math.abs(m[1]-prev[1]) < 16 && i%2===1; const L = pos(m[1]+.5); const tr = m[1] > 108 ? 'translate:-100% 0;' : m[1] < 8 ? 'translate:0 0;' : ''; return `<span class="stmk" style="left:${L};top:${up?0:15}px;${tr}">${m[0]} ${m[1]}</span><span class="stln" style="left:${L};${up?'top:14px;height:44px':''}"></span>`; }).join('')}
+        <div class="stbar" role="img" aria-label="${segs.map(s => ({none:'未登場',wild:'在野',liang:'已上梁山',gone:'已死亡或離散'})[s.s]+' '+s.n+' 回').join('，')}">${segs.map(s => `<i class="s-${s.s}" style="width:${s.n/120*100}%"></i>`).join('')}</div>
+        <div class="stscale"><span>1</span><span>30</span><span>60</span><span>90</span><span>120</span></div></div>
+      <div class="legend" style="margin-top:8px"><span><i class="s-none"></i>未登場</span><span><i class="s-wild"></i>在野</span><span><i class="s-liang"></i>已上梁山</span><span><i class="s-gone"></i>已死亡或離散</span></div></div>
+    <div class="sec"><h4>結局</h4><p class="summary" style="font-size:14px">${esc(c.fate)}${c.fateChapter?`（第 ${c.fateChapter} 回）`:''}</p></div>
+    <button class="primary" data-only="${id}">只看此角色</button>
+    <div class="sec"><h4>參與事件（${evs.length}）</h4><ul class="elist">${evs.map(e => `<li><button data-ev="${e.id}"><span>${rng(e).replace('第 ','').replace(' 回','回')}</span><b>${esc(e.title)}</b></button></li>`).join('')}</ul></div>
+    <div class="sec"><h4>人物關係</h4>${rels.length ? `<div class="rlist">${rels.map(r => `<button data-char="${r.o.id}" title="${esc(r.note)}">${av(r.o)}${esc(r.o.name)}<span class="rt" style="color:var(--r-${({結義:'jie',主僕:'zhu',兄弟:'xd',夫妻:'fq',仇敵:'ch'})[r.t]||'jie'})">${r.t}</span></button>`).join('')}</div>` : '<p class="hint">收錄範圍內沒有此角色的關係資料。</p>'}</div>
+  </div>`;
+  showDrawer('dChar');
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-close]')) return closeDrawers();
+  const a = e.target.closest('[data-add]'); if (a){ S.sel.add(a.dataset.add); render(); if (lastOpenEvent) openEvent(lastOpenEvent); return; }
+  const ch = e.target.closest('[data-char]'); if (ch) return openChar(ch.dataset.char);
+  const o = e.target.closest('[data-only]'); if (o){ S.sel = new Set([o.dataset.only]); closeDrawers(); render(); return; }
+  const gp = e.target.closest('[data-goplace]'); if (gp){ S.focusPlace = gp.dataset.goplace; closeDrawers(); setView('map'); return; }
+  const pl = e.target.closest('[data-place]'); if (pl){ S.focusPlace = pl.dataset.place; renderMap(); return; }
+});
+
+/* ---------- S5 map ---------- */
+const MW = 860, MH = 700, LON0 = 105, LON1 = 122.5, LAT0 = 27, LAT1 = 41.5;
+const px = (lon, lat) => [ (lon-LON0)/(LON1-LON0)*MW, (LAT1-lat)/(LAT1-LAT0)*MH ];
+const pts = a => a.map(p => px(p[0],p[1]).map(v => v.toFixed(1)).join(',')).join(' ');
+const SEA = [[123.5,41.5],[121.4,40.9],[120.4,40.2],[119.4,39.8],[118.3,39.1],[117.7,38.7],[118.3,38.0],[119.0,37.2],[120.0,37.5],[120.7,37.8],[121.6,37.5],[122.5,37.3],[122.4,36.9],[121.0,36.6],[120.2,35.9],[119.4,35.1],[120.3,34.3],[120.8,33.2],[121.0,32.4],[121.9,31.7],[121.9,30.9],[121.1,30.4],[122.0,29.9],[121.6,28.8],[121.1,27.9],[120.7,27.0],[123.5,27.0]];
+const LIAODONG = [[123.5,41.5],[122.3,40.8],[121.6,39.6],[121.2,38.8],[122.1,39.2],[123.5,39.9]];
+const HUANGHE = [[105,36.6],[106.4,38.5],[107.6,40.3],[109.8,40.6],[111.2,40.0],[110.6,37.6],[110.3,35.4],[111.6,34.8],[113.4,34.9],[114.6,35.1],[115.5,36.3],[116.4,37.5],[117.3,38.6],[117.7,38.95]];
+const CHANGJIANG = [[105,29.4],[106.6,29.6],[108.4,30.8],[110.4,31.0],[111.4,30.6],[112.5,29.8],[113.4,29.8],[114.3,30.6],[115.6,29.8],[116.4,29.8],[117.5,30.7],[118.4,31.4],[118.9,32.1],[119.9,32.2],[120.9,31.9],[121.8,31.5]];
+function renderMap(){
+  const evs = filtered();
+  const located = evs.filter(e => e.place), unloc = evs.length - located.length;
+  const byPlace = {}; located.forEach(e => (byPlace[e.place] ??= []).push(e));
+  const single = S.sel.size===1 ? [...S.sel][0] : null;
+  let trail = '';
+  if (single){
+    const seq = []; located.filter(e => e.characters.includes(single)).forEach(e => { if (seq[seq.length-1]!==e.place) seq.push(e.place); });
+    const P = seq.map(p => px(PL[p].lon, PL[p].lat));
+    if (P.length > 1){
+      trail = `<polyline class="trail" points="${P.map(p => p.join(',')).join(' ')}"/>` +
+        P.slice(0,-1).map((p,i) => { const q=P[i+1], mx=(p[0]+q[0])/2, my=(p[1]+q[1])/2; return `<circle cx="${mx}" cy="${my}" r="8" fill="var(--seal)"/><text class="trailno" x="${mx}" y="${my}" text-anchor="middle" dominant-baseline="central">${i+1}</text>`; }).join('');
+    }
+  }
+  const [lmx, lmy] = px(116.1, 35.8);
+  const [hx, hy] = px(111.0, 40.4), [cx2, cy2] = px(109.4, 31.25);
+  const marks = Object.entries(byPlace).map(([pid, list]) => {
+    const [x,y] = px(PL[pid].lon, PL[pid].lat); const r = 9 + Math.min(list.length,8)*1.3;
+    const lx = x > MW-90 ? x - r - 4 : x + r + 4, anchor = x > MW-90 ? 'end' : 'start';
+    return `<g class="mk ${S.focusPlace===pid?'hi':''}" data-place="${esc(pid)}" tabindex="0" role="button" aria-label="${esc(pid)}，${list.length} 個事件"><circle class="o" cx="${x}" cy="${y}" r="${r}"/><text class="n" x="${x}" y="${y}">${list.length}</text><text class="l" x="${lx}" y="${y+4}" text-anchor="${anchor}">${esc(pid)}</text></g>`;
+  }).join('');
+  $('#mapbox').innerHTML = `<svg viewBox="0 0 ${MW} ${MH}" role="img" aria-label="北宋疆域示意地圖">
+    <rect class="land" width="${MW}" height="${MH}"/>
+    <polygon class="sea" points="${pts(SEA)}"/><polygon class="land" points="${pts(LIAODONG)}"/>
+    <polyline class="river" points="${pts(HUANGHE)}"/><polyline class="river" points="${pts(CHANGJIANG)}"/>
+    <text class="rlabel" x="${hx}" y="${hy-8}">黃河（北宋河道示意）</text><text class="rlabel" x="${cx2}" y="${cy2-8}">長江</text>
+    <ellipse class="marsh" cx="${lmx}" cy="${lmy}" rx="22" ry="13"/>
+    <text class="rlabel" x="${px(121,33.8)[0]}" y="${px(121,33.8)[1]}" style="font-size:14px;letter-spacing:.3em">東海</text>
+    ${trail}${marks}</svg>
+    <span class="mapnote">示意，非精確測繪</span>${unloc>0?`<span class="unloc">${unloc} 個事件無法標示地點</span>`:''}${evs.length===0?`<div style="position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--card) 80%,transparent)">${emptyHTML()}</div>`:''}`;
+  // side
+  const fp = S.focusPlace && byPlace[S.focusPlace] ? S.focusPlace : null;
+  const [c0,c1] = S.arc ? ARC[S.arc].chapters : [1,120];
+  const P = n => ((n-1)/119*100).toFixed(2)+'%';
+  $('#mapside').innerHTML = `
+    ${fp ? `<div class="panel"><h3>${esc(fp)}</h3><p class="hint" style="margin:0 0 6px">${byPlace[fp].length} 個事件</p><ul class="elist">${byPlace[fp].map(e => `<li><button data-ev="${e.id}"><span>${e.chapters[0]}${e.chapters[1]!==e.chapters[0]?'–'+e.chapters[1]:''}回</span><b>${esc(e.title)}</b></button></li>`).join('')}</ul></div>`
+         : `<div class="panel"><h3>地點</h3><p class="hint" style="margin:0">點地圖上的標記，列出在該地發生的事件。${S.focusPlace && !byPlace[S.focusPlace] ? `<br>「${esc(S.focusPlace)}」不在目前的篩選結果中。` : ''}</p></div>`}
+    <div class="panel"><h3>${single ? esc(C[single].name)+'的行跡' : '目前篩選'}</h3>
+      <p class="hint" style="margin:0">${single ? '紅色虛線依章回順序連接地點，數字為移動順序。' : S.sel.size>1 ? '選了多位角色時只標出地點，不畫行跡線。只選一位角色可看行跡。' : '只選一位角色時，會以虛線畫出他的行跡。'}</p>
+      <div class="mini" aria-label="章回範圍"><div class="base"></div><div class="rng" style="left:${P(c0)};width:calc(${P(c1)} - ${P(c0)})"></div>
+        ${evs.map(e => `<div class="tk" style="left:${P(e.chapters[0])}"></div>`).join('')}
+        <span class="lb" style="left:0;translate:0 0">1</span><span class="lb" style="left:50%">60</span><span class="lb" style="left:100%;translate:-100% 0">120</span></div>
+      <p class="hint" style="margin:6px 0 0">${S.arc ? esc(ARC[S.arc].name)+'，' : ''}第 ${c0}–${c1} 回，共 ${evs.length} 個事件</p></div>`;
+}
+$('#mapbox').addEventListener('keydown', e => { const m = e.target.closest('[data-place]'); if (m && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); S.focusPlace = m.dataset.place; renderMap(); } });
+
+/* ---------- S6 graph ---------- */
+const GW = 820, GH = 720, GCX = GW/2, GCY = GH/2;
+const NB = {}; DATA.relations.forEach(r => { (NB[r.a] ??= new Set()).add(r.b); (NB[r.b] ??= new Set()).add(r.a); });
+const RING_ORDER = ['gaoqiu','yangzhi','luzhishen','linchong','chaijin','wusong','likui','daizong','huarong','wangying','husanniang','shiqian','yangxiong','shixiu','yanqing','lujunyi','ruanxiaoqi','ruanxiaoer','gongsunsheng','wuyong','chaogai','songjiang'];
+function layout(){
+  const center = S.sel.size ? [...S.sel] : ['songjiang'];
+  const cset = new Set(center);
+  const ring1 = RING_ORDER.filter(id => !cset.has(id) && center.some(c => NB[c]?.has(id)));
+  const ring2 = RING_ORDER.filter(id => !cset.has(id) && !ring1.includes(id));
+  const pos = {};
+  const place = (ids, r, off=-Math.PI/2) => ids.forEach((id,i) => { const a = off + i/ids.length*Math.PI*2; pos[id] = [GCX + r*Math.cos(a), GCY + r*Math.sin(a)]; });
+  if (center.length===1) pos[center[0]] = [GCX,GCY]; else place(center, Math.min(40+center.length*12, 130));
+  const r1 = center.length>1 ? 220 : 175;
+  place(ring1, r1, -Math.PI/2 + .2);
+  place(ring2, 315, -Math.PI/2);
+  return {pos, cset, ring1:new Set(ring1)};
+}
+function renderGraph(){
+  const {pos, cset, ring1} = layout();
+  const focus = S.sel.size > 0;
+  const vis = id => !focus || cset.has(id) || ring1.has(id);
+  let g = $('#graph svg');
+  if (!g){
+    $('#graph').innerHTML = `<svg viewBox="0 0 ${GW} ${GH}" role="img" aria-label="角色關係圖"><g id="edges"></g><g id="nodes"></g></svg>`;
+    $('#edges').innerHTML = DATA.relations.map((r,i) => `<g class="edge" data-i="${i}"><line class="e-${r.type}"><title>${esc(C[r.a].name)}—${esc(C[r.b].name)}：${r.type}。${esc(r.note)}</title></line></g>`).join('');
+    $('#nodes').innerHTML = DATA.characters.map(c => `<g class="node" data-node="${c.id}" style="transform:translate(${GCX}px,${GCY}px)">
+      <circle class="c ${grp(c)}" r="22" data-char="${c.id}" tabindex="0" role="button" aria-label="${esc(c.name)} 角色資料"><title>${esc(c.name)}</title></circle>
+      <text class="ch">${AVCH[c.id]||c.name[0]}</text><text class="nm" y="38">${esc(c.name)}</text>
+      <g class="plus" data-gadd="${c.id}" transform="translate(19,-19)" role="button" aria-label="將 ${esc(c.name)} 加入篩選"><circle r="9"/><text>＋</text></g></g>`).join('');
+    const types = [...new Set(DATA.relations.map(r => r.type))];
+    $('#glegend').innerHTML = `<span><span class="gdot" style="background:var(--g-tg)"></span>天罡</span><span><span class="gdot" style="background:var(--g-ds)"></span>地煞</span><span><span class="gdot" style="background:var(--g-ot)"></span>其他</span>` +
+      types.map(t => `<span><svg viewBox="0 0 30 10"><line class="e-${t}" x1="0" y1="5" x2="30" y2="5" stroke-width="2.2"/></svg>${t}</span>`).join('') +
+      `<span>點人物看資料，點「＋」加入篩選${focus?'':'；未選角色時以宋江為中心'}</span>`;
+    g = $('#graph svg'); g.getBoundingClientRect();
+  }
+  DATA.characters.forEach(c => {
+    const n = g.querySelector(`[data-node="${c.id}"]`), [x,y] = pos[c.id];
+    n.style.transform = `translate(${x}px,${y}px)`;
+    n.classList.toggle('sel', S.sel.has(c.id)); n.classList.toggle('dim', !vis(c.id));
+    n.querySelector('.plus').style.display = S.sel.has(c.id) ? 'none' : '';
+  });
+  DATA.relations.forEach((r,i) => {
+    const e = g.querySelector(`.edge[data-i="${i}"]`), l = e.firstElementChild;
+    const [x1,y1] = pos[r.a], [x2,y2] = pos[r.b];
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1); l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    e.classList.toggle('dim', focus && !(cset.has(r.a) || cset.has(r.b)));
+  });
+}
+$('#graph').addEventListener('click', e => { const p = e.target.closest('[data-gadd]'); if (p){ e.stopPropagation(); S.sel.add(p.dataset.gadd); render(); } }, true);
+$('#graph').addEventListener('keydown', e => { const c = e.target.closest('[data-char]'); if (c && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); openChar(c.dataset.char); } });
+
+/* ---------- render ---------- */
+function renderView(){ if (S.view==='timeline') renderTimeline(); else if (S.view==='map') renderMap(); else renderGraph(); }
+function render(){
+  renderChars(); renderSel();
+  $('#count').innerHTML = `共<b>${filtered().length}</b>個事件`;
+  renderView();
+}
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => S.view==='timeline' && renderTimeline(), 150); });
+const h = (location.hash||'').slice(1);
+setView(['timeline','map','graph'].includes(h) ? h : 'timeline');
+render();
+})();
+</script>
