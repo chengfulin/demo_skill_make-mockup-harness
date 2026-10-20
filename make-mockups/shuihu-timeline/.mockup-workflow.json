@@ -2,7 +2,7 @@
   "feature": "shuihu-timeline",
   "title": "水滸傳角色事件時間軸",
   "currentVersion": 1,
-  "stage": "storyboard",
+  "stage": "brief",
   "mockup": {
     "artifactUrl": null,
     "source": "mockup-src/index.html"
@@ -16,7 +16,7 @@
     {
       "v": 1,
       "storyboardDate": "2026-10-20",
-      "brief": null,
+      "brief": "briefs/v1-design-brief.md",
       "publishedAt": null,
       "mockup": null,
       "sourceFile": null,
