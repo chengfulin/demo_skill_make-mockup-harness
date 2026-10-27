@@ -42,7 +42,7 @@ make-mockups/shuihu-timeline/
 ├── mockups/v1、v2/                    # 凍結的互動 Mockup，commit 後不再修改
 ├── reviews/                          # 各版 Story Board 與 Mockup 的一致性檢核報告
 ├── feedback/                         # 回饋原文（如製作備註）
-└── handoff/v2/                       # 交給 sdd-harness 的交接包，從 SDD-START.md 開始讀
+└── handoff/v2/                       # 交給開發的中性交接包，從 index.md 開始讀
 ```
 
 ## 範例內容一覽
@@ -74,4 +74,4 @@ make-mockups/shuihu-timeline/
 2. 打開 [`mockups/v2/index.html`](make-mockups/shuihu-timeline/mockups/v2/index.html)，直接在瀏覽器操作最終版 Mockup。
 3. 讀 [`storyboard.md`](make-mockups/shuihu-timeline/storyboard.md)，看需求怎麼寫成「可以直接轉成 Mockup」的 User Story。
 4. 比較 [`reviews/v1-consistency.md`](make-mockups/shuihu-timeline/reviews/v1-consistency.md) 與 v2 的 Story Board，看檢核結果怎麼回寫成新版需求。
-5. 讀 [`handoff/v2/SDD-START.md`](make-mockups/shuihu-timeline/handoff/v2/SDD-START.md)，看 Mockup 定稿後怎麼交接給 sdd-harness 開發。
+5. 讀 [`handoff/v2/index.md`](make-mockups/shuihu-timeline/handoff/v2/index.md)，看 Mockup 定稿後怎麼打包交接給開發。
