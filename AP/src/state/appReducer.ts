@@ -52,6 +52,10 @@ export type SubmitSearchAction = { type: 'submitSearch'; id: string | null };
 /** 清除角色與大節篩選（空狀態「清除篩選」，AC-P14） */
 export type ClearFiltersAction = { type: 'clearFilters' };
 
+// US3 大節篩選（FR-011；與角色篩選並存取交集 FR-003；三視圖共用 FR-004）
+/** 選大節；`id` 為 null＝「全部大節」。單選：新值取代舊值，不動角色選取 */
+export type SelectArcAction = { type: 'selectArc'; id: string | null };
+
 export type Action =
   | SetViewAction
   | OpenEventAction
@@ -64,7 +68,8 @@ export type Action =
   | ToggleGroupAction
   | SetQueryAction
   | SubmitSearchAction
-  | ClearFiltersAction;
+  | ClearFiltersAction
+  | SelectArcAction;
 
 /** 初始狀態；`view` 由呼叫端（hash 解析結果）提供。 */
 export function createInitialState(view: View): AppState {
@@ -112,6 +117,8 @@ export function appReducer(state: AppState, action: Action): AppState {
       return state.selected.length === 0 && state.arcId === null
         ? state
         : { ...state, selected: selection.clear(), arcId: null };
+    case 'selectArc':
+      return state.arcId === action.id ? state : { ...state, arcId: action.id };
     default: {
       const unhandled: never = action;
       return unhandled;

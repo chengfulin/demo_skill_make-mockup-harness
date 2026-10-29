@@ -174,18 +174,18 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T076 [P] [US3] 修改 `AP/src/state/appReducer.test.ts`：新增 `selectArc(id | null)`；與既有角色選取並存
-- [ ] T077 [P] [US3] [S1] 撰寫 `AP/src/components/FilterBar/ArcSelect.test.tsx`：依 `contracts/ui-contracts.md`「S1」：`<select aria-label="大節">`，第一項「全部大節（第 1–120 回）」值為空，其餘「<大節名>（第 <a>–<b> 回）」12 項
-- [ ] T078 [P] [US3] [S1] [S2] 撰寫 `AP/e2e/us3-arc-filter.spec.ts`：逐條 AC-08、AC-09、AC-P15、AC-P16、AC-P17（點色帶「武松」後選單值變為該大節）、AC-S14，以及需大節選單、自 US1／US2 移入的 AC-P13、AC-P14（US2 的空狀態與「清除篩選」）、AC-S13（US1：切三個視圖時 S1 的 chip 列、大節選單、已選列、結果數、視圖分頁都渲染於頁面上方，不要求捲動時固定；地圖／關係圖此時為佔位區塊亦適用）（共 9 條）
+- [X] T076 [P] [US3] 修改 `AP/src/state/appReducer.test.ts`：新增 `selectArc(id | null)`；與既有角色選取並存
+- [X] T077 [P] [US3] [S1] 撰寫 `AP/src/components/FilterBar/ArcSelect.test.tsx`：依 `contracts/ui-contracts.md`「S1」：`<select aria-label="大節">`，第一項「全部大節（第 1–120 回）」值為空，其餘「<大節名>（第 <a>–<b> 回）」12 項
+- [X] T078 [P] [US3] [S1] [S2] 撰寫 `AP/e2e/us3-arc-filter.spec.ts`：逐條 AC-08、AC-09、AC-P15、AC-P16、AC-P17（點色帶「武松」後選單值變為該大節）、AC-S14，以及需大節選單、自 US1／US2 移入的 AC-P13、AC-P14（US2 的空狀態與「清除篩選」）、AC-S13（US1：切三個視圖時 S1 的 chip 列、大節選單、已選列、結果數、視圖分頁都渲染於頁面上方，不要求捲動時固定；地圖／關係圖此時為佔位區塊亦適用）（共 9 條）
 
 ### Implementation for User Story 3
 
-- [ ] T079 [US3] 修改 `AP/src/state/appReducer.ts`：加入 `selectArc`
-- [ ] T080 [P] [US3] [S1] 建立 `AP/src/components/FilterBar/ArcSelect.tsx`（選項文字用 `format.ts`）
-- [ ] T081 [US3] [S1] 修改 `AP/src/components/FilterBar/FilterBar.tsx`（依賴 T080）：row 插槽在「地煞」後放 `ArcSelect`
-- [ ] T082 [US3] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`（依賴 T079、T081）：傳 `arcs`、目前 `arcId`，變更 dispatch `selectArc`
-- [ ] T083 [US3] [S2] 修改 `AP/src/containers/TimelineContainer.tsx`（依賴 T079）：選了大節時以該大節 `chapters` 為 `timelineLayout` 的 range（只畫該大節色帶、刻度 43、50）；`ArcBands` 與 `TimelineList` 組標題的 `onSelectArc` dispatch `selectArc`（AC-P17）
-- [ ] T084 [US3] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts --project=chrome`，修正至全綠
+- [X] T079 [US3] 修改 `AP/src/state/appReducer.ts`：加入 `selectArc`
+- [X] T080 [P] [US3] [S1] 建立 `AP/src/components/FilterBar/ArcSelect.tsx`（選項文字用 `format.ts`）
+- [X] T081 [US3] [S1] 修改 `AP/src/components/FilterBar/FilterBar.tsx`（依賴 T080）：row 插槽在「地煞」後放 `ArcSelect`
+- [X] T082 [US3] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`（依賴 T079、T081）：傳 `arcs`、目前 `arcId`，變更 dispatch `selectArc`
+- [X] T083 [US3] [S2] 修改 `AP/src/containers/TimelineContainer.tsx`（依賴 T079）：選了大節時以該大節 `chapters` 為 `timelineLayout` 的 range（只畫該大節色帶、刻度 43、50）；`ArcBands` 與 `TimelineList` 組標題的 `onSelectArc` dispatch `selectArc`（AC-P17）
+- [X] T084 [US3] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts --project=chrome`，修正至全綠
 
 **Checkpoint**: US1～US3 皆可獨立運作
 
@@ -202,7 +202,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [X] T085 [P] [US4] [S3] 撰寫 `AP/src/domain/navigation.test.ts`：`prevNext(id, filtered, all)`：id 在 filtered 中用 filtered，否則用 all（G-2）；林沖＋魯智深篩選中「大鬧野豬林」下一個＝棒打洪教頭（AC-P20）；只選林沖時「大鬧野豬林」前一個＝林沖誤入白虎堂；首／尾回傳 `null`；檔頭附 ISP 分割表
 - [ ] T086 [P] [US4] 修改 `AP/src/state/appReducer.test.ts`：新增 `goToPlace`（關面板、`view='map'`、設 `focusPlace`；payload 的 `inShandong` 為 false 且目前 `mapScope='sd'` 時切回 `all`，G-10、AC-S23）；`addCharacter` 不關面板（AC-P19）
 - [X] T087 [P] [US4] [S3] 撰寫 `AP/src/components/EventDetail/EventDetail.test.tsx`：依 `contracts/ui-contracts.md`「S3」：內容順序 標題區 → 摘要 → 回目 → 地點 → 參與角色；小標「回目」「地點」「參與角色」；回目逐回列出（28–31 回 4 條）；可定位地點為按鈕「<location> · 在地圖上看」、不可定位為徽章「<location>（無法在示意地圖上定位）」；參與角色頭像鈕 `title="加入篩選"`、`aria-label="將 <姓名> 加入篩選"`、已選者外框＋「已在篩選中」、提示「點頭像加入篩選，點名字看角色資料。」、無角色「本事件沒有收錄名單中的角色。」；底部「← <前一事件名>」「<下一事件名> →」，首尾停用並顯示「← 已是第一個」「已是最後一個 →」
-- [ ] T088 [P] [US4] [S3] 撰寫 `AP/e2e/us4-event-detail.spec.ts`：逐條 AC-10、AC-11、AC-P18、AC-P19、AC-P20、AC-P21（本檔驗：點地點後面板關閉、hash `#map`、「地圖」分頁 `aria-selected`；地圖上的標記高亮於 US6 `AP/e2e/us6-map.spec.ts` 補驗）、AC-S26（已選林沖開「倒拔垂楊柳・林沖結義」：「← 已是第一個」停用、下一個「林沖誤入白虎堂 →」）、AC-S27（「九天玄女授天書」地點為徽章「還道村（無法在示意地圖上定位）」、無「在地圖上看」按鈕）（共 8 條）；AC-S15 見 T102
+- [X] T088 [P] [US4] [S3] 撰寫 `AP/e2e/us4-event-detail.spec.ts`：逐條 AC-10、AC-11、AC-P18、AC-P19、AC-P20、AC-P21（本檔驗：點地點後面板關閉、hash `#map`、「地圖」分頁 `aria-selected`；地圖上的標記高亮於 US6 `AP/e2e/us6-map.spec.ts` 補驗）、AC-S26（已選林沖開「倒拔垂楊柳・林沖結義」：「← 已是第一個」停用、下一個「林沖誤入白虎堂 →」）、AC-S27（「九天玄女授天書」地點為徽章「還道村（無法在示意地圖上定位）」、無「在地圖上看」按鈕）（共 8 條）；AC-S15 見 T102
 
 ### Implementation for User Story 4
 

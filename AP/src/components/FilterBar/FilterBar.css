@@ -31,6 +31,16 @@
   gap: var(--space-3);
 }
 
+/* 工具列：大節選單（Prototype `select`：7px 10px、細框、6px 圓角） */
+.filter .arc-select {
+  max-width: 100%;
+  padding: calc(var(--space-4) - 1px) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--ink);
+}
+
 /* 工具列：搜尋框（左側放大鏡）、天罡／地煞快選 */
 .filter .search {
   position: relative;

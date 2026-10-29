@@ -21,6 +21,7 @@
  * | 特徵                    | blocks                                   | base       | 對應案例            |
  * | :---------------------- | :--------------------------------------- | :--------- | :------------------ |
  * | C1 插槽內容             | 皆未提供／皆提供（US2、US3 填入）        | 皆未提供   | FB-1、FB-2          |
+ * | C5 arc 插槽（US3）      | 與 row 同時提供（arc 在 row 內容之後）   | 未提供     | FB-4                |
  * | C2 結果數 N             | 54（未篩選）／一般值 8／0（無結果）      | 54         | RC-1、RC-2、RC-3    |
  * | C3 目前視圖             | timeline／map／graph                     | timeline   | VT-1、VT-2、VT-3    |
  * | C4 使用者操作（分頁）   | 不點擊／點擊非目前分頁／點擊目前分頁     | 不點擊     | VT-1、VT-4、VT-5    |
@@ -106,6 +107,15 @@ describe('FilterBar（S1 殼）', () => {
     expect(section!.querySelector('.row')).toContainElement(screen.getByText('row-slot'));
     expect(within(section!).getByTestId('char-list')).toContainElement(screen.getByText('chars-slot'));
     expect(within(section!).getByTestId('selected-bar')).toContainElement(screen.getByText('sel-slot'));
+  });
+
+  // FB-4（C5 變動，US3）：arc 插槽（大節選單）渲染在 row 區塊、接在 row 內容（地煞）之後
+  it('renders the arc slot inside the row block after the row contents', () => {
+    const { section } = renderFilterBar({ row: <span>地煞</span>, arc: <span>arc-slot</span> });
+    const row = section!.querySelector('.row');
+    expect(row).toContainElement(screen.getByText('arc-slot'));
+    expect(row?.lastElementChild).toBe(screen.getByText('arc-slot'));
+    expect([...(row?.children ?? [])].map((el) => el.textContent)).toEqual(['地煞', 'arc-slot']);
   });
 
   // FB-3（C4 變動）：點分頁把視圖交給 onViewChange（容器再 dispatch setView）

@@ -3,7 +3,9 @@
  * 取篩選結果（`useFilteredEvents`）與資料，以全書 1–120 回呼叫 `timelineLayout`；點事件卡 dispatch `openEvent`。
  * `computeLayout` 以 useCallback 固定參照，只在事件或大節改變時換新，避免 Timeline 每次 render 重算版面。
  * US2（T074）：已選角色傳給事件卡（頭像排前加外框，AC-P5）；結果為 0 時以 `EmptyState` 填 `empty` 插槽，
- * 「清除篩選」dispatch `clearFilters`（AC-P13、AC-P14）。US3（大節區間、點色帶選大節）於此擴充。
+ * 「清除篩選」dispatch `clearFilters`（AC-P13、AC-P14）。
+ * US3（T083）：選了大節時以該大節 `chapters` 為 `timelineLayout` 的 range（只畫該大節色帶、刻度如 43、50；FR-011）；
+ * 色帶與直向列表組標題的 `onSelectArc` dispatch `selectArc`（AC-P17）。
  */
 import { useCallback, useMemo } from 'react';
 import { EmptyState } from '../components/EmptyState/EmptyState';
@@ -20,16 +22,21 @@ const NO_ARCS: readonly Arc[] = [];
 
 export function TimelineContainer() {
   const { dataset } = useDataset();
-  const { selected } = useAppState();
+  const { selected, arcId } = useAppState();
   const dispatch = useAppDispatch();
   const events = useFilteredEvents();
   const arcs = dataset?.arcs ?? NO_ARCS;
+  const range: ChapterRange = useMemo(
+    () => (arcId === null ? undefined : arcs.find((a) => a.id === arcId)?.chapters) ?? FULL_RANGE,
+    [arcId, arcs],
+  );
 
   const computeLayout = useCallback(
-    (availableWidth: number) => timelineLayout(events, arcs, FULL_RANGE, availableWidth),
-    [events, arcs],
+    (availableWidth: number) => timelineLayout(events, arcs, range, availableWidth),
+    [events, arcs, range],
   );
   const onOpenEvent = useCallback((id: string) => dispatch({ type: 'openEvent', id }), [dispatch]);
+  const onSelectArc = useCallback((id: string) => dispatch({ type: 'selectArc', id }), [dispatch]);
   const onClearFilters = useCallback(() => dispatch({ type: 'clearFilters' }), [dispatch]);
   const selectedIds = useMemo(() => new Set(selected), [selected]);
 
@@ -42,6 +49,7 @@ export function TimelineContainer() {
       characterById={dataset.characterById}
       selectedIds={selectedIds}
       onOpenEvent={onOpenEvent}
+      onSelectArc={onSelectArc}
       empty={<EmptyState onClear={onClearFilters} />}
     />
   );

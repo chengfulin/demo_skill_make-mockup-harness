@@ -37,8 +37,19 @@
  * | U7 submitSearch payload   | 未選 id（加入）／已選 id（不動作）／null（不動作）            | SUB-1～SUB-3   |
  * | U8 clearFilters 前狀態    | 有角色與大節（query 保留）／皆空（冪等）                      | CLR-1～CLR-2   |
  *
+ * US3 擴充（T076；FR-011、FR-003 交集、FR-004 三視圖共用）：
+ *   selectArc {id: string | null}：null＝「全部大節」；單選（新值取代舊值）；與既有角色選取並存（不清角色）。
+ *   大節 × 角色交集由 domain/filter.test.ts 驗；此處驗 reducer 接線、冪等與其他欄位保留。
+ *
+ * | 特徵                      | blocks（非 base 者各為一案）                                  | 對應案例       |
+ * | :------------------------ | :------------------------------------------------------------ | :------------- |
+ * | A1 selectArc 前 arcId     | null（選大節）／他大節（取代）／同大節（冪等）                | ARC-1～ARC-3   |
+ * | A2 selectArc payload      | 大節 id／null（回到全部大節）／null 且已是全部（冪等）        | ARC-1、ARC-4～ARC-5 |
+ * | A3 既有角色選取與面板     | 有選取且面板開啟（皆保留）                                    | ARC-6          |
+ *
  * 範圍外（一次性宣告）：未知 action type（TypeScript 聯集排除）；面板 id 不存在（由容器自資料產生）；
- * 大節、地圖類 action（US3～US6 擴充時各自補測）；toggleGroup members 為空（由資料保證非空）。
+ * 大節 id 不存在（選項由 arcs.json 產生）；地圖類 action（US4～US6 擴充時各自補測）；
+ * toggleGroup members 為空（由資料保證非空）。
  */
 import { describe, expect, it } from 'vitest';
 import { appReducer, createInitialState, type AppState } from './appReducer';
@@ -236,6 +247,47 @@ describe('purity (US2 actions)', () => {
     appReducer(s, { type: 'addCharacter', id: 'likui' });
     appReducer(s, { type: 'toggleGroup', members: ['wusong', 'likui'] });
     appReducer(s, { type: 'clearFilters' });
+    expect(s).toEqual(snapshot);
+  });
+});
+
+describe('selectArc (US3, FR-011)', () => {
+  it('ARC-1 selects an arc from all arcs', () => {
+    const next = appReducer(base(), { type: 'selectArc', id: 'arc-05' });
+    expect(next).toEqual({ ...base(), arcId: 'arc-05' });
+  });
+
+  it('ARC-2 selecting another arc replaces the current one (single choice)', () => {
+    const next = appReducer(withSel([], { arcId: 'arc-05' }), { type: 'selectArc', id: 'arc-03' });
+    expect(next.arcId).toBe('arc-03');
+  });
+
+  it('ARC-3 selecting the current arc is idempotent', () => {
+    const s = withSel([], { arcId: 'arc-05' });
+    expect(appReducer(s, { type: 'selectArc', id: 'arc-05' })).toBe(s);
+  });
+
+  it('ARC-4 null returns to all arcs (AC-S14)', () => {
+    const next = appReducer(withSel([], { arcId: 'arc-05' }), { type: 'selectArc', id: null });
+    expect(next.arcId).toBeNull();
+  });
+
+  it('ARC-5 null when already all arcs is idempotent', () => {
+    const s = base();
+    expect(appReducer(s, { type: 'selectArc', id: null })).toBe(s);
+  });
+
+  it('ARC-6 keeps the character selection, query, view and drawer (FR-003 intersection, FR-004)', () => {
+    const s = withSel(['wusong'], { query: '武', view: 'graph', drawer: { kind: 'event', id: 'ev-50' } });
+    const next = appReducer(s, { type: 'selectArc', id: 'arc-12' });
+    expect(next).toEqual({ ...s, arcId: 'arc-12' });
+  });
+
+  it('PURE-3 selectArc does not mutate the input state', () => {
+    const s = withSel(['wusong'], { arcId: 'arc-05' });
+    const snapshot = structuredClone(s);
+    appReducer(s, { type: 'selectArc', id: 'arc-03' });
+    appReducer(s, { type: 'selectArc', id: null });
     expect(s).toEqual(snapshot);
   });
 });
