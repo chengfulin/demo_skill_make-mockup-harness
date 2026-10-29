@@ -303,7 +303,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [X] T135 [US7] [S6] 建立 `AP/src/components/GraphView/GraphSvg.tsx`、`AP/src/components/GraphView/GraphView.tsx`、`AP/src/components/GraphView/GraphView.css`（依賴 T133、T134）：SVG 寬 100% 自動縮放；`prefers-reduced-motion` 時關閉 transition；`allDimmed` 時 `EmptyState overlay`
 - [X] T136 [US7] [S6] 建立 `AP/src/containers/GraphContainer.tsx`（依賴 T132、T135）：已選大節時以 `charactersInArc(dataset.events, arcId)` 傳入；點節點 dispatch `openCharacter`；「＋」dispatch `addCharacter`；空狀態「清除篩選」dispatch `clearFilters`
 - [X] T137 [US7] 修改 `AP/src/App.tsx`（依賴 T136）：`view === 'graph'` 改渲染 `GraphContainer`，移除 S6 佔位
-- [ ] T138 [US7] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test --project=chrome`，修正至全綠
+- [X] T138 [US7] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test --project=chrome`，修正至全綠
 
 **Checkpoint**: 全部 user story 可獨立運作
 
@@ -315,8 +315,8 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 - [X] T139 [P] [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/fixtures/prototypeStates.ts`：依 `contracts/ui-contracts.md`「21 個狀態的重現步驟與 DOM 斷言」逐列定義 21 個狀態（名稱與順序同 `handoff-notes.md`「截圖索引」）：`file`（截圖檔名）、`steps`（只用 UI 操作，從新頁 `/#timeline` 開始）、`blocks`（要檢查順序的 `data-page`）、`texts`（必含文案）、`asserts`（結果數、已選標籤、`aria-pressed`／`aria-selected`、`data-dim` 數等）
 - [X] T140 [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/prototype-compare.spec.ts`（依賴 T139）：Chrome 1440×900、`colorScheme: 'light'`；每狀態開新頁 → 執行步驟 → 等動畫結束 → `fullPage` 截圖至 `AP/test-results/compare/<檔名>.png`；DOM 斷言：① 各 `data-page` 區塊直接子區塊依 ui-contracts 順序 ② 必含文案以 `normalizeText` 比對 `innerText` ③ 狀態斷言；#20、#21 圖例說明依 D-4 斷言新文案（並列目視時不計逐字一致，SC-003）
-- [ ] T141 [P] 建立 `AP/e2e/responsive.spec.ts`：AC-S6（400×800 依序切地圖、關係圖並開事件明細與角色資料：頁面無水平捲動、兩種面板為全寬底部抽屜、地圖與關係圖寬度不超出視窗）；SC-004（1440×900 與 400×800 下三個視圖與兩種面板 `hasNoHorizontalScroll`）
-- [ ] T142 [P] 建立 `AP/e2e/demo-scenario.spec.ts`：SC-002 展示情境 6 步在同一頁面依序完成不重新整理（進站「共 54 個事件」→ 搜尋「豹子頭」Enter 選林沖 → 開「大鬧野豬林」點魯智深頭像 → 點林沖名字看狀態條 →「只看此角色」切地圖看行跡 → 切關係圖點節點開資料），測試標題含 `@demo` 供 `npm run e2e:browsers` 在 WebKit／Firefox／Edge 抽驗；另以 `test.use({ viewport: { width: 400, height: 800 } })` 在 400×800 再跑一次同樣 6 步（SC-004「操作可完成」）
+- [X] T141 [P] 建立 `AP/e2e/responsive.spec.ts`：AC-S6（400×800 依序切地圖、關係圖並開事件明細與角色資料：頁面無水平捲動、兩種面板為全寬底部抽屜、地圖與關係圖寬度不超出視窗）；SC-004（1440×900 與 400×800 下三個視圖與兩種面板 `hasNoHorizontalScroll`）
+- [X] T142 [P] 建立 `AP/e2e/demo-scenario.spec.ts`：SC-002 展示情境 6 步在同一頁面依序完成不重新整理（進站「共 54 個事件」→ 搜尋「豹子頭」Enter 選林沖 → 開「大鬧野豬林」點魯智深頭像 → 點林沖名字看狀態條 →「只看此角色」切地圖看行跡 → 切關係圖點節點開資料），測試標題含 `@demo` 供 `npm run e2e:browsers` 在 WebKit／Firefox／Edge 抽驗；另以 `test.use({ viewport: { width: 400, height: 800 } })` 在 400×800 再跑一次同樣 6 步（SC-004「操作可完成」）
 - [ ] T143 [P] 建立 `AP/scripts/check-ac-coverage.mjs`：掃描 `AP/e2e/*.spec.ts` 的測試名稱，核對 AC-01～AC-18、AC-P1～AC-P42、AC-S1～AC-S27 共 87 個編號全部出現，缺漏列出並非零結束；於 `AP/` 以 `node scripts/check-ac-coverage.mjs` 執行並補齊缺漏
 - [ ] T144 於 `AP/` 執行 `npm run typecheck`、`npm run lint`（含分層與 FR-021 import 限制）、`npm test`、`npm run build`，修正所有錯誤；確認 `AP/dist/data/*.json` 存在、`AP/dist/index.html` 含 CSP meta
 - [ ] T145 [P] 檢查機密與輸出安全（§CP-2、§FE-3／§FE-5）：`AP/.env.example` 只含非機密變數、`AP/src/**` 無 `dangerouslySetInnerHTML`、無寫死的部署路徑或資料 URL（皆經 `AP/src/config.ts`）；網站沒有任何登入、隱藏或防劇透機制（事件、結局、星號直接顯示，FR-023）
