@@ -56,6 +56,14 @@ export type ClearFiltersAction = { type: 'clearFilters' };
 /** 選大節；`id` 為 null＝「全部大節」。單選：新值取代舊值，不動角色選取 */
 export type SelectArcAction = { type: 'selectArc'; id: string | null };
 
+// US4 事件明細（FR-012、G-10(a)、AC-P21、AC-S23）
+/**
+ * 點事件地點「在地圖上看」：切到地圖、設焦點地點、關面板。
+ * `inShandong` 由容器以 `mapLayout.inScope('sd', place)` 算出（reducer 不持有資料）；
+ * 目前範圍為「山東」而地點在範圍外時自動切回「全圖」。
+ */
+export type GoToPlaceAction = { type: 'goToPlace'; placeId: string; inShandong: boolean };
+
 export type Action =
   | SetViewAction
   | OpenEventAction
@@ -69,7 +77,8 @@ export type Action =
   | SetQueryAction
   | SubmitSearchAction
   | ClearFiltersAction
-  | SelectArcAction;
+  | SelectArcAction
+  | GoToPlaceAction;
 
 /** 初始狀態；`view` 由呼叫端（hash 解析結果）提供。 */
 export function createInitialState(view: View): AppState {
@@ -119,6 +128,14 @@ export function appReducer(state: AppState, action: Action): AppState {
         : { ...state, selected: selection.clear(), arcId: null };
     case 'selectArc':
       return state.arcId === action.id ? state : { ...state, arcId: action.id };
+    case 'goToPlace':
+      return {
+        ...state,
+        view: 'map',
+        mapScope: state.mapScope === 'sd' && !action.inShandong ? 'all' : state.mapScope,
+        focusPlace: action.placeId,
+        drawer: null,
+      };
     default: {
       const unhandled: never = action;
       return unhandled;

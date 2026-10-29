@@ -85,7 +85,7 @@ test.describe('US4 event detail', () => {
     const d = await openEvent(page, '醉打蔣門神・血濺鴛鴦樓');
     expect(normalizeText(await d.locator('.ed-head').innerText())).toContain('第28–31回');
     await expect.poll(() => chapterRows(d)).toEqual(CH_28_31);
-    await expect(section(d, '地點').locator('button.place')).toHaveText(/孟州 · 在地圖上看/);
+    await expect(section(d, '地點').locator('button.place')).toHaveText('孟州 · 在地圖上看');
     await expect.poll(() => participantNames(d)).toEqual(['武松']);
   });
 
@@ -133,11 +133,11 @@ test.describe('US4 event detail', () => {
     await pickCharacter(page, '林沖');
     await pickCharacter(page, '魯智深');
     const d = await openEvent(page, '大鬧野豬林');
-    await expect(prevButton(d)).toHaveText(/←\s*林沖誤入白虎堂/);
-    await expect(nextButton(d)).toHaveText(/棒打洪教頭\s*→/);
+    await expect(prevButton(d)).toHaveText(/^←\s*林沖誤入白虎堂$/);
+    await expect(nextButton(d)).toHaveText(/^棒打洪教頭\s*→$/);
     await nextButton(d).click();
     await expect(d.getByRole('heading', { level: 2 })).toHaveText('棒打洪教頭');
-    await expect(prevButton(d)).toHaveText(/←\s*大鬧野豬林/);
+    await expect(prevButton(d)).toHaveText(/^←\s*大鬧野豬林$/);
   });
 
   test('AC-P21 clicking the place closes the panel and switches to the map view', async ({ page }) => {
@@ -157,9 +157,9 @@ test.describe('US4 event detail', () => {
     await gotoApp(page);
     await pickCharacter(page, '林沖');
     const d = await openEvent(page, '倒拔垂楊柳・林沖結義');
-    await expect(prevButton(d)).toHaveText(/←\s*已是第一個/);
+    await expect(prevButton(d)).toHaveText(/^←\s*已是第一個$/);
     await expect(prevButton(d)).toBeDisabled();
-    await expect(nextButton(d)).toHaveText(/林沖誤入白虎堂\s*→/);
+    await expect(nextButton(d)).toHaveText(/^林沖誤入白虎堂\s*→$/);
     await expect(nextButton(d)).toBeEnabled();
   });
 

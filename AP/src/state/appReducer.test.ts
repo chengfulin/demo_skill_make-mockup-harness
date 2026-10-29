@@ -47,8 +47,20 @@
  * | A2 selectArc payload      | 大節 id／null（回到全部大節）／null 且已是全部（冪等）        | ARC-1、ARC-4～ARC-5 |
  * | A3 既有角色選取與面板     | 有選取且面板開啟（皆保留）                                    | ARC-6          |
  *
+ * US4 擴充（T086；FR-012、G-10(a)、AC-P21、AC-S23、AC-P19）：
+ *   goToPlace {placeId, inShandong}：切到地圖視圖、設 focusPlace、關面板；`inShandong` 由容器以
+ *   mapLayout.inScope('sd', place) 算出，reducer 不持有資料。目前 mapScope='sd' 且地點不在山東 → 切回 'all'。
+ *   addCharacter 不關面板（AC-P19）已由 CHR-3 涵蓋。
+ *
+ * | 特徵                      | blocks（非 base 者各為一案）                                  | 對應案例       |
+ * | :------------------------ | :------------------------------------------------------------ | :------------- |
+ * | G1 goToPlace 前 mapScope × inShandong | all × true（base，範圍不變）／all × false（範圍不變）／sd × true（保留 sd）／sd × false（切回 all） | PLC-1～PLC-4 |
+ * | G2 goToPlace 前 view 與面板 | 時間軸＋事件面板開啟（base：切 map、關面板）／已在 map 且無面板 | PLC-1、PLC-5 |
+ * | G3 其他欄位               | 選取、大節、query 保留；focusPlace 由他地點取代               | PLC-6          |
+ * | P1 純度                   | 不修改輸入狀態                                                | PURE-4         |
+ *
  * 範圍外（一次性宣告）：未知 action type（TypeScript 聯集排除）；面板 id 不存在（由容器自資料產生）；
- * 大節 id 不存在（選項由 arcs.json 產生）；地圖類 action（US4～US6 擴充時各自補測）；
+ * 大節 id 不存在（選項由 arcs.json 產生）；地圖範圍切換與標記類 action（US6 擴充時補測）；
  * toggleGroup members 為空（由資料保證非空）。
  */
 import { describe, expect, it } from 'vitest';
@@ -288,6 +300,51 @@ describe('selectArc (US3, FR-011)', () => {
     const snapshot = structuredClone(s);
     appReducer(s, { type: 'selectArc', id: 'arc-03' });
     appReducer(s, { type: 'selectArc', id: null });
+    expect(s).toEqual(snapshot);
+  });
+});
+
+describe('goToPlace (US4, FR-012, G-10(a))', () => {
+  const opened = (extra: Partial<AppState> = {}): AppState =>
+    withSel([], { drawer: { kind: 'event', id: 'ev-09' }, ...extra });
+
+  it('PLC-1 switches to the map, focuses the place and closes the drawer (AC-P21)', () => {
+    const next = appReducer(opened(), { type: 'goToPlace', placeId: '野豬林', inShandong: false });
+    expect(next).toEqual({ ...base(), view: 'map', focusPlace: '野豬林', drawer: null });
+  });
+
+  it('PLC-2 scope all with a place outside 山東 keeps scope all', () => {
+    const next = appReducer(opened(), { type: 'goToPlace', placeId: '孟州', inShandong: false });
+    expect(next.mapScope).toBe('all');
+  });
+
+  it('PLC-3 scope sd with a place inside 山東 keeps scope sd', () => {
+    const next = appReducer(opened({ mapScope: 'sd' }), { type: 'goToPlace', placeId: '梁山泊', inShandong: true });
+    expect(next.mapScope).toBe('sd');
+    expect(next.focusPlace).toBe('梁山泊');
+  });
+
+  it('PLC-4 scope sd with a place outside 山東 switches back to all (AC-S23)', () => {
+    const next = appReducer(opened({ mapScope: 'sd' }), { type: 'goToPlace', placeId: '孟州', inShandong: false });
+    expect(next).toEqual({ ...base(), view: 'map', mapScope: 'all', focusPlace: '孟州', drawer: null });
+  });
+
+  it('PLC-5 already on the map without a drawer still focuses the place', () => {
+    const s = withSel([], { view: 'map' });
+    const next = appReducer(s, { type: 'goToPlace', placeId: '梁山泊', inShandong: true });
+    expect(next).toEqual({ ...s, focusPlace: '梁山泊' });
+  });
+
+  it('PLC-6 keeps selection, arc and query; replaces a previous focusPlace', () => {
+    const s = opened({ selected: ['linchong'], arcId: 'arc-03', query: '林', focusPlace: '東京' });
+    const next = appReducer(s, { type: 'goToPlace', placeId: '野豬林', inShandong: false });
+    expect(next).toEqual({ ...s, view: 'map', focusPlace: '野豬林', drawer: null });
+  });
+
+  it('PURE-4 goToPlace does not mutate the input state', () => {
+    const s = opened({ mapScope: 'sd', selected: ['wusong'] });
+    const snapshot = structuredClone(s);
+    appReducer(s, { type: 'goToPlace', placeId: '孟州', inShandong: false });
     expect(s).toEqual(snapshot);
   });
 });

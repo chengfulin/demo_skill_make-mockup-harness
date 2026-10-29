@@ -200,21 +200,21 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 ### Tests for User Story 4 ⚠️
 
 - [X] T085 [P] [US4] [S3] 撰寫 `AP/src/domain/navigation.test.ts`：`prevNext(id, filtered, all)`：id 在 filtered 中用 filtered，否則用 all（G-2）；林沖＋魯智深篩選中「大鬧野豬林」下一個＝棒打洪教頭（AC-P20）；只選林沖時「大鬧野豬林」前一個＝林沖誤入白虎堂；首／尾回傳 `null`；檔頭附 ISP 分割表
-- [ ] T086 [P] [US4] 修改 `AP/src/state/appReducer.test.ts`：新增 `goToPlace`（關面板、`view='map'`、設 `focusPlace`；payload 的 `inShandong` 為 false 且目前 `mapScope='sd'` 時切回 `all`，G-10、AC-S23）；`addCharacter` 不關面板（AC-P19）
+- [X] T086 [P] [US4] 修改 `AP/src/state/appReducer.test.ts`：新增 `goToPlace`（關面板、`view='map'`、設 `focusPlace`；payload 的 `inShandong` 為 false 且目前 `mapScope='sd'` 時切回 `all`，G-10、AC-S23）；`addCharacter` 不關面板（AC-P19）
 - [X] T087 [P] [US4] [S3] 撰寫 `AP/src/components/EventDetail/EventDetail.test.tsx`：依 `contracts/ui-contracts.md`「S3」：內容順序 標題區 → 摘要 → 回目 → 地點 → 參與角色；小標「回目」「地點」「參與角色」；回目逐回列出（28–31 回 4 條）；可定位地點為按鈕「<location> · 在地圖上看」、不可定位為徽章「<location>（無法在示意地圖上定位）」；參與角色頭像鈕 `title="加入篩選"`、`aria-label="將 <姓名> 加入篩選"`、已選者外框＋「已在篩選中」、提示「點頭像加入篩選，點名字看角色資料。」、無角色「本事件沒有收錄名單中的角色。」；底部「← <前一事件名>」「<下一事件名> →」，首尾停用並顯示「← 已是第一個」「已是最後一個 →」
 - [X] T088 [P] [US4] [S3] 撰寫 `AP/e2e/us4-event-detail.spec.ts`：逐條 AC-10、AC-11、AC-P18、AC-P19、AC-P20、AC-P21（本檔驗：點地點後面板關閉、hash `#map`、「地圖」分頁 `aria-selected`；地圖上的標記高亮於 US6 `AP/e2e/us6-map.spec.ts` 補驗）、AC-S26（已選林沖開「倒拔垂楊柳・林沖結義」：「← 已是第一個」停用、下一個「林沖誤入白虎堂 →」）、AC-S27（「九天玄女授天書」地點為徽章「還道村（無法在示意地圖上定位）」、無「在地圖上看」按鈕）（共 8 條）；AC-S15 見 T102
 
 ### Implementation for User Story 4
 
 - [X] T089 [P] [US4] [S3] 實作 `AP/src/domain/navigation.ts`：`prevNext`
-- [ ] T090 [US4] 修改 `AP/src/state/appReducer.ts`：加入 `goToPlace`（payload `{ placeId, inShandong }`，`inShandong` 由容器以 `mapLayout.inScope('sd', place)` 算出）
+- [X] T090 [US4] 修改 `AP/src/state/appReducer.ts`：加入 `goToPlace`（payload `{ placeId, inShandong }`，`inShandong` 由容器以 `mapLayout.inScope('sd', place)` 算出）
 - [X] T091 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventChapters.tsx`（「<第八回> <回目>」逐回）
 - [X] T092 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventPlace.tsx`（可定位按鈕／不可定位徽章）
 - [X] T093 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventParticipants.tsx`（頭像鈕 `onAdd`、名字鈕 `onOpenCharacter`、「已在篩選中」、提示與無角色文案）
 - [X] T094 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/PrevNextNav.tsx`（`pn` 區塊；停用時透明度 .4）
 - [X] T095 [US4] [S3] 修改 `AP/src/components/EventDetail/EventDetail.tsx` 與 `AP/src/components/EventDetail/EventDetail.css`（依賴 T091–T094）：依序組合 標題區 → 摘要 → `EventChapters` → `EventPlace` → `EventParticipants`，底部 `PrevNextNav`
-- [ ] T096 [US4] [S3] 修改 `AP/src/containers/EventDrawerContainer.tsx`（依賴 T089、T090、T095）：`prevNext(id, useFilteredEvents(), dataset.events)`，切換 dispatch `openEvent`；頭像 dispatch `addCharacter`；名字 dispatch `openCharacter`（US5 起顯示角色面板）；地點 dispatch `goToPlace`
-- [ ] T097 [US4] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts e2e/us4-event-detail.spec.ts --project=chrome`，修正至全綠
+- [X] T096 [US4] [S3] 修改 `AP/src/containers/EventDrawerContainer.tsx`（依賴 T089、T090、T095）：`prevNext(id, useFilteredEvents(), dataset.events)`，切換 dispatch `openEvent`；頭像 dispatch `addCharacter`；名字 dispatch `openCharacter`（US5 起顯示角色面板）；地點 dispatch `goToPlace`
+- [X] T097 [US4] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts e2e/us4-event-detail.spec.ts --project=chrome`，修正至全綠
 
 **Checkpoint**: US1～US4 皆可獨立運作
 
