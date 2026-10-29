@@ -50,7 +50,7 @@
         ],
         "plan_file": "specs/001-shuihu-timeline-poc/parallel-plan.json"
       },
-      "waves_done": 1
+      "waves_done": 2
     }
   },
   "brief": {
