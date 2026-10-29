@@ -64,6 +64,7 @@ npm run preview        # 以 dist/ 起本機伺服器，http://localhost:4173/
 ```bash
 npm run e2e            # Playwright chrome project：先 build＋preview，再跑 e2e/ 下除 prototype-compare 以外的全部 spec（us1～us7、us4-prevnext-from-character、responsive、demo-scenario；Chrome，1440×900 與 400×800）
 npm run e2e:compare    # compare project：只跑 e2e/prototype-compare.spec.ts
+npm run check:ac       # 核對 87 個驗收編號（AC-01～18、AC-P1～42、AC-S1～27）都有 E2E 測試名稱涵蓋
 npm run e2e:browsers   # SC-004 抽驗：WebKit／Firefox／Edge（msedge）最新版跑標 @demo 的展示情境 6 步（D-6）
 npx playwright show-report
 ```

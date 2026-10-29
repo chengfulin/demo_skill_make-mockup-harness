@@ -17,7 +17,8 @@
     "e2e": "playwright test --project=chrome",
     "e2e:compare": "playwright test --project=compare",
     "e2e:browsers": "playwright test --project=webkit --project=firefox --project=msedge --grep @demo",
-    "data:convert": "node scripts/convert-prototype-data.mjs"
+    "data:convert": "node scripts/convert-prototype-data.mjs",
+    "check:ac": "node scripts/check-ac-coverage.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",

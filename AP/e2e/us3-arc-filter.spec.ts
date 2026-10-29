@@ -3,6 +3,7 @@
  *
  * 本檔 9 條：AC-08、AC-09、AC-P15、AC-P16、AC-P17、AC-S14，
  * 以及需大節選單、自前面 story 移入的 AC-P13、AC-P14（US2 空狀態與「清除篩選」）、AC-S13（US1 篩選區三視圖常駐）。
+ * 另加非 AC 的回歸測試（T144 遺留缺陷）：切換大節（色帶或選單）時時間軸 `.tl-scroll` 橫向捲動歸零。
  *
  * 定位：大節選單 `select[aria-label="大節"]`（fixture `selectArc` 依選項文字「<大節名>（第 a–b 回）」選取）；
  * 色帶 `[data-testid="timeline"] .arcs button.arc`（`<b>` 為大節名）；刻度 `.ruler .tick:not(.minor)` 為標數字者；
@@ -179,5 +180,37 @@ test.describe('US3 arc filter', () => {
       expect(viewBox).not.toBeNull();
       if (s1Box && viewBox) expect(s1Box.y + s1Box.height).toBeLessThanOrEqual(viewBox.y + 1);
     }
+  });
+
+  // T144 回歸（Prototype 行為、不在 AC 範圍）：時間軸捲到最右再切大節，
+  // 橫向捲動須歸零，色帶標題與左側卡片不得被切掉。
+  test('switching arc resets the timeline horizontal scroll to the start', async ({ page }) => {
+    await gotoApp(page);
+    const scroller = page.getByTestId('timeline');
+    const scrollToEnd = () =>
+      scroller.evaluate((el) => {
+        el.scrollLeft = el.scrollWidth;
+        return el.scrollLeft;
+      });
+    const scrollLeft = () => scroller.evaluate((el) => el.scrollLeft);
+
+    // 1) 點色帶：捲到最右後點最後一個色帶「征方臘」
+    expect(await scrollToEnd()).toBeGreaterThan(0);
+    await scroller.locator('.arcs button.arc', { has: page.getByText('征方臘', { exact: true }) }).click();
+    await expect(arcSelect(page)).not.toHaveValue('');
+    expect(await bandNames(page)).toEqual(['征方臘']);
+    await expect.poll(scrollLeft).toBe(0);
+    await expect(scroller.locator('.arcs button.arc').first()).toBeInViewport({ ratio: 1 });
+    await expect(timelineCards(page).first()).toBeInViewport();
+
+    // 2) 用選單：在大節內捲到最右（若可捲）後切另一個大節，再切回全部大節
+    await scrollToEnd();
+    await selectArc(page, '武松');
+    await expect.poll(scrollLeft).toBe(0);
+    await expect(scroller.locator('.arcs button.arc').first()).toBeInViewport({ ratio: 1 });
+    await scrollToEnd();
+    await selectArc(page, '全部大節');
+    await expect(timelineCards(page)).toHaveCount(54);
+    await expect.poll(scrollLeft).toBe(0);
   });
 });

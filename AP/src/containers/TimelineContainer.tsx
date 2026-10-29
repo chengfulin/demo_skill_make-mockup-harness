@@ -6,6 +6,7 @@
  * 「清除篩選」dispatch `clearFilters`（AC-P13、AC-P14）。
  * US3（T083）：選了大節時以該大節 `chapters` 為 `timelineLayout` 的 range（只畫該大節色帶、刻度如 43、50；FR-011）；
  * 色帶與直向列表組標題的 `onSelectArc` dispatch `selectArc`（AC-P17）。
+ * 大節改變時以 `scrollResetKey={arcId}` 讓時間軸橫向捲動歸零（T144 遺留缺陷修正）。
  */
 import { useCallback, useMemo } from 'react';
 import { EmptyState } from '../components/EmptyState/EmptyState';
@@ -51,6 +52,7 @@ export function TimelineContainer() {
       onOpenEvent={onOpenEvent}
       onSelectArc={onSelectArc}
       empty={<EmptyState onClear={onClearFilters} />}
+      scrollResetKey={arcId}
     />
   );
 }

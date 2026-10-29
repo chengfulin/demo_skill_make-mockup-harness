@@ -4,8 +4,10 @@
  * ≤720px（useIsNarrow）：只渲染 `TimelineList`（AC-P42）。
  * 版面由 `computeLayout(可用寬)` 算出：以 useElementWidth 量 tl-scroll 內容寬，未量到時為 0（每回取 UNIT_MIN），
  * 量到或尺寸改變時重算。tl-scroll 不設 padding，clientWidth 與 contentRect.width 口徑一致。
+ * `scrollResetKey`（容器傳目前大節）改變時把 tl-scroll 的 scrollLeft 歸零，避免切大節後
+ * 色帶標題與左側卡片被捲出視窗（Prototype 行為）。
  */
-import { useMemo, type ReactNode } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import type { TimelineLayout } from '../../domain/timelineLayout';
 import type { Arc, Character, StoryEvent } from '../../domain/types';
 import { useElementWidth } from '../hooks/useElementWidth';
@@ -30,6 +32,8 @@ export interface TimelineProps {
   onSelectArc?: (arcId: string) => void;
   /** 篩選結果為 0 時取代車道（US2） */
   empty?: ReactNode;
+  /** 值改變時橫向捲動歸零（容器傳目前大節 id；null 為全部大節） */
+  scrollResetKey?: string | null;
 }
 
 export function Timeline({
@@ -41,9 +45,21 @@ export function Timeline({
   onOpenEvent,
   onSelectArc,
   empty,
+  scrollResetKey = null,
 }: TimelineProps) {
   const narrow = useIsNarrow();
-  const [scrollRef, availableWidth] = useElementWidth<HTMLDivElement>();
+  const [measureRef, availableWidth] = useElementWidth<HTMLDivElement>();
+  const scrollEl = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      scrollEl.current = node;
+      return measureRef(node);
+    },
+    [measureRef],
+  );
+  useLayoutEffect(() => {
+    if (scrollEl.current) scrollEl.current.scrollLeft = 0;
+  }, [scrollResetKey]);
   const layout = useMemo(
     () => (narrow ? null : computeLayout(availableWidth)),
     [narrow, computeLayout, availableWidth],
