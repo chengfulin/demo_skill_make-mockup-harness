@@ -228,20 +228,20 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T098 [P] [US5] [S4] 撰寫 `AP/src/domain/status.test.ts`（用 `realDataset`）：`statusAt(c, n)` 依「`fateChapter≠null 且 n≥fateChapter` → 已死亡或離散；否則 `joinChapter≠null 且 n≥joinChapter` → 已上梁山；否則 `n≥firstChapter` → 在野；否則 未登場」（FR-013、D-2）；`statusSegments`：晁蓋 未登場 13／在野 6／已上梁山 40／已死亡或離散 61（AC-P22）、高俅 未登場 1／在野 119（AC-P23）、公孫勝 110–120 為已死亡或離散且最後一段不是已上梁山（AC-S16）；`milestones`：無值者不產生（高俅只有登場 2）；`statusAriaLabel` 產生「未登場 13 回，在野 6 回，已上梁山 40 回，已死亡或離散 61 回」格式；檔頭附 ISP 分割表
-- [ ] T099 [P] [US5] 修改 `AP/src/state/appReducer.test.ts`：新增 `onlyCharacter`（`selected=[id]` 並關面板，AC-P25、AC-S25）
-- [ ] T100 [P] [US5] [S4] 撰寫 `AP/src/components/CharacterDetail/CharacterDetail.test.tsx`：依 `contracts/ui-contracts.md`「S4」：內容順序 身分區 → 狀態 → 結局 →「只看此角色」→ 參與事件 → 人物關係；「綽號 <nickname 原字串>」（高俅不顯示）、「<星號>・第 <座次> 位・<天罡｜地煞>」或「非一百單八將」；小標「一百二十回中的狀態」；節點標記「登場 <n>」「上梁山 <n>」「結局 <n>」；狀態條 `role="img"` 與 `aria-label`；刻度 1、30、60、90、120；圖例四狀態名；結局「<fate>（第 <n> 回）」或只有 <fate>；「參與事件（<N>）」每列「<a>–<b>回」或「<n>回」＋事件名；人物關係鈕「<頭像> <姓名> <關係類型>」、`title`＝關係說明；無關係「收錄範圍內沒有此角色的關係資料。」
-- [ ] T101 [P] [US5] [S1] [S4] 撰寫 `AP/e2e/us5-character.spec.ts`：逐條 AC-12、AC-13、AC-P22、AC-P23、AC-P24、AC-P25、AC-S12（點林沖「i」後林沖 chip `aria-pressed` 不變）、AC-S16、AC-S24（事件明細與角色資料面板各以 Escape 與點遮罩關閉，G-10）、AC-S25（「只看此角色」後角色資料面板關閉、已選只剩魯智深、「共 10 個事件」，G-10）（共 10 條）
-- [ ] T102 [P] [US5] [S3] [S4] 撰寫 `AP/e2e/us4-prevnext-from-character.spec.ts`：AC-S15（US4 的驗收，需 S4 入口故於本 phase 撰寫）：已選林沖，自宋江角色資料開啟不在篩選結果中的「宋公明神聚蓼兒洼」（全書最後一個事件），「已是最後一個 →」停用；按上一個依全書順序切到「眾將散去」
+- [X] T098 [P] [US5] [S4] 撰寫 `AP/src/domain/status.test.ts`（用 `realDataset`）：`statusAt(c, n)` 依「`fateChapter≠null 且 n≥fateChapter` → 已死亡或離散；否則 `joinChapter≠null 且 n≥joinChapter` → 已上梁山；否則 `n≥firstChapter` → 在野；否則 未登場」（FR-013、D-2）；`statusSegments`：晁蓋 未登場 13／在野 6／已上梁山 40／已死亡或離散 61（AC-P22）、高俅 未登場 1／在野 119（AC-P23）、公孫勝 110–120 為已死亡或離散且最後一段不是已上梁山（AC-S16）；`milestones`：無值者不產生（高俅只有登場 2）；`statusAriaLabel` 產生「未登場 13 回，在野 6 回，已上梁山 40 回，已死亡或離散 61 回」格式；檔頭附 ISP 分割表
+- [X] T099 [P] [US5] 修改 `AP/src/state/appReducer.test.ts`：新增 `onlyCharacter`（`selected=[id]` 並關面板，AC-P25、AC-S25）
+- [X] T100 [P] [US5] [S4] 撰寫 `AP/src/components/CharacterDetail/CharacterDetail.test.tsx`：依 `contracts/ui-contracts.md`「S4」：內容順序 身分區 → 狀態 → 結局 →「只看此角色」→ 參與事件 → 人物關係；「綽號 <nickname 原字串>」（高俅不顯示）、「<星號>・第 <座次> 位・<天罡｜地煞>」或「非一百單八將」；小標「一百二十回中的狀態」；節點標記「登場 <n>」「上梁山 <n>」「結局 <n>」；狀態條 `role="img"` 與 `aria-label`；刻度 1、30、60、90、120；圖例四狀態名；結局「<fate>（第 <n> 回）」或只有 <fate>；「參與事件（<N>）」每列「<a>–<b>回」或「<n>回」＋事件名；人物關係鈕「<頭像> <姓名> <關係類型>」、`title`＝關係說明；無關係「收錄範圍內沒有此角色的關係資料。」
+- [X] T101 [P] [US5] [S1] [S4] 撰寫 `AP/e2e/us5-character.spec.ts`：逐條 AC-12、AC-13、AC-P22、AC-P23、AC-P24、AC-P25、AC-S12（點林沖「i」後林沖 chip `aria-pressed` 不變）、AC-S16、AC-S24（事件明細與角色資料面板各以 Escape 與點遮罩關閉，G-10）、AC-S25（「只看此角色」後角色資料面板關閉、已選只剩魯智深、「共 10 個事件」，G-10）（共 10 條）
+- [X] T102 [P] [US5] [S3] [S4] 撰寫 `AP/e2e/us4-prevnext-from-character.spec.ts`：AC-S15（US4 的驗收，需 S4 入口故於本 phase 撰寫）：已選林沖，自宋江角色資料開啟不在篩選結果中的「宋公明神聚蓼兒洼」（全書最後一個事件），「已是最後一個 →」停用；按上一個依全書順序切到「眾將散去」
 
 ### Implementation for User Story 5
 
-- [ ] T103 [P] [US5] [S4] 實作 `AP/src/domain/status.ts`：`statusAt`、`statusSegments`、`milestones`、`statusAriaLabel`
-- [ ] T104 [US5] 修改 `AP/src/state/appReducer.ts`：加入 `onlyCharacter`（使用 `selection.only`）
-- [ ] T105 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterIdentity.tsx`（大頭像＋`h2`＋綽號／星號行）
-- [ ] T106 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/StatusBar.tsx` 與 `AP/src/components/CharacterDetail/StatusBar.css`（標記 → 四色區段 → 刻度 → 圖例，色取 token）
-- [ ] T107 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterEvents.tsx`（全書順序、點擊 `onOpenEvent`）
-- [ ] T108 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterRelations.tsx`（點擊 `onOpenCharacter`）
+- [X] T103 [P] [US5] [S4] 實作 `AP/src/domain/status.ts`：`statusAt`、`statusSegments`、`milestones`、`statusAriaLabel`
+- [X] T104 [US5] 修改 `AP/src/state/appReducer.ts`：加入 `onlyCharacter`（使用 `selection.only`）
+- [X] T105 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterIdentity.tsx`（大頭像＋`h2`＋綽號／星號行）
+- [X] T106 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/StatusBar.tsx` 與 `AP/src/components/CharacterDetail/StatusBar.css`（標記 → 四色區段 → 刻度 → 圖例，色取 token）
+- [X] T107 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterEvents.tsx`（全書順序、點擊 `onOpenEvent`）
+- [X] T108 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterRelations.tsx`（點擊 `onOpenCharacter`）
 - [ ] T109 [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterDetail.tsx` 與 `AP/src/components/CharacterDetail/CharacterDetail.css`（依賴 T105–T108）：依序組合 身分 → 狀態 → 結局 →「只看此角色」按鈕 → 參與事件 → 人物關係
 - [ ] T110 [US5] [S4] 建立 `AP/src/containers/CharacterDrawerContainer.tsx`（依賴 T103、T104、T109）：`Drawer`（`data-page="S4 角色資料面板"`、`aria-label="角色資料"`、`data-testid="character-drawer"`、類別字「角色資料」）；關係取 `dataset` 中含該角色的 `Relation`；「只看此角色」dispatch `onlyCharacter`；事件 dispatch `openEvent`；關係對象 dispatch `openCharacter`
 - [ ] T111 [US5] 修改 `AP/src/App.tsx`（依賴 T110）：`drawer.kind === 'character'` 時渲染 `CharacterDrawerContainer`
@@ -260,21 +260,21 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T114 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.test.ts`（新增）：`buildMarkers(filtered, places, scope)` 只含篩選結果中、在範圍內的地點與事件數（武松全圖 8、山東 4 不含東京）；半徑 `(山東 12｜全圖 9) + min(事件數, 8)·1.3`；標記推開 40 輪、間距 山東 6／全圖 2，只改顯示位置；標籤靠右、近右緣改靠左，山東未篩選時標籤外框兩兩不相交（AC-P37）；`buildTrail(filtered, characterId)`：`place≠null`、依全書順序、連續同地點合併（G-3、AC-S10）；`unlocatedCount`（武松＋宋江＝1）；檔頭附 ISP 分割表
+- [X] T114 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.test.ts`（新增）：`buildMarkers(filtered, places, scope)` 只含篩選結果中、在範圍內的地點與事件數（武松全圖 8、山東 4 不含東京）；半徑 `(山東 12｜全圖 9) + min(事件數, 8)·1.3`；標記推開 40 輪、間距 山東 6／全圖 2，只改顯示位置；標籤靠右、近右緣改靠左，山東未篩選時標籤外框兩兩不相交（AC-P37）；`buildTrail(filtered, characterId)`：`place≠null`、依全書順序、連續同地點合併（G-3、AC-S10）；`unlocatedCount`（武松＋宋江＝1）；檔頭附 ISP 分割表
 - [ ] T115 [P] [US6] 修改 `AP/src/state/appReducer.test.ts`：新增 `setMapScope`、`focusPlace`
-- [ ] T116 [P] [US6] [S5] 撰寫 `AP/src/components/MapView/MapView.test.tsx`：依 `contracts/ui-contracts.md`「S5 地圖」：`section[data-page="S5 地圖"]`；地圖欄順序 範圍切換（`role="tablist"`、`aria-label="地圖範圍"`、「全圖」「山東」）→ 地圖框（`data-testid="map"`）→ 刻度＋說明；側欄（`data-testid="map-side"`）地點面板 → 說明面板；SVG `aria-label`「北宋疆域示意地圖」／「山東範圍示意地圖」；山東框「山東 · 點此放大」（`aria-label="放大山東"`，僅全圖）；標記 `aria-label="<地名>，<N> 個事件"`、焦點地點朱色；角落「示意，非精確測繪」／「示意，非精確測繪 · 山東範圍外的地點不顯示」；「<N> 個事件無法標示地點」（N>0）；刻度 `aria-label="章回範圍"` 與說明「章回刻度 · [<大節名>，]第 <a>–<b> 回，共 <N> 個事件，直線標出各事件的起始回」；地點面板三種狀態與「「<地名>」不在目前的篩選結果中。」；說明面板三種文案；結果為 0 時覆蓋 `EmptyState`
-- [ ] T117 [P] [US6] [S5] 撰寫 `AP/e2e/us6-map.spec.ts`：逐條 AC-14、AC-15、AC-16、AC-P26、AC-P27、AC-P28、AC-P35、AC-P36、AC-P37、AC-P38、AC-P39（刻度在地圖正下方、寬度相同）、AC-S10、AC-S11、AC-S23（先切「山東」再回時間軸開「醉打蔣門神・血濺鴛鴦樓」點「孟州 · 在地圖上看」：範圍自動改「全圖」、`全圖` 分頁 `aria-selected`、孟州標記為焦點色，G-10）（共 14 條），另加「AC-P21（地圖端）」：自事件明細點地點後該地點標記為焦點色、側欄列出該地點
+- [X] T116 [P] [US6] [S5] 撰寫 `AP/src/components/MapView/MapView.test.tsx`：依 `contracts/ui-contracts.md`「S5 地圖」：`section[data-page="S5 地圖"]`；地圖欄順序 範圍切換（`role="tablist"`、`aria-label="地圖範圍"`、「全圖」「山東」）→ 地圖框（`data-testid="map"`）→ 刻度＋說明；側欄（`data-testid="map-side"`）地點面板 → 說明面板；SVG `aria-label`「北宋疆域示意地圖」／「山東範圍示意地圖」；山東框「山東 · 點此放大」（`aria-label="放大山東"`，僅全圖）；標記 `aria-label="<地名>，<N> 個事件"`、焦點地點朱色；角落「示意，非精確測繪」／「示意，非精確測繪 · 山東範圍外的地點不顯示」；「<N> 個事件無法標示地點」（N>0）；刻度 `aria-label="章回範圍"` 與說明「章回刻度 · [<大節名>，]第 <a>–<b> 回，共 <N> 個事件，直線標出各事件的起始回」；地點面板三種狀態與「「<地名>」不在目前的篩選結果中。」；說明面板三種文案；結果為 0 時覆蓋 `EmptyState`
+- [X] T117 [P] [US6] [S5] 撰寫 `AP/e2e/us6-map.spec.ts`：逐條 AC-14、AC-15、AC-16、AC-P26、AC-P27、AC-P28、AC-P35、AC-P36、AC-P37、AC-P38、AC-P39（刻度在地圖正下方、寬度相同）、AC-S10、AC-S11、AC-S23（先切「山東」再回時間軸開「醉打蔣門神・血濺鴛鴦樓」點「孟州 · 在地圖上看」：範圍自動改「全圖」、`全圖` 分頁 `aria-selected`、孟州標記為焦點色，G-10）（共 14 條），另加「AC-P21（地圖端）」：自事件明細點地點後該地點標記為焦點色、側欄列出該地點
 
 ### Implementation for User Story 6
 
-- [ ] T118 [P] [US6] [S5] 建立 `AP/src/domain/mapGeometry.ts`：自 Prototype（唯讀 `.specify/context/shuihu-timeline/v2/prototype/index.html`）取出示意底圖折線常數（陸地、海、遼東、黃河、長江）、地名註記座標、梁山泊水域橢圓、山東框（全圖座標）
-- [ ] T119 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.ts`：加入 `buildMarkers`、推開演算法、標籤側別、`buildTrail`、`unlocatedCount`
+- [X] T118 [P] [US6] [S5] 建立 `AP/src/domain/mapGeometry.ts`：自 Prototype（唯讀 `.specify/context/shuihu-timeline/v2/prototype/index.html`）取出示意底圖折線常數（陸地、海、遼東、黃河、長江）、地名註記座標、梁山泊水域橢圓、山東框（全圖座標）
+- [X] T119 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.ts`：加入 `buildMarkers`、推開演算法、標籤側別、`buildTrail`、`unlocatedCount`
 - [ ] T120 [US6] 修改 `AP/src/state/appReducer.ts`：加入 `setMapScope`、`focusPlace`
-- [ ] T121 [P] [US6] [S5] 建立 `AP/src/components/MapView/ScopeSwitch.tsx`
-- [ ] T122 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapSvg.tsx` 與 `AP/src/components/MapView/MapMarker.tsx`：圖層順序 陸地底 → 海、遼東 → 黃河（全圖另有長江）→ 地名註記 → 梁山泊水域 → 山東框（僅全圖、可點）→ 行跡（紅色虛線、各段中點順序號 1…n，只選一位且 ≥2 點）→ 標記；標記為 `role="button"`＋`tabindex="0"` 的 SVG 群組，Enter／Space 觸發
-- [ ] T123 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapRuler.tsx`（與地圖同寬的精簡刻度 1、30、60、90、120，直線標出各事件起始回，FR-018）
-- [ ] T124 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapSidePanel.tsx`（地點面板＋說明面板；點事件 `onOpenEvent`）
-- [ ] T125 [US6] [S5] 建立 `AP/src/components/MapView/MapView.tsx` 與 `AP/src/components/MapView/MapView.css`（依賴 T121–T124）：`mapgrid` 寬 ≥900px 為「地圖欄｜側欄 280px」、以下單欄；SVG 寬 100% 自動縮放；結果為 0 時以 `EmptyState overlay` 覆蓋地圖框
+- [X] T121 [P] [US6] [S5] 建立 `AP/src/components/MapView/ScopeSwitch.tsx`
+- [X] T122 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapSvg.tsx` 與 `AP/src/components/MapView/MapMarker.tsx`：圖層順序 陸地底 → 海、遼東 → 黃河（全圖另有長江）→ 地名註記 → 梁山泊水域 → 山東框（僅全圖、可點）→ 行跡（紅色虛線、各段中點順序號 1…n，只選一位且 ≥2 點）→ 標記；標記為 `role="button"`＋`tabindex="0"` 的 SVG 群組，Enter／Space 觸發
+- [X] T123 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapRuler.tsx`（與地圖同寬的精簡刻度 1、30、60、90、120，直線標出各事件起始回，FR-018）
+- [X] T124 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapSidePanel.tsx`（地點面板＋說明面板；點事件 `onOpenEvent`）
+- [X] T125 [US6] [S5] 建立 `AP/src/components/MapView/MapView.tsx` 與 `AP/src/components/MapView/MapView.css`（依賴 T121–T124）：`mapgrid` 寬 ≥900px 為「地圖欄｜側欄 280px」、以下單欄；SVG 寬 100% 自動縮放；結果為 0 時以 `EmptyState overlay` 覆蓋地圖框
 - [ ] T126 [US6] [S5] 建立 `AP/src/containers/MapContainer.tsx`（依賴 T118–T120、T125）：以 `useFilteredEvents`、`mapScope`、`focusPlace` 呼叫 `mapLayout.*`；行跡只在 `selected.length === 1` 時計算；dispatch `setMapScope`、`focusPlace`、`openEvent`、`clearFilters`
 - [ ] T127 [US6] 修改 `AP/src/App.tsx`（依賴 T126）：`view === 'map'` 改渲染 `MapContainer`，移除 S5 佔位
 - [ ] T128 [US6] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test --project=chrome`（含 us1～us6 全部），修正至全綠

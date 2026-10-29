@@ -64,6 +64,10 @@ export type SelectArcAction = { type: 'selectArc'; id: string | null };
  */
 export type GoToPlaceAction = { type: 'goToPlace'; placeId: string; inShandong: boolean };
 
+// US5 角色資料（FR-014、G-10(c)、AC-P25、AC-S25）
+/** 「只看此角色」：選取改為僅此人並關閉面板 */
+export type OnlyCharacterAction = { type: 'onlyCharacter'; id: string };
+
 export type Action =
   | SetViewAction
   | OpenEventAction
@@ -78,7 +82,8 @@ export type Action =
   | SubmitSearchAction
   | ClearFiltersAction
   | SelectArcAction
-  | GoToPlaceAction;
+  | GoToPlaceAction
+  | OnlyCharacterAction;
 
 /** 初始狀態；`view` 由呼叫端（hash 解析結果）提供。 */
 export function createInitialState(view: View): AppState {
@@ -136,6 +141,8 @@ export function appReducer(state: AppState, action: Action): AppState {
         focusPlace: action.placeId,
         drawer: null,
       };
+    case 'onlyCharacter':
+      return { ...state, selected: selection.only(action.id), drawer: null };
     default: {
       const unhandled: never = action;
       return unhandled;

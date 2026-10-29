@@ -1,0 +1,184 @@
+/*
+ * S5 地圖樣式（Prototype「S5 map」段與 `.panel`、`.elist`、`.mini`、`.tabs`、`.hint` 對應規則）。
+ * 數值取自 tokens.css；無對應 token 的尺寸（刻度高 30px、底條高 6px、事件直線 2×14px、清單回次欄 72px、
+ * 行跡虛線 6 5、山東框虛線 6 4、分頁內距 5px）沿用 Prototype 字面值。
+ * @media 無法用 var()，斷點寫字面值 900px（--bp-map-stack）。
+ */
+
+.mapgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--size-map-side);
+  gap: var(--space-8);
+}
+@media (max-width: 900px) {
+  .mapgrid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.mapcol { display: grid; gap: var(--space-4); min-width: 0; }
+
+/* ① 範圍切換 */
+.maptools { display: flex; justify-content: flex-start; }
+.maptools .tabs {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--card);
+}
+.maptools .tabs button {
+  border: 0;
+  background: none;
+  padding: 5px var(--space-7);
+  font: inherit;
+  font-size: var(--text-md);
+  color: inherit;
+  cursor: pointer;
+}
+.maptools .tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+
+/* ② 地圖框 */
+.mapbox {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  overflow: hidden;
+}
+.mapbox svg { display: block; width: 100%; height: auto; }
+.mapbox .sea { fill: var(--accent-soft); }
+.mapbox .land { fill: var(--paper-2); }
+.mapbox .river { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .45; }
+.mapbox .rlabel { font-size: var(--text-2xs); fill: var(--accent); opacity: .8; }
+.mapbox .rlabel.sea-label { font-size: var(--text-base); letter-spacing: .3em; }
+.mapbox .marsh { fill: var(--accent); opacity: .25; }
+
+.mapbox .trail { fill: none; stroke: var(--seal); stroke-width: 2; stroke-dasharray: 6 5; }
+.mapbox .trailstep { fill: var(--seal); }
+.mapbox .trailno { font-size: 10px; fill: var(--paper); font-weight: var(--weight-bold); }
+
+.mapbox .mk { cursor: pointer; }
+.mapbox .mk:focus { outline: none; }
+.mapbox .mk:focus-visible circle.o { stroke: var(--ink); }
+.mapbox .mk circle.o { fill: var(--accent); stroke: var(--card); stroke-width: 2; }
+.mapbox .mk.hi circle.o { fill: var(--seal); }
+.mapbox .mk text.n {
+  fill: var(--paper);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.mapbox .mk text.l {
+  fill: var(--ink);
+  font-size: var(--text-sm);
+  paint-order: stroke;
+  stroke: var(--card);
+  stroke-width: 3px;
+}
+
+.mapbox .sdbox { cursor: pointer; }
+.mapbox .sdbox:focus { outline: none; }
+.mapbox .sdbox rect {
+  fill: transparent;
+  stroke: var(--seal);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  pointer-events: all;
+}
+.mapbox .sdbox text { fill: var(--seal); font-size: var(--text-sm); }
+.mapbox .sdbox:hover rect,
+.mapbox .sdbox:focus rect { fill: color-mix(in srgb, var(--seal) 8%, transparent); }
+
+.mapnote {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-4);
+  font-size: var(--text-2xs);
+  color: var(--ink-2);
+  background: var(--card);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-xs);
+}
+.unloc {
+  position: absolute;
+  right: var(--space-5);
+  top: var(--space-5);
+  font-size: var(--text-sm);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+}
+
+/* ③ 精簡章回刻度（與地圖同寬） */
+.mapruler { padding: 0 var(--space-1); }
+.mapruler .hint { margin: var(--space-2) 0 0; font-size: var(--text-sm); color: var(--ink-2); }
+.mini { position: relative; height: 30px; margin-top: var(--space-3); }
+.mini .base {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 12px;
+  height: 6px;
+  background: var(--st-none);
+  border-radius: var(--radius-xs);
+}
+.mini .rng {
+  position: absolute;
+  top: 12px;
+  height: 6px;
+  background: var(--accent);
+  opacity: .35;
+  border-radius: var(--radius-xs);
+}
+.mini .tk { position: absolute; top: 8px; width: 2px; height: 14px; background: var(--accent); }
+.mini .lb {
+  position: absolute;
+  top: 22px;
+  font-size: 10px;
+  color: var(--ink-2);
+  translate: -50% 0;
+  font-variant-numeric: tabular-nums;
+}
+.mini .lb.first { translate: 0 0; }
+.mini .lb.last { translate: -100% 0; }
+
+/* 側欄 */
+.side { display: grid; gap: var(--space-6); align-content: start; }
+.side .panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  padding: var(--space-6) var(--space-7);
+}
+.side .panel h3 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--f-display);
+  font-weight: var(--weight-regular);
+  font-size: 19px;
+}
+.side .hint { margin: 0; font-size: var(--text-sm); color: var(--ink-2); }
+.side .hint.count { margin: 0 0 var(--space-3); }
+.elist { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-1); }
+.elist button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: var(--space-4);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  padding: 5px var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.elist button:hover { background: var(--paper-2); }
+.elist span {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  padding-top: 1px;
+}
+.elist b { font-family: var(--f-display); font-weight: var(--weight-regular); font-size: var(--text-body); }

@@ -1,0 +1,68 @@
+/*
+ * S4 狀態條（Prototype `.stwrap`、`.stmk`、`.stln`、`.stbar`、`.s-*`、`.stscale`、`.legend`）。
+ * 色取 tokens.css `--st-*`；數值取 tokens（space／text／radius），Prototype 無對應 token 者保留字面值
+ * （條高 16px、標記區高 40px、豎線 top 30px／高 28px、豎線粗 1.5px、圖例色塊 12px／圓角 2px、行高 14px、刻度上距 3px）。
+ */
+.status-sec .stwrap {
+  position: relative;
+  padding-top: 40px;
+}
+
+.status-sec .stmk {
+  position: absolute;
+  translate: -50% 0;
+  font-size: var(--text-2xs);
+  line-height: 14px;
+  white-space: nowrap;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-sec .stln {
+  position: absolute;
+  top: 30px;
+  height: 28px;
+  border-left: 1.5px solid var(--ink);
+}
+
+.status-sec .stbar {
+  display: flex;
+  height: 16px;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+}
+.status-sec .stbar i {
+  display: block;
+  height: 100%;
+}
+
+.status-sec .s-none { background: var(--st-none); }
+.status-sec .s-wild { background: var(--st-wild); }
+.status-sec .s-liang { background: var(--st-liang); }
+.status-sec .s-gone { background: var(--st-gone); }
+
+.status-sec .stscale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  font-size: var(--text-3xs);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-sec .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+.status-sec .legend i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 2px;
+  vertical-align: -1px;
+}

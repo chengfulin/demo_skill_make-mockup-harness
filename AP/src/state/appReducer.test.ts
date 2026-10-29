@@ -59,6 +59,17 @@
  * | G3 其他欄位               | 選取、大節、query 保留；focusPlace 由他地點取代               | PLC-6          |
  * | P1 純度                   | 不修改輸入狀態                                                | PURE-4         |
  *
+ * US5 擴充（T099；FR-014、G-10(c)、AC-P25、AC-S25）：
+ *   onlyCharacter {id}：選取改為只有 [id]（domain selection.only）並關閉面板；大節、query、view 保留。
+ *   選取規則本身由 domain/selection.test.ts 驗；此處驗 reducer 接線與關面板。
+ *
+ * | 特徵                      | blocks（非 base 者各為一案）                                  | 對應案例       |
+ * | :------------------------ | :------------------------------------------------------------ | :------------- |
+ * | O1 onlyCharacter 前選取   | 有他人（取代為僅此人）／空（設為僅此人）／已是僅此人          | ONL-1～ONL-3   |
+ * | O2 onlyCharacter 前面板   | 角色面板開啟（base：關閉）／未開                              | ONL-1、ONL-2   |
+ * | O3 其他欄位               | 大節、query、view、mapScope、focusPlace 保留                  | ONL-4          |
+ * | P1 純度                   | 不修改輸入狀態                                                | PURE-5         |
+ *
  * 範圍外（一次性宣告）：未知 action type（TypeScript 聯集排除）；面板 id 不存在（由容器自資料產生）；
  * 大節 id 不存在（選項由 arcs.json 產生）；地圖範圍切換與標記類 action（US6 擴充時補測）；
  * toggleGroup members 為空（由資料保證非空）。
@@ -345,6 +356,41 @@ describe('goToPlace (US4, FR-012, G-10(a))', () => {
     const s = opened({ mapScope: 'sd', selected: ['wusong'] });
     const snapshot = structuredClone(s);
     appReducer(s, { type: 'goToPlace', placeId: '孟州', inShandong: false });
+    expect(s).toEqual(snapshot);
+  });
+});
+
+describe('onlyCharacter (US5, FR-014, G-10(c))', () => {
+  const charOpen = (selected: string[], extra: Partial<AppState> = {}): AppState =>
+    withSel(selected, { drawer: { kind: 'character', id: 'luzhishen' }, ...extra });
+
+  it('ONL-1 replaces the selection with only this character and closes the drawer (AC-P25, AC-S25)', () => {
+    const next = appReducer(charOpen(['linchong', 'wusong']), { type: 'onlyCharacter', id: 'luzhishen' });
+    expect(next.selected).toEqual(['luzhishen']);
+    expect(next.drawer).toBeNull();
+  });
+
+  it('ONL-2 with an empty selection and no drawer selects only this character', () => {
+    const next = appReducer(base(), { type: 'onlyCharacter', id: 'luzhishen' });
+    expect(next).toEqual({ ...base(), selected: ['luzhishen'] });
+  });
+
+  it('ONL-3 already only this character still closes the drawer', () => {
+    const next = appReducer(charOpen(['luzhishen']), { type: 'onlyCharacter', id: 'luzhishen' });
+    expect(next.selected).toEqual(['luzhishen']);
+    expect(next.drawer).toBeNull();
+  });
+
+  it('ONL-4 keeps arc, query, view, map scope and focus place', () => {
+    const s = charOpen(['linchong'], { arcId: 'arc-03', query: '魯', view: 'graph', mapScope: 'sd', focusPlace: '梁山泊' });
+    const next = appReducer(s, { type: 'onlyCharacter', id: 'luzhishen' });
+    expect(next).toEqual({ ...s, selected: ['luzhishen'], drawer: null });
+  });
+
+  it('PURE-5 onlyCharacter does not mutate the input state', () => {
+    const s = charOpen(['linchong', 'wusong']);
+    const snapshot = structuredClone(s);
+    appReducer(s, { type: 'onlyCharacter', id: 'luzhishen' });
     expect(s).toEqual(snapshot);
   });
 });
