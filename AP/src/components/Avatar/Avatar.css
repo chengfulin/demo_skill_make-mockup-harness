@@ -1,0 +1,27 @@
+/*
+ * 頭像（Prototype `.av`、`.av.tg|ds|ot`、`.av.ring`、`.avs .av`、`.person .av`、角色面板 56px）。
+ * 數值取自 tokens.css；lg 的 16px 無字級 token，以尺寸的一半表示。
+ */
+.av {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 50%;
+  font-family: var(--f-display);
+  line-height: 1;
+  color: var(--paper);
+}
+
+.av.tg { background: var(--g-tg); }
+.av.ds { background: var(--g-ds); }
+.av.ot { background: var(--g-ot); }
+
+/* 尺寸：事件卡／chip／事件面板人物／角色面板 */
+.av-sm { width: var(--size-avatar-sm); height: var(--size-avatar-sm); font-size: var(--text-2xs); }
+.av-md { width: var(--size-avatar-md); height: var(--size-avatar-md); font-size: var(--text-base); }
+.av-lg { width: var(--size-avatar-lg); height: var(--size-avatar-lg); font-size: calc(var(--size-avatar-lg) / 2); }
+.av-xl { width: var(--size-avatar-xl); height: var(--size-avatar-xl); font-size: var(--text-3xl); }
+
+/* 已選：朱色外框（內圈留卡片底色） */
+.av.ring { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--seal); }
+.av-sm.ring { box-shadow: 0 0 0 1.5px var(--card), 0 0 0 3px var(--seal); }

@@ -74,19 +74,19 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [X] T021 [P] 撰寫 `AP/src/domain/filter.test.ts`（用 `realDataset`）：`filterEvents` 未篩選 54、武松 8、武松＋魯智深 14、林沖 10、天罡 17 位 52、林沖＋宋江 31、大節三打祝家莊 4、征方臘＋武松＝睦州血戰與魯智深擒方臘・浙江坐化、誤走妖魔・魯智深與林沖＋王英 0；`charactersInArc` 回傳在該大節至少參與一事件的角色（G-9）；檔頭附 ISP 分割表
 - [X] T022 [P] 撰寫 `AP/src/domain/format.test.ts`：明細用「第 28–31 回」「第 8 回」、清單用「28–31回」「8回」、大節選項「<大節名>（第 a–b 回）」（含「魂聚蓼兒洼（第 120–120 回）」）、色帶「a–b」
 - [X] T023 [P] 撰寫 `AP/src/domain/mapLayout.test.ts`（範圍部分）：兩個範圍常數（全圖 viewBox 860×700、經度 105–122.5、緯度 27–41.5；山東 860×620、經度 114.6–119.2、緯度 34.6–37.9）、等距投影 `x=(lon−lon0)/(lon1−lon0)·W`、`y=(lat1−lat)/(lat1−lat0)·H`、`inScope`：32 地點中山東 15 個且不含東京（AC-P36 的資料基礎）
-- [ ] T024 [P] 撰寫 `AP/src/state/appReducer.test.ts`（基礎）：初始狀態 `selected: []`、`arcId: null`、`query: ''`、`view` 取參數、`mapScope: 'all'`、`focusPlace: null`、`drawer: null`；`setView`；`openEvent`、`openCharacter`（開啟另一個面板即取代）、`closeDrawer`
-- [ ] T025 [P] 實作 `AP/src/domain/filter.ts`：`filterEvents(events, selected, arcId)` =「(arcId 為空 或 e.arc = arcId) 且 (selected 為空 或 e.characters ∩ selected ≠ ∅)」（FR-003）；`charactersInArc(events, arcId)`（G-9）
-- [ ] T026 [P] 實作 `AP/src/domain/format.ts`：章回區間與大節標籤文字函式（T022 所列格式）
-- [ ] T027 [P] 實作 `AP/src/domain/mapLayout.ts`（範圍部分）：`MAP_SCOPES`（`all`／`sd`）常數、`project(scope, lon, lat)`、`inScope(scope, place)`；US6 會再擴充本檔
-- [ ] T028 [P] 實作 `AP/src/state/appReducer.ts`：`AppState`（plan「狀態」節的 7 個欄位）、`Action` 聯集（本 phase 先有 `setView`、`openEvent`、`openCharacter`、`closeDrawer`，各 story 再加）、`createInitialState(view)`、`appReducer`（純函式，不持有資料內容）
-- [ ] T029 實作 `AP/src/state/AppStateProvider.tsx`（依賴 T028）：Context + `useReducer`，export `AppStateProvider`、`useAppState`、`useAppDispatch`
+- [X] T024 [P] 撰寫 `AP/src/state/appReducer.test.ts`（基礎）：初始狀態 `selected: []`、`arcId: null`、`query: ''`、`view` 取參數、`mapScope: 'all'`、`focusPlace: null`、`drawer: null`；`setView`；`openEvent`、`openCharacter`（開啟另一個面板即取代）、`closeDrawer`
+- [X] T025 [P] 實作 `AP/src/domain/filter.ts`：`filterEvents(events, selected, arcId)` =「(arcId 為空 或 e.arc = arcId) 且 (selected 為空 或 e.characters ∩ selected ≠ ∅)」（FR-003）；`charactersInArc(events, arcId)`（G-9）
+- [X] T026 [P] 實作 `AP/src/domain/format.ts`：章回區間與大節標籤文字函式（T022 所列格式）
+- [X] T027 [P] 實作 `AP/src/domain/mapLayout.ts`（範圍部分）：`MAP_SCOPES`（`all`／`sd`）常數、`project(scope, lon, lat)`、`inScope(scope, place)`；US6 會再擴充本檔
+- [X] T028 [P] 實作 `AP/src/state/appReducer.ts`：`AppState`（plan「狀態」節的 7 個欄位）、`Action` 聯集（本 phase 先有 `setView`、`openEvent`、`openCharacter`、`closeDrawer`，各 story 再加）、`createInitialState(view)`、`appReducer`（純函式，不持有資料內容）
+- [X] T029 實作 `AP/src/state/AppStateProvider.tsx`（依賴 T028）：Context + `useReducer`，export `AppStateProvider`、`useAppState`、`useAppDispatch`
 - [ ] T030 [P] [S1] 建立 `AP/src/components/LoadState/LoadState.tsx` 與 `AP/src/components/LoadState/LoadState.test.tsx`：依 `contracts/ui-contracts.md`「載入狀態」節：載入中 `role="status"`、`data-testid="loading"`、「資料載入中…」；失敗 `role="alert"`、`data-testid="load-error"`、「資料載入失敗，請稍後再試。」＋按鈕「重試」（`onRetry`）；樣式沿用 EmptyState 類別
-- [ ] T031 實作 `AP/src/data/DatasetProvider.tsx` 與 `AP/src/data/DatasetProvider.test.tsx`（依賴 T019）：Context 提供 `{ status: 'loading'|'error'|'ready', dataset, retry }`，載入器可注入（測試以 stub）；error 時不提供任何部分資料；`retry` 重新載入；export `useDataset`
-- [ ] T032 實作 `AP/src/state/selectors.ts`（依賴 T025、T029、T031）：`useFilteredEvents()`（`useMemo` 包 `filterEvents(dataset.events, selected, arcId)`，結果不存 state）、`useResultCount()`
+- [X] T031 實作 `AP/src/data/DatasetProvider.tsx` 與 `AP/src/data/DatasetProvider.test.tsx`（依賴 T019）：Context 提供 `{ status: 'loading'|'error'|'ready', dataset, retry }`，載入器可注入（測試以 stub）；error 時不提供任何部分資料；`retry` 重新載入；export `useDataset`
+- [X] T032 實作 `AP/src/state/selectors.ts`（依賴 T025、T029、T031）：`useFilteredEvents()`（`useMemo` 包 `filterEvents(dataset.events, selected, arcId)`，結果不存 state）、`useResultCount()`
 
 ### 共用展示元件與 App 殼
 
-- [ ] T033 [P] [S2] [S3] [S4] [S6] 建立 `AP/src/components/Avatar/Avatar.tsx`、`AP/src/components/Avatar/Avatar.css`、`AP/src/components/Avatar/Avatar.test.tsx`：吃 `avatar` 字、`group`（決定 token 色）、`highlighted`（朱色外框）、`size`；`aria-hidden`（文字由外層提供）
+- [X] T033 [P] [S2] [S3] [S4] [S6] 建立 `AP/src/components/Avatar/Avatar.tsx`、`AP/src/components/Avatar/Avatar.css`、`AP/src/components/Avatar/Avatar.test.tsx`：吃 `avatar` 字、`group`（決定 token 色）、`highlighted`（朱色外框）、`size`；`aria-hidden`（文字由外層提供）
 - [ ] T034 [P] [S2] [S5] [S6] 建立 `AP/src/components/EmptyState/EmptyState.tsx`、`AP/src/components/EmptyState/EmptyState.css`、`AP/src/components/EmptyState/EmptyState.test.tsx`：依 `contracts/ui-contracts.md`「S2 時間軸」逐字文案：標題「沒有符合條件的事件」、說明「目前的角色與大節組合下沒有事件。」、按鈕「清除篩選」（`onClear`）；`overlay` prop 供地圖／關係圖覆蓋使用
 - [ ] T035 [P] [S3] [S4] 建立 `AP/src/components/Drawer/Drawer.tsx`、`AP/src/components/Drawer/Drawer.css`、`AP/src/components/Drawer/Drawer.test.tsx`：依 `contracts/ui-contracts.md`「S3」「S4」區塊順序的共用殼：`aside.drawer`，`data-page`／`aria-label`／`data-testid` 由 props 帶入；頁首 `dh` = 類別字 → 關閉鈕「×」（`aria-label="關閉"`）；遮罩點擊與 Escape 觸發 `onClose`（G-10、AC-S24）；寬 `min(440px, 100%)`，≤720px 為全寬、高 82% 底部抽屜（FR-012、FR-014、FR-020）
 - [ ] T036 [P] 建立 `AP/src/components/Masthead/Masthead.tsx` 與 `AP/src/components/Masthead/Masthead.css`（FR-024）：依 `contracts/ui-contracts.md`「頁首」：印章「水」「滸」「年」「表」2×2（`aria-hidden`）→ `h1`「水滸時間軸」→ 副標「依百二十回本《水滸全傳》章回 · 收錄 <N> 位人物、<M> 件事」（N、M 由 props 帶入，不寫死；`counts` 為 `null` 時不渲染副標）
@@ -105,15 +105,15 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 1 ⚠️（先寫，確認失敗）
 
-- [ ] T039 [P] [US1] [S2] 撰寫 `AP/src/domain/timelineLayout.test.ts`（用 `realDataset`）：每回寬 `max(30, floor(可用寬 / 回數))`、事件卡寬 `max(170, 跨回寬 − 8)`；貪婪車道配置下任兩張卡在同車道不重疊（AC-S1）；全書 12 條大節色帶、奇數條標記交替底色；刻度＝起始回與每 10 回（1、10…120；43–50 為 43、50）；每回寬 ≥60px 每回畫短刻度，否則每 5 回；檔頭附 ISP 分割表
+- [X] T039 [P] [US1] [S2] 撰寫 `AP/src/domain/timelineLayout.test.ts`（用 `realDataset`）：每回寬 `max(30, floor(可用寬 / 回數))`、事件卡寬 `max(170, 跨回寬 − 8)`；貪婪車道配置下任兩張卡在同車道不重疊（AC-S1）；全書 12 條大節色帶、奇數條標記交替底色；刻度＝起始回與每 10 回（1、10…120；43–50 為 43、50）；每回寬 ≥60px 每回畫短刻度，否則每 5 回；檔頭附 ISP 分割表
 - [ ] T040 [P] [US1] 撰寫 `AP/src/state/useHashView.test.ts`：hash 空、`#foo` → `timeline`（AC-S17）；`#map`、`#graph` 對應；`setView` 以 `history.replaceState` 寫回；`hashchange` 事件同步；篩選不寫入網址（FR-005）
-- [ ] T041 [P] [US1] [S2] 撰寫 `AP/src/components/Timeline/Timeline.test.tsx`：依 `contracts/ui-contracts.md`「S2 時間軸」：`section[data-page="S2 時間軸"]`、`data-testid="timeline"` 內順序 色帶 → 刻度 → 車道；`EventCard`（`data-testid="event-card"`）事件名、「第 a–b 回／第 n 回」、單回圓點／跨回色條、頭像最多 3 個＋「+N」（AC-S2）、已選角色頭像排前並帶外框、「（無收錄角色）」；窄螢幕（matchMedia ≤720px）改渲染 `data-testid="timeline-list"` 依大節分組
+- [X] T041 [P] [US1] [S2] 撰寫 `AP/src/components/Timeline/Timeline.test.tsx`：依 `contracts/ui-contracts.md`「S2 時間軸」：`section[data-page="S2 時間軸"]`、`data-testid="timeline"` 內順序 色帶 → 刻度 → 車道；`EventCard`（`data-testid="event-card"`）事件名、「第 a–b 回／第 n 回」、單回圓點／跨回色條、頭像最多 3 個＋「+N」（AC-S2）、已選角色頭像排前並帶外框、「（無收錄角色）」；窄螢幕（matchMedia ≤720px）改渲染 `data-testid="timeline-list"` 依大節分組
 - [X] T042 [P] [US1] [S1] 撰寫 `AP/src/components/FilterBar/FilterBar.test.tsx`：依 `contracts/ui-contracts.md`「S1 角色篩選列」：`section.filter[data-page="S1 角色篩選列"]` 四個區塊順序（row → chars → sel → bar）；`ResultCount`（`data-testid="result-count"`、`aria-live="polite"`）「共 <N> 個事件」；`ViewTabs` `role="tablist"`、三個 `role="tab"`「時間軸」「地圖」「關係圖」、目前視圖 `aria-selected="true"`、點擊呼叫 `onChange`
 - [ ] T043 [P] [US1] [S1] [S2] [S3] 撰寫 `AP/e2e/us1-timeline.spec.ts`：逐條 AC-01、AC-02、AC-P1、AC-P2、AC-P41、AC-P42（400×800：`timeline-list` 顯示且頁面無水平捲動）、AC-S1（車道卡片外框兩兩不相交）、AC-S2、AC-S3（`page.emulateMedia({ colorScheme: 'dark' | 'light' })` 比對 `body` 背景色不同且分別等於 token 值）、AC-S4（`page.route` 延遲 `data/*.json`，見 `loading` 且無 `event-card`）、AC-S5（第一次 abort、按「重試」後放行，見「共 54 個事件」）、AC-S17（共 12 條）；AC-S6 於 Polish 的 `AP/e2e/responsive.spec.ts`；AC-S13 需大節選單（US3 才建），於 US3 的 `AP/e2e/us3-arc-filter.spec.ts`（T078）驗
 
 ### Implementation for User Story 1
 
-- [ ] T044 [P] [US1] [S2] 實作 `AP/src/domain/timelineLayout.ts`：常數 `UNIT_MIN=30`、`CARD_MIN=170`、`LANE_H=70`、`LANE_GAP=8`（research「版面常數」）；`timelineLayout(events, arcs, range, availableWidth)` 回傳每回寬、色帶、刻度、卡片座標與車道數；`range` 參數供 US3 傳大節區間
+- [X] T044 [P] [US1] [S2] 實作 `AP/src/domain/timelineLayout.ts`：常數 `UNIT_MIN=30`、`CARD_MIN=170`、`LANE_H=70`、`LANE_GAP=8`（research「版面常數」）；`timelineLayout(events, arcs, range, availableWidth)` 回傳每回寬、色帶、刻度、卡片座標與車道數；`range` 參數供 US3 傳大節區間
 - [ ] T045 [P] [US1] 實作 `AP/src/state/useHashView.ts`：`readHashView()`（非 `#timeline`／`#map`／`#graph` 一律 `timeline`）、`writeHashView(view)`（`replaceState`）、`useHashSync(view, onChange)`
 - [ ] T046 [US1] 修改 `AP/src/state/AppStateProvider.tsx`（依賴 T045）：初始 `view` 取 `readHashView()`；`view` 變動寫回 hash；監聽 `hashchange` 時 dispatch `setView`
 - [X] T047 [P] [US1] 建立 `AP/src/components/hooks/useMediaQuery.ts` 與 `AP/src/components/hooks/useElementWidth.ts`（`ResizeObserver` 量容器寬，供時間軸每回寬計算）
