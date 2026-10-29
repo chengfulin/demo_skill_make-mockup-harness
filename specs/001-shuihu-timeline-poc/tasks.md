@@ -242,11 +242,11 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [X] T106 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/StatusBar.tsx` 與 `AP/src/components/CharacterDetail/StatusBar.css`（標記 → 四色區段 → 刻度 → 圖例，色取 token）
 - [X] T107 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterEvents.tsx`（全書順序、點擊 `onOpenEvent`）
 - [X] T108 [P] [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterRelations.tsx`（點擊 `onOpenCharacter`）
-- [ ] T109 [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterDetail.tsx` 與 `AP/src/components/CharacterDetail/CharacterDetail.css`（依賴 T105–T108）：依序組合 身分 → 狀態 → 結局 →「只看此角色」按鈕 → 參與事件 → 人物關係
-- [ ] T110 [US5] [S4] 建立 `AP/src/containers/CharacterDrawerContainer.tsx`（依賴 T103、T104、T109）：`Drawer`（`data-page="S4 角色資料面板"`、`aria-label="角色資料"`、`data-testid="character-drawer"`、類別字「角色資料」）；關係取 `dataset` 中含該角色的 `Relation`；「只看此角色」dispatch `onlyCharacter`；事件 dispatch `openEvent`；關係對象 dispatch `openCharacter`
-- [ ] T111 [US5] 修改 `AP/src/App.tsx`（依賴 T110）：`drawer.kind === 'character'` 時渲染 `CharacterDrawerContainer`
-- [ ] T112 [US5] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`：傳 `onInfo` 給 `CharacterChip`，dispatch `openCharacter` 且不改變選取（AC-S12）
-- [ ] T113 [US5] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts e2e/us4-event-detail.spec.ts e2e/us4-prevnext-from-character.spec.ts e2e/us5-character.spec.ts --project=chrome`，修正至全綠
+- [X] T109 [US5] [S4] 建立 `AP/src/components/CharacterDetail/CharacterDetail.tsx` 與 `AP/src/components/CharacterDetail/CharacterDetail.css`（依賴 T105–T108）：依序組合 身分 → 狀態 → 結局 →「只看此角色」按鈕 → 參與事件 → 人物關係
+- [X] T110 [US5] [S4] 建立 `AP/src/containers/CharacterDrawerContainer.tsx`（依賴 T103、T104、T109）：`Drawer`（`data-page="S4 角色資料面板"`、`aria-label="角色資料"`、`data-testid="character-drawer"`、類別字「角色資料」）；關係取 `dataset` 中含該角色的 `Relation`；「只看此角色」dispatch `onlyCharacter`；事件 dispatch `openEvent`；關係對象 dispatch `openCharacter`
+- [X] T111 [US5] 修改 `AP/src/App.tsx`（依賴 T110）：`drawer.kind === 'character'` 時渲染 `CharacterDrawerContainer`
+- [X] T112 [US5] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`：傳 `onInfo` 給 `CharacterChip`，dispatch `openCharacter` 且不改變選取（AC-S12）
+- [X] T113 [US5] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts e2e/us4-event-detail.spec.ts e2e/us4-prevnext-from-character.spec.ts e2e/us5-character.spec.ts --project=chrome`，修正至全綠
 
 **Checkpoint**: P1 全數（US1～US5）可運作，可作為第一個展示版本
 

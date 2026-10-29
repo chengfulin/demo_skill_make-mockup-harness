@@ -3,7 +3,8 @@
  * - row：SearchBox（即打即篩 `setQuery`；Enter 以 `enterSelectTarget` dispatch `submitSearch`，D-3）→ 天罡 → 地煞
  *   （成員自 dataset 依 `group` 算出，全選時 `aria-pressed`；`toggleGroup`，G-7）。
  * - arc（T082）：ArcSelect（`arcs` 依資料順序、值為目前 `arcId`；變更 dispatch `selectArc`，FR-011）。
- * - chars：CharacterList（`matchCharacters` 篩過、依 characters.json 順序；`toggleCharacter`）。
+ * - chars：CharacterList（`matchCharacters` 篩過、依 characters.json 順序；`toggleCharacter`；資料鈕 `openCharacter`，
+ *   不改選取，AC-S12，T112）。
  * - sel：SelectedTags（依加入順序；`removeCharacter`、`clearCharacters`）。
  * - bar：結果數取 `useResultCount`，視圖分頁 dispatch `setView`（hash 由 AppStateProvider 同步）。
  */
@@ -56,6 +57,7 @@ export function FilterBarContainer() {
     [dispatch, matches, selected],
   );
   const onToggle = useCallback((id: string) => dispatch({ type: 'toggleCharacter', id }), [dispatch]);
+  const onInfo = useCallback((id: string) => dispatch({ type: 'openCharacter', id }), [dispatch]);
   const onRemove = useCallback((id: string) => dispatch({ type: 'removeCharacter', id }), [dispatch]);
   const onClear = useCallback(() => dispatch({ type: 'clearCharacters' }), [dispatch]);
   const onArcChange = useCallback((id: string | null) => dispatch({ type: 'selectArc', id }), [dispatch]);
@@ -82,7 +84,7 @@ export function FilterBarContainer() {
     <FilterBar
       row={row}
       arc={<ArcSelect arcs={arcs} value={arcId} onChange={onArcChange} />}
-      chars={<CharacterList characters={matches} selectedIds={selectedIds} onToggle={onToggle} />}
+      chars={<CharacterList characters={matches} selectedIds={selectedIds} onToggle={onToggle} onInfo={onInfo} />}
       sel={<SelectedTags characters={selectedCharacters} onRemove={onRemove} onClear={onClear} />}
       resultCount={resultCount}
       view={view}

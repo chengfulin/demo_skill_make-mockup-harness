@@ -36,10 +36,10 @@ export function CharacterRelations({ relations, onOpenCharacter }: CharacterRela
       <h4>人物關係</h4>
       {relations.length > 0 ? (
         <div className="rlist">
-          {relations.map(({ character: o, type, note }) => (
+          {relations.map(({ character: o, type, note }, i) => (
             <button
               type="button"
-              key={`${o.id}-${type}`}
+              key={`${i}-${o.id}-${type}`}
               title={note}
               onClick={() => onOpenCharacter?.(o.id)}
             >
