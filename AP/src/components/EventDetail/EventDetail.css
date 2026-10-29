@@ -1,0 +1,17 @@
+/*
+ * S3 事件明細內容（Prototype `.meta`）。數值取自 tokens.css。
+ * 內容區 `.db` 與 `.db h2` 由 Drawer.css 提供；`.event-detail` 只作為樣式範圍，
+ * 以 display: contents 讓各區塊成為 `.db` grid 的直接子項。
+ */
+.event-detail {
+  display: contents;
+}
+.event-detail .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-7);
+  margin-top: var(--space-3);
+  font-size: var(--text-md);
+  color: var(--ink-2);
+}
+.event-detail .meta b { color: var(--ink); font-weight: var(--weight-medium); }

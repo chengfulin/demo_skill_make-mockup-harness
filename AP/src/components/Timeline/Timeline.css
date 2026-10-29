@@ -1,0 +1,133 @@
+/*
+ * S2 時間軸樣式（Prototype「S2 timeline」段對應規則）。
+ * 數值取自 tokens.css；無對應 token 的版面尺寸（色帶高 52px、刻度高 26px、章回欄 62px 等）沿用 Prototype 字面值。
+ * @media 無法用 var()，斷點寫字面值 720px（--bp-sheet）。
+ * tl-scroll 不設 padding：useElementWidth 的 clientWidth／contentRect.width 皆為可用寬。
+ */
+.view { padding-block: var(--space-9) 40px; }
+
+.tl-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.tl { position: relative; }
+
+/* ① 大節色帶 */
+.arcs { position: relative; height: 52px; border-bottom: 1px solid var(--line); }
+.arc {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 5px var(--space-4);
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.arc.alt { background: var(--paper-2); }
+.arc b { display: block; font-family: var(--f-display); font-size: var(--text-base); font-weight: var(--weight-regular); }
+.arc span { font-size: var(--text-2xs); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.arc:hover b, .arc:focus-visible b { color: var(--accent); text-decoration: underline; }
+
+/* ② 章回刻度 */
+.ruler { position: relative; height: 26px; border-bottom: 1px solid var(--line); }
+.tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--line);
+  padding-left: 3px;
+  font-size: var(--text-2xs);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.tick.minor { top: 16px; opacity: 0.6; }
+
+/* ③ 車道與事件卡 */
+.lanes { position: relative; }
+.ev {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0 9px var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ev:hover, .ev:focus-visible { border-color: var(--accent); box-shadow: var(--shadow); z-index: 2; }
+.ev .span {
+  width: var(--sw, auto);
+  height: 5px;
+  margin: 0 -9px var(--space-2);
+  border-radius: 5px 5px 0 0;
+  background: var(--accent);
+  opacity: 0.85;
+}
+.ev .span.pt { width: 11px; height: 11px; border-radius: 50%; margin: var(--space-3) 0 var(--space-1) -4px; }
+.ev .t {
+  font-family: var(--f-display);
+  font-size: var(--text-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ev .m {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.avs { display: flex; }
+.avs .av { width: 20px; height: 20px; font-size: var(--text-2xs); margin-left: -4px; box-shadow: 0 0 0 1.5px var(--card); }
+.avs .av:first-child { margin-left: 0; }
+.avs .av.ring { box-shadow: 0 0 0 1.5px var(--card), 0 0 0 3px var(--seal); }
+.more { margin-left: 3px; font-size: var(--text-2xs); color: var(--ink-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ev { transition: none; }
+}
+
+/* ≤720px 直向列表（只在窄螢幕渲染） */
+.vlist { display: grid; gap: var(--space-9); }
+.vgroup h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-4);
+  font-family: var(--f-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+}
+.vgroup h3 button { all: unset; cursor: pointer; }
+.vgroup h3 button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vgroup h3 small { font-family: var(--f-ui); font-size: var(--text-sm); color: var(--ink-2); }
+.vgroup .stack { display: grid; gap: var(--space-4); }
+.vrow { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.vrow .ch {
+  align-self: stretch;
+  padding-top: 9px;
+  padding-right: 9px;
+  border-right: 2px solid var(--line);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.vrow .ev { position: static; width: auto; min-width: 0; }
+.vrow .ev .span:not(.pt) { width: auto; }
