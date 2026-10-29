@@ -13,14 +13,19 @@
  * | D1 載入狀態           | ready（base）／loading（pending）／error（reject）   | APP-1～2  |
  * | R1 失敗後重試結果     | 重試 → 成功                                           | APP-3     |
  * | C1 副標的數字來源     | 真實資料 22／54（base）／合成資料不同筆數             | APP-4     |
+ * | V1 初始 hash（T046）  | 無 hash（base）／#map／#graph                         | APP-5～6  |
+ * | I1 ready 互動（T058） | 切視圖分頁寫回 hash／點事件卡開面板、關閉鈕關面板      | APP-6～7  |
+ *
+ * ready 時（T058）：S1 篩選列（結果數「共 54 個事件」）→ main（S2 時間軸，或 S5／S6 佔位）→ 事件明細面板。
  *
  * 範圍外（一次性宣告）：重試後再失敗（DatasetProvider.test DP-4 已驗）；
- * 「共 54 個事件」結果數（FilterBar 於 US1 起接入，由 E2E 驗）；hash 初始視圖（T046）；
+ * 無法辨識 hash 的解析與 hashchange 同步（useHashView.test 已驗）；
+ * 時間軸版面與事件卡內容（timelineLayout.test、Timeline.test 已驗）；
  * main.tsx 的樣式載入與掛載（E2E 與 build 驗）。
  */
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { App } from './App';
 import { DatasetProvider, type DatasetLoader } from './data/DatasetProvider';
 import type { Dataset } from './domain/types';
@@ -38,6 +43,14 @@ function renderApp(loader: DatasetLoader) {
     </DatasetProvider>,
   );
 }
+
+const readyLoader: DatasetLoader = () => Promise.resolve(realDataset);
+
+function setHash(hash: string) {
+  window.history.replaceState(null, '', `${window.location.pathname}${hash}`);
+}
+
+afterEach(() => setHash(''));
 
 function expectMastheadTitle() {
   const header = screen.getByRole('banner');
@@ -103,5 +116,54 @@ describe('App', () => {
     renderApp(() => Promise.resolve(dataset));
     await screen.findByRole('main');
     expect(screen.getByRole('banner')).toHaveTextContent(`${SUBTITLE_PREFIX} · 收錄 3 位人物、5 件事`);
+  });
+
+  it('APP-5 ready without hash renders S1 result count and S2 timeline, hash becomes #timeline', async () => {
+    const { container } = renderApp(readyLoader);
+    const main = await screen.findByRole('main');
+    expect(container.querySelector('[data-page="S1 角色篩選列"]')).not.toBeNull();
+    expect(screen.getByTestId('result-count')).toHaveTextContent(/共\s*54\s*個事件/);
+    expect(main.querySelector('[data-page="S2 時間軸"]')).not.toBeNull();
+    expect(within(main).getAllByTestId('event-card')).toHaveLength(54);
+    expect(screen.getByRole('tab', { name: '時間軸' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.queryByTestId('event-drawer')).toBeNull();
+    expect(window.location.hash).toBe('#timeline');
+  });
+
+  it('APP-6 initial #map shows the S5 placeholder; switching tabs writes the hash', async () => {
+    setHash('#map');
+    const { container } = renderApp(readyLoader);
+    const main = await screen.findByRole('main');
+    expect(main.querySelector('[data-page="S5 地圖"]')).not.toBeNull();
+    expect(container.querySelector('[data-page="S2 時間軸"]')).toBeNull();
+    expect(screen.getByRole('tab', { name: '地圖' })).toHaveAttribute('aria-selected', 'true');
+
+    await userEvent.click(screen.getByRole('tab', { name: '關係圖' }));
+    expect(main.querySelector('[data-page="S6 關係圖"]')).not.toBeNull();
+    expect(main.querySelector('[data-page="S5 地圖"]')).toBeNull();
+    expect(window.location.hash).toBe('#graph');
+
+    await userEvent.click(screen.getByRole('tab', { name: '時間軸' }));
+    expect(main.querySelector('[data-page="S2 時間軸"]')).not.toBeNull();
+    expect(window.location.hash).toBe('#timeline');
+  });
+
+  it('APP-7 clicking an event card opens S3 event drawer; close button closes it', async () => {
+    renderApp(readyLoader);
+    await screen.findByRole('main');
+    const card = screen
+      .getAllByTestId('event-card')
+      .find((el) => within(el).queryByText('智取生辰綱', { exact: true }) !== null);
+    expect(card).toBeDefined();
+    await userEvent.click(card!);
+    const drawer = screen.getByTestId('event-drawer');
+    expect(drawer).toHaveAttribute('data-page', 'S3 事件明細面板');
+    expect(drawer).toHaveAttribute('aria-label', '事件明細');
+    expect(within(drawer).getByRole('heading', { level: 2 })).toHaveTextContent('智取生辰綱');
+    const arcName = realDataset.arcById.get(realDataset.eventById.get('ev-11')!.arc)!.name;
+    expect(within(drawer).getByText(`事件 · ${arcName}`)).toBeInTheDocument();
+
+    await userEvent.click(within(drawer).getByRole('button', { name: '關閉' }));
+    expect(screen.queryByTestId('event-drawer')).toBeNull();
   });
 });
