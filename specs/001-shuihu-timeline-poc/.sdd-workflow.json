@@ -1,0 +1,14 @@
+{
+  "feature": "001-shuihu-timeline-poc",
+  "steps": {
+    "specify": {"done": true},
+    "clarify": {"done": false},
+    "plan": {"done": false},
+    "tasks": {"done": false},
+    "analyze": {"done": false, "findings": null, "remediated": null},
+    "implement": {"done": false, "stories": {}}
+  },
+  "brief": {
+    "artifact_url": "https://claude.ai/artifact/XCfBHQdduHQuWr4iH17CLK"
+  }
+}
