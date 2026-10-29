@@ -291,18 +291,18 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 7 ⚠️
 
-- [ ] T129 [P] [US7] [S6] 撰寫 `AP/src/domain/graphLayout.test.ts`（用 `realDataset`）：固定環序常數（資料中有、環序沒有者依資料順序補在最後）；viewBox 820×720、中心 (410,360)；未選→宋江居中；單一中心放正中、多中心排半徑 `min(40+12n, 130)` 小圈；一層半徑 175（多中心 220）自 −90°+0.2 rad 起、二層 315 自 −90° 起；淡出：未選 0 個、選林沖 19 個（清楚＝林沖、魯智深、高俅）、大節三打祝家莊未選角色時在該大節無事件者淡出（AC-S18）、誤走妖魔・魯智深與林沖＋王英全部淡出（含王英，`allDimmed=true`，AC-S20）；邊只在兩端可見且（未選角色或連到中心）時清楚；圖例類型＝資料出現者依首次出現順序、不含師徒（AC-P40）；圖例說明 未選「點人物看資料，點「＋」加入篩選；未選角色時以宋江為中心」、已選「點人物看資料，點「＋」加入篩選」（D-4）；檔頭附 ISP 分割表
-- [ ] T130 [P] [US7] [S6] 撰寫 `AP/src/components/GraphView/GraphView.test.tsx`：依 `contracts/ui-contracts.md`「S6 關係圖」：`section[data-page="S6 關係圖"]` → `data-testid="graph"` 內 SVG（`role="img"`、`aria-label="角色關係圖"`，邊在下、節點在上）→ 圖例列；節點圓 `aria-label="<姓名> 角色資料"`、已選者朱色外框＋`data-selected`；「＋」`aria-label="將 <姓名> 加入篩選"`，已選節點不渲染；淡出節點 `data-dim="true"`；邊 `<title>`「<甲>—<乙>：<類型>。<說明>」；圖例 天罡、地煞、其他＋出現的關係類型；`allDimmed` 時覆蓋 `EmptyState`；節點群組 Enter／Space 觸發
-- [ ] T131 [P] [US7] [S6] 撰寫 `AP/e2e/us7-graph.spec.ts`：逐條 AC-17、AC-18、AC-P29、AC-P30、AC-P31、AC-P32、AC-P40、AC-S18（淡出且結果數與時間軸一致）、AC-S20、AC-S22
+- [X] T129 [P] [US7] [S6] 撰寫 `AP/src/domain/graphLayout.test.ts`（用 `realDataset`）：固定環序常數（資料中有、環序沒有者依資料順序補在最後）；viewBox 820×720、中心 (410,360)；未選→宋江居中；單一中心放正中、多中心排半徑 `min(40+12n, 130)` 小圈；一層半徑 175（多中心 220）自 −90°+0.2 rad 起、二層 315 自 −90° 起；淡出：未選 0 個、選林沖 19 個（清楚＝林沖、魯智深、高俅）、大節三打祝家莊未選角色時在該大節無事件者淡出（AC-S18）、誤走妖魔・魯智深與林沖＋王英全部淡出（含王英，`allDimmed=true`，AC-S20）；邊只在兩端可見且（未選角色或連到中心）時清楚；圖例類型＝資料出現者依首次出現順序、不含師徒（AC-P40）；圖例說明 未選「點人物看資料，點「＋」加入篩選；未選角色時以宋江為中心」、已選「點人物看資料，點「＋」加入篩選」（D-4）；檔頭附 ISP 分割表
+- [X] T130 [P] [US7] [S6] 撰寫 `AP/src/components/GraphView/GraphView.test.tsx`：依 `contracts/ui-contracts.md`「S6 關係圖」：`section[data-page="S6 關係圖"]` → `data-testid="graph"` 內 SVG（`role="img"`、`aria-label="角色關係圖"`，邊在下、節點在上）→ 圖例列；節點圓 `aria-label="<姓名> 角色資料"`、已選者朱色外框＋`data-selected`；「＋」`aria-label="將 <姓名> 加入篩選"`，已選節點不渲染；淡出節點 `data-dim="true"`；邊 `<title>`「<甲>—<乙>：<類型>。<說明>」；圖例 天罡、地煞、其他＋出現的關係類型；`allDimmed` 時覆蓋 `EmptyState`；節點群組 Enter／Space 觸發
+- [X] T131 [P] [US7] [S6] 撰寫 `AP/e2e/us7-graph.spec.ts`：逐條 AC-17、AC-18、AC-P29、AC-P30、AC-P31、AC-P32、AC-P40、AC-S18（淡出且結果數與時間軸一致）、AC-S20、AC-S22
 
 ### Implementation for User Story 7
 
-- [ ] T132 [P] [US7] [S6] 實作 `AP/src/domain/graphLayout.ts`：常數 `GW=820`、`GH=720`、半徑 175／220／315、節點半徑 22、「＋」半徑 9、淡出透明度 `.12`（research「版面常數」）、環序常數；`layoutGraph(dataset, selected, arcCharacters)` 回傳節點座標與 `dim`、邊可見性、`allDimmed`；`legendTypes`、`legendCaption(hasSelected)`
-- [ ] T133 [P] [US7] [S6] 建立 `AP/src/components/GraphView/GraphNode.tsx` 與 `AP/src/components/GraphView/GraphEdge.tsx`：節點色依星號群組 token、邊樣式依關係類型（research「關係線樣式」）；節點位移 CSS transition（`transform .5s, opacity .3s`）
-- [ ] T134 [P] [US7] [S6] 建立 `AP/src/components/GraphView/GraphLegend.tsx`
-- [ ] T135 [US7] [S6] 建立 `AP/src/components/GraphView/GraphSvg.tsx`、`AP/src/components/GraphView/GraphView.tsx`、`AP/src/components/GraphView/GraphView.css`（依賴 T133、T134）：SVG 寬 100% 自動縮放；`prefers-reduced-motion` 時關閉 transition；`allDimmed` 時 `EmptyState overlay`
-- [ ] T136 [US7] [S6] 建立 `AP/src/containers/GraphContainer.tsx`（依賴 T132、T135）：已選大節時以 `charactersInArc(dataset.events, arcId)` 傳入；點節點 dispatch `openCharacter`；「＋」dispatch `addCharacter`；空狀態「清除篩選」dispatch `clearFilters`
-- [ ] T137 [US7] 修改 `AP/src/App.tsx`（依賴 T136）：`view === 'graph'` 改渲染 `GraphContainer`，移除 S6 佔位
+- [X] T132 [P] [US7] [S6] 實作 `AP/src/domain/graphLayout.ts`：常數 `GW=820`、`GH=720`、半徑 175／220／315、節點半徑 22、「＋」半徑 9、淡出透明度 `.12`（research「版面常數」）、環序常數；`layoutGraph(dataset, selected, arcCharacters)` 回傳節點座標與 `dim`、邊可見性、`allDimmed`；`legendTypes`、`legendCaption(hasSelected)`
+- [X] T133 [P] [US7] [S6] 建立 `AP/src/components/GraphView/GraphNode.tsx` 與 `AP/src/components/GraphView/GraphEdge.tsx`：節點色依星號群組 token、邊樣式依關係類型（research「關係線樣式」）；節點位移 CSS transition（`transform .5s, opacity .3s`）
+- [X] T134 [P] [US7] [S6] 建立 `AP/src/components/GraphView/GraphLegend.tsx`
+- [X] T135 [US7] [S6] 建立 `AP/src/components/GraphView/GraphSvg.tsx`、`AP/src/components/GraphView/GraphView.tsx`、`AP/src/components/GraphView/GraphView.css`（依賴 T133、T134）：SVG 寬 100% 自動縮放；`prefers-reduced-motion` 時關閉 transition；`allDimmed` 時 `EmptyState overlay`
+- [X] T136 [US7] [S6] 建立 `AP/src/containers/GraphContainer.tsx`（依賴 T132、T135）：已選大節時以 `charactersInArc(dataset.events, arcId)` 傳入；點節點 dispatch `openCharacter`；「＋」dispatch `addCharacter`；空狀態「清除篩選」dispatch `clearFilters`
+- [X] T137 [US7] 修改 `AP/src/App.tsx`（依賴 T136）：`view === 'graph'` 改渲染 `GraphContainer`，移除 S6 佔位
 - [ ] T138 [US7] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test --project=chrome`，修正至全綠
 
 **Checkpoint**: 全部 user story 可獨立運作
@@ -313,8 +313,8 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 **Purpose**: Prototype 並列比對（SC-003）、窄螢幕與跨瀏覽器（SC-004）、展示情境（SC-002）、AC 涵蓋核對與 quickstart 驗證
 
-- [ ] T139 [P] [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/fixtures/prototypeStates.ts`：依 `contracts/ui-contracts.md`「21 個狀態的重現步驟與 DOM 斷言」逐列定義 21 個狀態（名稱與順序同 `handoff-notes.md`「截圖索引」）：`file`（截圖檔名）、`steps`（只用 UI 操作，從新頁 `/#timeline` 開始）、`blocks`（要檢查順序的 `data-page`）、`texts`（必含文案）、`asserts`（結果數、已選標籤、`aria-pressed`／`aria-selected`、`data-dim` 數等）
-- [ ] T140 [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/prototype-compare.spec.ts`（依賴 T139）：Chrome 1440×900、`colorScheme: 'light'`；每狀態開新頁 → 執行步驟 → 等動畫結束 → `fullPage` 截圖至 `AP/test-results/compare/<檔名>.png`；DOM 斷言：① 各 `data-page` 區塊直接子區塊依 ui-contracts 順序 ② 必含文案以 `normalizeText` 比對 `innerText` ③ 狀態斷言；#20、#21 圖例說明依 D-4 斷言新文案（並列目視時不計逐字一致，SC-003）
+- [X] T139 [P] [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/fixtures/prototypeStates.ts`：依 `contracts/ui-contracts.md`「21 個狀態的重現步驟與 DOM 斷言」逐列定義 21 個狀態（名稱與順序同 `handoff-notes.md`「截圖索引」）：`file`（截圖檔名）、`steps`（只用 UI 操作，從新頁 `/#timeline` 開始）、`blocks`（要檢查順序的 `data-page`）、`texts`（必含文案）、`asserts`（結果數、已選標籤、`aria-pressed`／`aria-selected`、`data-dim` 數等）
+- [X] T140 [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/prototype-compare.spec.ts`（依賴 T139）：Chrome 1440×900、`colorScheme: 'light'`；每狀態開新頁 → 執行步驟 → 等動畫結束 → `fullPage` 截圖至 `AP/test-results/compare/<檔名>.png`；DOM 斷言：① 各 `data-page` 區塊直接子區塊依 ui-contracts 順序 ② 必含文案以 `normalizeText` 比對 `innerText` ③ 狀態斷言；#20、#21 圖例說明依 D-4 斷言新文案（並列目視時不計逐字一致，SC-003）
 - [ ] T141 [P] 建立 `AP/e2e/responsive.spec.ts`：AC-S6（400×800 依序切地圖、關係圖並開事件明細與角色資料：頁面無水平捲動、兩種面板為全寬底部抽屜、地圖與關係圖寬度不超出視窗）；SC-004（1440×900 與 400×800 下三個視圖與兩種面板 `hasNoHorizontalScroll`）
 - [ ] T142 [P] 建立 `AP/e2e/demo-scenario.spec.ts`：SC-002 展示情境 6 步在同一頁面依序完成不重新整理（進站「共 54 個事件」→ 搜尋「豹子頭」Enter 選林沖 → 開「大鬧野豬林」點魯智深頭像 → 點林沖名字看狀態條 →「只看此角色」切地圖看行跡 → 切關係圖點節點開資料），測試標題含 `@demo` 供 `npm run e2e:browsers` 在 WebKit／Firefox／Edge 抽驗；另以 `test.use({ viewport: { width: 400, height: 800 } })` 在 400×800 再跑一次同樣 6 步（SC-004「操作可完成」）
 - [ ] T143 [P] 建立 `AP/scripts/check-ac-coverage.mjs`：掃描 `AP/e2e/*.spec.ts` 的測試名稱，核對 AC-01～AC-18、AC-P1～AC-P42、AC-S1～AC-S27 共 87 個編號全部出現，缺漏列出並非零結束；於 `AP/` 以 `node scripts/check-ac-coverage.mjs` 執行並補齊缺漏

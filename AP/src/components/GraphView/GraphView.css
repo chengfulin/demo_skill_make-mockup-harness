@@ -1,0 +1,95 @@
+/*
+ * S6 關係圖樣式（Prototype「S6 graph」段）。
+ * 數值取自 tokens.css；無對應 token 的尺寸（SVG 高 min(76vh, 720px)、節點外框 2.5／3.5、邊線寬 2.2／兄弟 4、
+ * 「＋」字級 14px、圖例線 30×10、色點 11px、圖例間距 6px 16px、內距 10px 14px）沿用 Prototype 字面值。
+ * 圖例線示意為 block（Prototype `.graphbox svg` 亦套到圖例 svg，類型名因此排在線下方）。
+ * 淡出透明度 .12 同 graphLayout.DIM_OPACITY；過場 transform .5s、opacity .3s，prefers-reduced-motion 時關閉。
+ */
+
+.graphbox {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  overflow: hidden;
+}
+.graphcanvas { position: relative; }
+.graphcanvas > svg { display: block; width: 100%; height: min(76vh, 720px); }
+
+.graphbox .node { transition: transform .5s ease, opacity .3s; }
+.graphbox .node .c { stroke: var(--card); stroke-width: 2.5; cursor: pointer; }
+.graphbox .node .c:focus { outline: none; }
+.graphbox .node .c:focus-visible { stroke: var(--ink); stroke-width: 3.5; }
+.graphbox .node .c.tg { fill: var(--g-tg); }
+.graphbox .node .c.ds { fill: var(--g-ds); }
+.graphbox .node .c.ot { fill: var(--g-ot); }
+.graphbox .node .ch {
+  fill: var(--paper);
+  font-family: var(--f-display);
+  font-size: var(--text-lg);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+.graphbox .node .nm {
+  fill: var(--ink);
+  font-size: var(--text-md);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--card);
+  stroke-width: 4px;
+  pointer-events: none;
+}
+.graphbox .node .plus { cursor: pointer; }
+.graphbox .node .plus:focus { outline: none; }
+.graphbox .node .plus circle { fill: var(--card); stroke: var(--ink-2); }
+.graphbox .node .plus:focus-visible circle { stroke: var(--ink); stroke-width: 2; }
+.graphbox .node .plus text {
+  fill: var(--ink);
+  font-size: 14px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+.graphbox .node.sel .c { stroke: var(--seal); stroke-width: 3.5; }
+.graphbox .node.dim,
+.graphbox .edge.dim { opacity: .12; }
+
+.graphbox .edge { transition: opacity .3s; }
+.graphbox .edge line { stroke-width: 2.2; transition: all .5s ease; }
+
+/* 關係線樣式（research「關係線樣式」）；圖例示意線共用 */
+.graphbox .e-jie { stroke: var(--r-jie); }
+.graphbox .e-zhu { stroke: var(--r-zhu); stroke-dasharray: 7 4; }
+.graphbox .e-xd { stroke: var(--r-xd); stroke-width: 4 !important; }
+.graphbox .e-fq { stroke: var(--r-fq); stroke-dasharray: 2 4; stroke-linecap: round; }
+.graphbox .e-ch { stroke: var(--r-ch); stroke-dasharray: 10 4 2 4; }
+.graphbox .e-mentor { stroke: var(--color-rel-mentor); }
+
+.glegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+}
+.glegend svg { display: block; width: 30px; height: 10px; vertical-align: middle; margin-right: var(--space-2); }
+.glegend line { stroke-width: 2.2; }
+.gdot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+.gdot.tg { background: var(--g-tg); }
+.gdot.ds { background: var(--g-ds); }
+.gdot.ot { background: var(--g-ot); }
+
+@media (prefers-reduced-motion: reduce) {
+  .graphbox .node,
+  .graphbox .edge,
+  .graphbox .edge line { transition: none; }
+}
