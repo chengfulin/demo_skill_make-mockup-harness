@@ -21,7 +21,35 @@
     },
     "implement": {
       "done": false,
-      "stories": {}
+      "stories": {},
+      "parallel_plan": {
+        "mode": "sequential",
+        "mode_reason": "分析基礎為 greenfield，集合不足以作為並行實作的邊界",
+        "granularity": "task",
+        "basis": "greenfield",
+        "tasks": 146,
+        "conflict_pairs": 1595,
+        "pairs": 10585,
+        "by_type": {
+          "相依": 879,
+          "寫入": 389,
+          "未定": 299,
+          "宣告": 17,
+          "資源": 11
+        },
+        "batches": 51,
+        "max_width": 14,
+        "phases": 10,
+        "waves": 19,
+        "est_speedup": 1.3,
+        "low_conf": [
+          "T059",
+          "T097",
+          "T143",
+          "T144"
+        ],
+        "plan_file": "specs/001-shuihu-timeline-poc/parallel-plan.json"
+      }
     }
   },
   "brief": {
