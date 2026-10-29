@@ -23,8 +23,8 @@
       "done": false,
       "stories": {},
       "parallel_plan": {
-        "mode": "sequential",
-        "mode_reason": "分析基礎為 greenfield，集合不足以作為並行實作的邊界",
+        "mode": "parallel",
+        "mode_reason": "使用者指定：驗證並行波次流程（腳本判定 sequential：greenfield、波次估計加速 1.3x）",
         "granularity": "task",
         "basis": "greenfield",
         "tasks": 146,
@@ -49,7 +49,8 @@
           "T144"
         ],
         "plan_file": "specs/001-shuihu-timeline-poc/parallel-plan.json"
-      }
+      },
+      "waves_done": 1
     }
   },
   "brief": {

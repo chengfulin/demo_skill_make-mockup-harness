@@ -16,7 +16,7 @@
 
 ## Technical Context
 
-**Language/Version**: TypeScript 7.x（若工具鏈相容性不足退回 5.9）；Node.js 24 LTS（僅建置與測試用）
+**Language/Version**: TypeScript 7.x（若工具鏈相容性不足退回 5.9）；Node.js 24 LTS（僅建置與測試用）。實作時已觸發退回：TypeScript 釘 ~5.9.3（typescript-eslint 8.72.1 的 peer 不支援 TS 7）；jsdom 釘 ^29（jsdom 30 要求 node ^24.15，本機為 v24.10.0）
 
 **Primary Dependencies**: React 19、react-dom 19、Vite 8、@vitejs/plugin-react 6；不引入 UI 元件庫、圖表或地圖套件、狀態管理套件、路由套件
 

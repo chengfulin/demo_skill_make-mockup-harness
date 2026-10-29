@@ -1,0 +1,127 @@
+/*
+ * 設計 token（模式 B：自 Prototype v2 導入）
+ * 來源：specs/001-shuihu-timeline-poc/research.md「設計 token」節。
+ * 命名：Prototype `:root` 有原名者（色彩 21、陰影 1、字型 2）沿用原名；
+ *       其餘（師徒關係色、遮罩、字級、間距、圓角、尺寸）依用途命名。
+ * 主題：淺色值在 :root；深色值在 prefers-color-scheme: dark（G-5、FR-020），不提供切換鈕。
+ * 斷點 token（--bp-*）供 JS／文件參照；CSS 的 @media 無法使用 var()，須寫字面值 720px／900px。
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* ── 色彩（Prototype 原名） ── */
+  --paper: #eceee8;
+  --paper-2: #e1e5dd;
+  --card: #f7f8f4;
+  --ink: #1c2227;
+  --ink-2: #55605f;
+  --line: #c3cbc2;
+  --accent: #2c5a86;
+  --accent-soft: #d5e0ea;
+  --seal: #a8382a;
+  --g-tg: #2c5a86;
+  --g-ds: #3f7550;
+  --g-ot: #86683f;
+  --st-none: #d5dad2;
+  --st-wild: #c4943d;
+  --st-liang: #2c5a86;
+  --st-gone: #5b6164;
+  --r-jie: #2c5a86;
+  --r-zhu: #3f7550;
+  --r-xd: #86683f;
+  --r-fq: #a2557a;
+  --r-ch: #a8382a;
+
+  /* ── 色彩（依用途命名） ── */
+  --color-rel-mentor: var(--ink-2); /* 關係「師徒」（本資料未出現，保留） */
+  --color-scrim: rgb(10 14 16 / .28); /* 面板遮罩（淺深同值） */
+
+  /* ── 陰影（Prototype 原名） ── */
+  --shadow: 0 10px 30px rgb(28 34 39 / .14);
+
+  /* ── 字型（Prototype 原名） ── */
+  --f-display: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "STKaiti", "KaiTi", serif;
+  --f-ui: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+
+  /* ── 字級 ── */
+  --text-3xs: 10.5px;
+  --text-2xs: 11px;
+  --text-xs: 11.5px;
+  --text-sm: 12px;
+  --text-md: 13px;
+  --text-base: 14px;
+  --text-body: 15px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 22px;
+  --text-3xl: 28px;
+  --text-display: clamp(28px, 4vw, 40px);
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+  --tracking-wide: .1em; /* research 記為 .1em～.12em，取下限；需要 .12em 的元件自行覆寫 */
+
+  /* ── 間距 ── */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 10px;
+  --space-6: 12px;
+  --space-7: 14px;
+  --space-8: 16px;
+  --space-9: 18px;
+  --space-10: 22px;
+  --space-12: 48px;
+
+  /* ── 圓角 ── */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 14px;
+  --radius-pill: 999px;
+
+  /* ── 尺寸 ── */
+  --size-avatar-sm: 20px;
+  --size-avatar-md: 26px;
+  --size-avatar-lg: 32px;
+  --size-avatar-xl: 56px;
+  --size-drawer: min(440px, 100%);
+  --size-drawer-sheet: 82%;
+  --size-map-side: 280px;
+  --size-page-max: 1440px;
+
+  /* ── 斷點 ── */
+  --bp-sheet: 720px; /* 面板改底部抽屜、時間軸改直向、chip 橫捲 */
+  --bp-map-stack: 900px; /* 地圖側欄移到下方 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14181b;
+    --paper-2: #1b2125;
+    --card: #20272b;
+    --ink: #e3e6df;
+    --ink-2: #a1aaa6;
+    --line: #343d41;
+    --accent: #86afd8;
+    --accent-soft: #25384a;
+    --seal: #e07563;
+    --g-tg: #86afd8;
+    --g-ds: #86bc95;
+    --g-ot: #c9a97c;
+    --st-none: #2b3236;
+    --st-wild: #d6a95a;
+    --st-liang: #86afd8;
+    --st-gone: #8a9195;
+    --r-jie: #86afd8;
+    --r-zhu: #86bc95;
+    --r-xd: #c9a97c;
+    --r-fq: #d38fb0;
+    --r-ch: #e07563;
+
+    --shadow: 0 10px 30px rgb(0 0 0 / .45);
+  }
+}
