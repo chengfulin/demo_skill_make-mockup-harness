@@ -39,7 +39,7 @@ Technical Context 沒有留下 NEEDS CLARIFICATION：技術選型已由使用者
 
 ### R6 測試
 
-- **Decision**: Vitest（jsdom）+ RTL 測 `domain/`、`data/`、`state/` 與主要展示元件；Playwright（Chrome channel）測 AC／AC-P／AC-S 與 Prototype 並列比對；Safari／Edge／Firefox 以 SC-004 的展示情境 6 步抽驗（Playwright webkit／firefox project，手動觸發）。
+- **Decision**: Vitest（jsdom）+ RTL 測 `domain/`、`data/`、`state/` 與主要展示元件；Playwright（Chrome channel）測 AC／AC-P／AC-S 與 Prototype 並列比對；Safari／Edge／Firefox 最新版（D-6）以 SC-004 的展示情境 6 步抽驗（Playwright webkit／firefox project 與 `channel: 'msedge'` 的 msedge project，手動觸發）。
 - **Rationale**: 對應 §CP-4、§TR-7（Experimental：主要流程範圍、Base Choice）；E2E 直接把 AC 數字（8、14、13/6/40/61、15 地點…）當 oracle。
 - **Alternatives considered**: Cypress（團隊 E2E 已用 Playwright，且 Prototype 取證同工具）；視覺像素 diff（SC-003 明定色彩與像素位移不計，改用 DOM 斷言＋人工並列）。
 
@@ -58,23 +58,22 @@ Technical Context 沒有留下 NEEDS CLARIFICATION：技術選型已由使用者
 ### R9 Prototype 取證與發現
 
 - Prototype 的篩選、狀態推算、地圖、關係圖邏輯已以 Playwright 操作與限量檢視 `<script>` 片段確認，與 spec 的 AC 數字一致（武松 8 事件、武松＋魯智深 14、晁蓋 13/6/40/61、高俅 1/119、山東範圍 15 地點、還道村無座標、林沖＋魯智深「大鬧野豬林」下一個為「棒打洪教頭」）。
-- 發現兩處 Prototype 與 spec／StoryBoard 不一致，已回填 spec 偏離登記：D-4（關係圖圖例說明文字只在第一次畫圖時決定）、D-5（搜尋比對整段綽號字串，含「座次綽號」說明字）。
+- 發現兩處 Prototype 與 spec／StoryBoard 不一致，已回填 spec 偏離登記：D-4（關係圖圖例說明文字只在第一次畫圖時決定；S6-02、S6-03 截圖都受影響）、D-5（搜尋比對整段綽號字串，含「座次綽號」說明字）。
 
 ## 設計 token
 
-**模式 B**（自 Prototype 導入）。數值以 computed style 為準（Chrome，1440×900，淺色與 `prefers-color-scheme: dark` 各量一次）；token 採**混合命名**（plan review 裁決 2026-10-29，對應 spec 權威劃分第 4 條「命名沿用 Prototype」）：Prototype `:root` 有原名者（色彩、陰影，共 22 個）一律沿用原名；Prototype 沒有原名者（「師徒」關係色、遮罩、字型、字級、間距、圓角、尺寸）依用途命名。「用途」欄保留原本的語意說明。
+**模式 B**（自 Prototype 導入）。數值以 computed style 為準（Chrome，1440×900，淺色與 `prefers-color-scheme: dark` 各量一次）；token 採**混合命名**（plan review 裁決 2026-10-29，對應 spec 權威劃分第 4 條「命名沿用 Prototype」）：Prototype `:root` 有原名者（色彩 21 個、陰影 1 個、字型 2 個，共 24 個）一律沿用原名；Prototype 沒有原名者（「師徒」關係色、遮罩、字級、間距、圓角、尺寸）依用途命名。「用途」欄保留原本的語意說明。
 實作放 `AP/src/styles/tokens.css`：淺色值寫在 `:root`，深色值寫在 `@media (prefers-color-scheme: dark) { :root { … } }`（G-5）。
 
 ### 色彩
 
 | Token | 用途 | 淺色 | 深色 | Prototype 名 |
 | :---- | :---- | :---- | :---- | :---- |
-| `--paper` | 頁面底色 | `#eceee8` | `#14181b` | `--paper` |
+| `--paper` | 頁面底色；實心底上的文字（頭像字、已選分頁字） | `#eceee8` | `#14181b` | `--paper` |
 | `--paper-2` | 篩選列底、大節色帶交替、次要按鈕底、地圖陸地 | `#e1e5dd` | `#1b2125` | `--paper-2` |
 | `--card` | 卡片、面板、輸入框、地圖／關係圖框 | `#f7f8f4` | `#20272b` | `--card` |
 | `--ink` | 主要文字；實心按鈕底、已選分頁底、已選標籤底 | `#1c2227` | `#e3e6df` | `--ink` |
 | `--ink-2` | 次要文字、刻度、提示 | `#55605f` | `#a1aaa6` | `--ink-2` |
-| `--paper` | 實心底上的文字（頭像字、已選分頁字） | `#eceee8` | `#14181b` | `--paper` |
 | `--line` | 分隔線與框線 | `#c3cbc2` | `#343d41` | `--line` |
 | `--accent` | 連結、結果數字、事件色條、地圖標記、河流 | `#2c5a86` | `#86afd8` | `--accent` |
 | `--accent-soft` | 已選 chip 底、海 | `#d5e0ea` | `#25384a` | `--accent-soft` |
@@ -109,8 +108,8 @@ Technical Context 沒有留下 NEEDS CLARIFICATION：技術選型已由使用者
 
 | Token | 值 | 用在 |
 | :---- | :---- | :---- |
-| `--font-display` | `"LXGW WenKai TC","Kaiti TC","BiauKai","STKaiti","KaiTi",serif` | 標題、事件名、大節名、頭像字、結果數、回目 |
-| `--font-ui` | `"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif` | 其餘介面 |
+| `--f-display`（Prototype 原名） | `"LXGW WenKai TC","Kaiti TC","BiauKai","STKaiti","KaiTi",serif` | 標題、事件名、大節名、頭像字、結果數、回目 |
+| `--f-ui`（Prototype 原名） | `"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif` | 其餘介面 |
 | `--text-3xs` | 10.5px | 狀態條刻度（精簡刻度 10px） |
 | `--text-2xs` | 11px | 刻度數字、+N、狀態節點標、地圖註記、事件數字 |
 | `--text-xs` | 11.5px | 事件卡章回、chip 綽號 |

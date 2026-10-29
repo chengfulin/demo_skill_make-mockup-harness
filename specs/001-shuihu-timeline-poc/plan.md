@@ -22,9 +22,9 @@
 
 **Storage**: 無後端。靜態 JSON 檔 `AP/public/data/*.json`，隨站台發布（見 [data-model.md](./data-model.md)）
 
-**Testing**: Vitest 5 + @testing-library/react 16 + @testing-library/user-event 14 + jsdom（單元與元件）；@playwright/test 1.64（E2E 與 Prototype 並列比對，Chrome）
+**Testing**: Vitest 5 + @testing-library/react 16 + @testing-library/user-event 14 + jsdom（單元與元件）；@playwright/test 1.64（E2E 與 Prototype 並列比對，Chrome；Safari／Edge／Firefox 以 webkit、msedge、firefox project 抽驗展示情境）
 
-**Target Platform**: 現代瀏覽器 Chrome／Safari／Edge／Firefox 最新兩版；桌機 1440px 與手機 400px `[HO Q5]`
+**Target Platform**: 現代瀏覽器 Chrome／Safari／Edge／Firefox 最新版（D-6；Chrome 全驗，其餘以展示情境 6 步抽驗）；桌機 1440px 與手機 400px `[HO Q5]`
 
 **Project Type**: 前端單頁應用（static SPA），無後端
 
@@ -51,7 +51,7 @@
 | §GV-3 B 人工審查清單 | PASS（流程） | 審查時逐項確認：spec 一致、分層（見「元件分層」）、變更範圍（見 §TR-8 宣告）、ISP 分割表、例外紀錄、風險分級標示 Experimental |
 | §TR-8【參考】 | 已宣告 | 見「變更影響範圍」 |
 | §FE-1【參考】 | 偏離，已說明 | 見「偏離紀錄」 |
-| §FE-2【參考】 | 預設豁免（§GV-2 Experimental） | GitHub Pages 無法自訂回應標頭；`index.html` 以 `<meta http-equiv="Content-Security-Policy">` 限定 self＋Google Fonts，作為最低限度 |
+| §FE-2【參考】 | 預設豁免（§GV-2 Experimental） | GitHub Pages 無法自訂回應標頭；`index.html` 以 `<meta http-equiv="Content-Security-Policy">` 限定 self＋Google Fonts，作為最低限度；`connect-src` 於 build 時由 `VITE_DATA_BASE_URL` 取出 origin 加入（未設定時只有 `'self'`），E2E 的 baseURL／port 由 `E2E_BASE_URL`／`E2E_PORT` 提供並有預設值 |
 | §FE-3／§FE-5【參考】 | 符合 | 前端無機密；不使用 `dangerouslySetInnerHTML`，所有文字由 React 轉義輸出 |
 | §FE-4【參考】 | 符合 | 展示元件／容器／資料存取層／狀態層分離（見「元件分層」）；視圖切換集中在 `useHashView` |
 | §FE-6／§FE-7【參考】 | 符合 | 語意化標籤、鍵盤可操作（Enter／Space／Escape）、ARIA；Vitest + RTL 取代建議的 Vue Test Utils（隨框架偏離），Playwright 做 E2E |
@@ -130,10 +130,12 @@ AP/
 │   │   └── useHashView.ts         # #timeline／#map／#graph ↔ view
 │   ├── components/                # 展示元件（只吃 props，不碰 Context／fetch）
 │   │   ├── Masthead/  FilterBar/  Timeline/  EventDetail/  CharacterDetail/
-│   │   └── MapView/  GraphView/  Drawer/  EmptyState/  LoadState/  Avatar/
+│   │   ├── MapView/  GraphView/  Drawer/  EmptyState/  LoadState/  Avatar/
+│   │   └── hooks/                 # useMediaQuery、useElementWidth
 │   ├── containers/                # 容器：讀 Context、dispatch、組裝展示元件
 │   │   ├── FilterBarContainer.tsx  TimelineContainer.tsx  MapContainer.tsx
 │   │   └── GraphContainer.tsx  EventDrawerContainer.tsx  CharacterDrawerContainer.tsx
+│   ├── test-utils/                # 測試共用：rawDatasetFactory.ts（合成資料）、realDataset.ts（讀 public/data）
 │   └── styles/
 │       ├── tokens.css             # design token（淺色／深色），清單見 research.md
 │       └── base.css               # reset、字型、全域排版
@@ -153,7 +155,7 @@ AP/
 ### 頁面骨架
 
 由上而下：`Masthead`（印章＋「水滸時間軸」＋副標）→ `FilterBar`（S1：搜尋／天罡／地煞／大節選單 → 角色 chip 列 → 已選標籤列 → 結果數＋視圖分頁）→ `main`（三個視圖只顯示一個：S2／S5／S6）→ 疊在最上層的 `Drawer`（S3 或 S4，同時最多開一個）與遮罩。
-FilterBar 不 sticky（Prototype 為一般文件流），但三個視圖都渲染它（FR-005、AC-S13）。
+FilterBar 不 sticky（Prototype 為一般文件流），但三個視圖都渲染它（FR-005、AC-S13；「常駐」定義見 spec Clarifications analyze 條）。
 
 ### 元件分層（§FE-4）
 
@@ -187,7 +189,7 @@ AppState = {
 }
 ```
 
-Actions：`toggleCharacter`、`addCharacter`、`removeCharacter`、`clearCharacters`、`onlyCharacter`、`toggleGroup(天罡|地煞)`（G-7）、`submitSearch`（D-3：只選取不取消）、`setQuery`、`selectArc`、`clearFilters`（角色＋大節）、`setView`、`setMapScope`、`focusPlace`、`goToPlace`（關面板、切地圖、地點不在山東範圍時切回全圖）、`openEvent`、`openCharacter`、`closeDrawer`。
+Actions：`toggleCharacter`、`addCharacter`、`removeCharacter`、`clearCharacters`、`onlyCharacter`、`toggleGroup`（payload 帶群組成員 id，由容器自資料算出；reducer 呼叫 `selection.groupToggle`，G-7）、`submitSearch`（D-3：只選取不取消）、`setQuery`、`selectArc`、`clearFilters`（角色＋大節）、`setView`、`setMapScope`、`focusPlace`、`goToPlace`（關面板、切地圖、地點不在山東範圍時切回全圖，G-10）、`openEvent`、`openCharacter`、`closeDrawer`。
 reducer 只呼叫 `domain/selection.ts` 等純函式；篩選結果不存 state，由 selector 以 `filterEvents(dataset, selected, arcId)` 即時算出（`useMemo`）。
 
 ### 路由（hash）
@@ -196,7 +198,7 @@ reducer 只呼叫 `domain/selection.ts` 等純函式；篩選結果不存 state�
 
 ### 時間軸（S2，FR-006／FR-007）
 
-- `timelineLayout(events, range, availableWidth)`：每回寬 `max(30, floor(可用寬 / 回數))` px；事件卡寬 `max(170, 跨回寬 − 8)`；以貪婪法分配車道（lane 高 70、間距 8），重疊事件自動錯開（AC-S1）。
+- `timelineLayout(events, arcs, range, availableWidth)`：每回寬 `max(30, floor(可用寬 / 回數))` px；事件卡寬 `max(170, 跨回寬 − 8)`；以貪婪法分配車道（lane 高 70、間距 8），重疊事件自動錯開（AC-S1）。
 - 版面：大節色帶（奇數條底色交替）→ 章回刻度（起始回與每 10 回標數字）→ 車道。橫向在容器內捲動。
 - 事件卡：頂部色條（跨回）或圓點（單回）、事件名、章回區間、頭像最多 3 個（已選角色排前並加朱色外框）＋「+N」，無角色時「（無收錄角色）」。
 - ≤720px：改為依大節分組的直向列表（AC-P42），大節標題按鈕同樣選取大節。
@@ -206,7 +208,7 @@ reducer 只呼叫 `domain/selection.ts` 等純函式；篩選結果不存 state�
 - 兩個固定範圍（Prototype 原值）：全圖 viewBox 860×700、經度 105–122.5、緯度 27–41.5；山東 860×620、經度 114.6–119.2、緯度 34.6–37.9。等距投影 `x=(lon−lon0)/(lon1−lon0)·W`、`y=(lat1−lat)/(lat1−lat0)·H`。
 - 圖層順序：陸地底 → 海、遼東 → 黃河（全圖另有長江）→ 地名註記 → 梁山泊水域橢圓 → 山東框（僅全圖，可點，文案「山東 · 點此放大」）→ 行跡 → 標記。
 - 標記：半徑 `(山東 12｜全圖 9) + min(事件數, 8)·1.3`；相鄰標記以 40 輪兩兩推開（間距 山東 6／全圖 2），只影響顯示位置；標籤靠右，近右緣改靠左（AC-16／AC-P37 標籤不重疊）。
-- 行跡（只選一位角色）：取篩選結果中該角色、可定位的事件，連續同地點合併（G-3），依投影座標畫紅色虛線，各段中點標順序號 1…n。
+- 行跡（只選一位角色）：取篩選結果中該角色、可定位的事件，連續同地點合併（G-3），依投影座標畫紅色虛線，各段中點標移動順序號 1…n（FR-016）。
 - 無法定位計數 `N 個事件無法標示地點`（右上角）、「示意，非精確測繪」（左下角）。地圖正下方是同寬的精簡章回刻度（FR-018）。
 - 側欄：地點面板（未選地點時提示，選了列出該地事件）＋行跡／目前篩選說明。
 
@@ -220,9 +222,9 @@ reducer 只呼叫 `domain/selection.ts` 等純函式；篩選結果不存 state�
 
 ### 面板（S3／S4）
 
-- 共用 `Drawer`：右側 `min(440px, 100%)` 寬，≤720px 改為全寬、高 82% 的底部抽屜；遮罩點擊或 Escape 關閉；開啟另一個面板即取代。
+- 共用 `Drawer`：右側 `min(440px, 100%)` 寬，≤720px 改為全寬、高 82% 的底部抽屜；遮罩點擊或 Escape 關閉（G-10）；開啟另一個面板即取代。
 - 事件明細（FR-012）：頁首「事件 · 大節名」→ 標題＋章回＋大節 → 摘要 → 回目 → 地點（可定位為按鈕「<地點> · 在地圖上看」，否則徽章「<地點>（無法在示意地圖上定位）」）→ 參與角色（頭像＝加入篩選且面板維持開啟；名字＝角色資料；「已在篩選中」）→ 底部上一個／下一個（`navigation.prevNext`：在篩選結果中就用篩選結果，否則全書順序；首尾停用並顯示「已是第一個／最後一個」）。
-- 角色資料（FR-013／FR-014）：頭像＋姓名＋綽號＋星號座次或「非一百單八將」→ 狀態條（`statusSegments` 產生 1–120 回的四色區段與三節點標記）→ 結局 →「只看此角色」→ 參與事件（數量）→ 人物關係。
+- 角色資料（FR-013／FR-014）：頭像＋姓名＋綽號＋星號座次或「非一百單八將」→ 狀態條（`statusSegments` 產生 1–120 回的四色區段與三節點標記）→ 結局 →「只看此角色」（設定篩選後關閉面板，G-10）→ 參與事件（數量）→ 人物關係。
 
 ### 主題與響應式
 

@@ -139,7 +139,7 @@
 - **篩選** `filterEvents(events, selected, arcId)`：`(arcId 為空 或 e.arc = arcId) 且 (selected 為空 或 e.characters ∩ selected ≠ ∅)`（FR-003）。
 - **角色在大節內** `charactersInArc(events, arcId)`：在該大節至少參與一個事件的角色集合（G-9）。
 - **角色狀態** `statusAt(c, n)`：`fateChapter≠null 且 n≥fateChapter` → 已死亡或離散；否則 `joinChapter≠null 且 n≥joinChapter` → 已上梁山；否則 `n≥firstChapter` → 在野；否則 未登場（FR-013、D-2）。`statusSegments(c)` 把 1–120 回合併成連續區段。
-- **天罡／地煞快選** `toggleGroup(selected, members)`：成員未全選 → 加入全部並保留其他；已全選 → 只移除成員（G-7）。
+- **天罡／地煞快選** `groupToggle(selected, members)`（`domain/selection.ts`；reducer action `toggleGroup` 帶群組成員 id 呼叫之）：成員未全選 → 加入全部並保留其他；已全選 → 只移除成員（G-7）。
 - **搜尋** `matchCharacters(q)`：`name` 或 `nicknames` 任一包含 q（D-5）；`enterSelectTarget`：第一個符合者，已選或無符合 → 不動作（D-3）。
 - **上一個／下一個** `prevNext(id, filtered, all)`：id 在 filtered 中用 filtered，否則用 all（G-2）。
 - **行跡** `buildTrail(filtered, characterId)`：該角色、`place≠null` 的事件依全書順序取地點，連續相同者合併（G-3）。

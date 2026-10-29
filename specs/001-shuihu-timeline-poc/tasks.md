@@ -9,7 +9,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 **Prerequisites**: plan.md、spec.md、research.md、data-model.md、contracts/ui-contracts.md、quickstart.md
 
-**Tests**: 需要。憲章 §CP-4 要求核心邏輯有自動化測試（domain 純函式、data、state reducer 皆以 Vitest 測，測試檔開頭附 ISP 分割表：Experimental、主要流程範圍、Base Choice）；spec 的 82 條驗收情境（AC 18＋AC-P 42＋AC-S 22）以 Playwright E2E 逐條對應，測試名稱以 AC 編號開頭（例 `AC-P3 選武松結果數為 8`）。各 story phase 內測試先寫（先紅後綠）。
+**Tests**: 需要。憲章 §CP-4 要求核心邏輯有自動化測試（domain 純函式、data、state reducer 皆以 Vitest 測，測試檔開頭附 ISP 分割表：Experimental、主要流程範圍、Base Choice）；spec 的 87 條驗收情境（AC 18＋AC-P 42＋AC-S 27）以 Playwright E2E 逐條對應，測試名稱以 AC 編號開頭（例 `AC-P3 選武松結果數為 8`）。各 story phase 內測試先寫（先紅後綠）。
 
 **Organization**: 依 user story 分 phase（US1–US5 為 P1、US6–US7 為 P2）。phase 依序執行；同一 phase 內標 `[P]` 的任務彼此檔案不重疊、可並行。
 
@@ -34,15 +34,15 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 **Purpose**: 建立 `AP/` npm 專案與工具鏈設定（plan「Technical Context」、research R1／R6／R7／R8）
 
-- [ ] T001 建立 `AP/package.json`：`"private": true`、`"type": "module"`、`engines.node >=24`；dependencies 只有 react 19、react-dom 19；devDependencies：typescript 7.x（工具鏈不相容時退回 5.9）、vite 8、@vitejs/plugin-react 6、vitest 5、jsdom、@testing-library/react 16、@testing-library/user-event 14、@testing-library/jest-dom、@playwright/test 1.64、eslint、typescript-eslint、eslint-plugin-react-hooks、@types/react、@types/react-dom、@types/node；不得引入 UI 元件庫、圖表／地圖套件、狀態管理套件、路由套件。scripts：`dev`、`build`（`tsc --noEmit && vite build`）、`preview`、`typecheck`（`tsc --noEmit`）、`lint`（`eslint .`）、`test`（`vitest run`）、`test:watch`（`vitest`）、`e2e`（`playwright test --project=chrome`）、`e2e:compare`（`playwright test --project=compare`）、`e2e:browsers`（`playwright test --project=webkit --project=firefox --grep @demo`）、`data:convert`（`node scripts/convert-prototype-data.mjs`）
+- [ ] T001 建立 `AP/package.json`：`"private": true`、`"type": "module"`、`engines.node >=24`；dependencies 只有 react 19、react-dom 19；devDependencies：typescript 7.x（工具鏈不相容時退回 5.9）、vite 8、@vitejs/plugin-react 6、vitest 5、jsdom、@testing-library/react 16、@testing-library/user-event 14、@testing-library/jest-dom、@playwright/test 1.64、eslint、typescript-eslint、eslint-plugin-react-hooks、@types/react、@types/react-dom、@types/node；不得引入 UI 元件庫、圖表／地圖套件、狀態管理套件、路由套件。scripts：`dev`、`build`（`tsc --noEmit && vite build`）、`preview`、`typecheck`（`tsc --noEmit`）、`lint`（`eslint .`）、`test`（`vitest run`）、`test:watch`（`vitest`）、`e2e`（`playwright test --project=chrome`）、`e2e:compare`（`playwright test --project=compare`）、`e2e:browsers`（`playwright test --project=webkit --project=firefox --project=msedge --grep @demo`）、`data:convert`（`node scripts/convert-prototype-data.mjs`）
 - [ ] T002 [P] 建立 `AP/tsconfig.json`：`strict`、`jsx: react-jsx`、`moduleResolution: bundler`、`noEmit`、`erasableSyntaxOnly: true`（讓 `src/data/validateDataset.ts` 可被 Node 24 原生型別剝除直接 import）、`allowImportingTsExtensions`、`resolveJsonModule`；include `src`、`e2e`、`scripts`、`vite.config.ts`、`vitest.setup.ts`、`playwright.config.ts`；types `vite/client`、`vitest/globals`、`node`
-- [ ] T003 [P] 建立 `AP/vite.config.ts`：`base` 取 `loadEnv` 的 `VITE_BASE_PATH`（預設 `/`）、`@vitejs/plugin-react`；`test`：`environment: 'jsdom'`、`globals: true`、`setupFiles: ['./vitest.setup.ts']`、`include: ['src/**/*.test.{ts,tsx}']`；以 `transformIndexHtml` 外掛只在 build（`apply: 'build'`）時於 `<head>` 注入 `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'">`（plan §FE-2；dev 不注入以免擋 react-refresh）
+- [ ] T003 [P] 建立 `AP/vite.config.ts`：`base` 取 `loadEnv` 的 `VITE_BASE_PATH`（預設 `/`）、`@vitejs/plugin-react`；`test`：`environment: 'jsdom'`、`globals: true`、`setupFiles: ['./vitest.setup.ts']`、`include: ['src/**/*.test.{ts,tsx}']`；以 `transformIndexHtml` 外掛只在 build（`apply: 'build'`）時於 `<head>` 注入 `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' <資料 origin>">`：build 時以 `loadEnv` 讀 `VITE_DATA_BASE_URL`，有設定且為絕對網址時以 `new URL(...).origin` 取出 origin 加進 `connect-src`，未設定（或為相對路徑）時 `connect-src` 只有 `'self'`（plan §FE-2、§CP-3；dev 不注入以免擋 react-refresh）
 - [ ] T004 [P] 建立 `AP/vitest.setup.ts`：載入 `@testing-library/jest-dom/vitest`；`window.matchMedia` stub（預設淺色、寬 >720px，可由測試覆寫）、`ResizeObserver` stub；每測 `cleanup`
-- [ ] T005 [P] 建立 `AP/playwright.config.ts`：`testDir: 'e2e'`、`outputDir: 'test-results/playwright'`（不可清掉 `test-results/compare/`）、`webServer` 執行 `npm run build && npm run preview -- --port 4173 --strictPort`、`baseURL: 'http://localhost:4173/'`；projects：`chrome`（`channel: 'chrome'`、viewport 1440×900、`colorScheme: 'light'`、`testIgnore: /prototype-compare/`；需 400px 的測試在檔內以 `test.use({ viewport: { width: 400, height: 800 } })` 切換）、`compare`（只跑 `prototype-compare.spec.ts`，Chrome 1440×900 淺色）、`webkit`、`firefox`（供 `e2e:browsers` 以 `@demo` 抽驗）
+- [ ] T005 [P] 建立 `AP/playwright.config.ts`：`testDir: 'e2e'`、`outputDir: 'test-results/playwright'`（不可清掉 `test-results/compare/`）、port 取環境變數 `E2E_PORT`（預設 `4173`）、`baseURL` 取 `E2E_BASE_URL`（預設 `http://localhost:${port}/`），`webServer` 執行 `npm run build && npm run preview -- --port ${port} --strictPort`（§CP-3，不寫死）；projects：`chrome`（`channel: 'chrome'`、viewport 1440×900、`colorScheme: 'light'`、`testIgnore: /prototype-compare/`；需 400px 的測試在檔內以 `test.use({ viewport: { width: 400, height: 800 } })` 切換）、`compare`（只跑 `prototype-compare.spec.ts`，Chrome 1440×900 淺色）、`webkit`、`firefox`、`msedge`（`channel: 'msedge'`，使用本機 Edge）（三者供 `e2e:browsers` 以 `@demo` 抽驗，SC-004、D-6）；`chrome`、`compare` 以 `channel: 'chrome'` 使用本機 Chrome
 - [ ] T006 [P] 建立 `AP/eslint.config.js`：typescript-eslint recommended、react-hooks；分層規則（plan「元件分層」§FE-4）以 `no-restricted-imports` 落實：`src/domain/**` 不得 import `react`／`react-dom`／`src/{components,containers,state,data}`；`src/components/**` 不得 import `src/{containers,state,data}`；`src/**`（測試檔與 `src/test-utils/**` 除外）不得 import `public/data/*.json`（FR-021）；`no-restricted-syntax` 禁用 JSX 屬性 `dangerouslySetInnerHTML`（§FE-5）
 - [ ] T007 [P] 建立 `AP/.env.example`（只列 `VITE_BASE_PATH=/` 與註解掉的 `VITE_DATA_BASE_URL=`，附用途說明，皆非機密）與 `AP/.gitignore`（`node_modules/`、`dist/`、`test-results/`、`playwright-report/`、`.env*` 並以 `!.env.example` 排除）（§CP-2、§CP-3）
 - [ ] T008 [P] 建立 `AP/index.html`：`<html lang="zh-Hant">`、viewport meta、`<title>水滸時間軸</title>`、Google Fonts 連結（LXGW WenKai TC 400/700、Noto Sans TC 400/500/700，`display=swap`，research R8）、`<div id="root">`、`<script type="module" src="/src/main.tsx">`（CSP 由 T003 於 build 注入）
-- [ ] T009 於 `AP/` 執行 `npm install` 產生 `AP/package-lock.json`，並執行 `npx playwright install chromium`（依賴 T001）
+- [ ] T009 於 `AP/` 執行 `npm install` 產生 `AP/package-lock.json`，並執行 `npx playwright install chromium` 與 `npx playwright install webkit firefox`（依賴 T001）；`chrome`／`compare`／`msedge` project 以 channel 使用本機安裝的 Chrome／Edge，不由 Playwright 下載
 
 ---
 
@@ -56,7 +56,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 - [ ] T010 [P] 建立 `AP/src/domain/types.ts`：依 data-model.md §1 定義 `Arc`、`Chapter`、`Character`、`StoryEvent`、`Place`、`Relation`、`RawDataset`（6 個陣列）、`Dataset`（§4 索引成員）、`CharacterGroup = "天罡" | "地煞" | "其他"`、`RelationType = "結義"|"師徒"|"主僕"|"仇敵"|"夫妻"|"兄弟"`、`CharacterStatus = "未登場"|"在野"|"已上梁山"|"已死亡或離散"`；欄位約束原文寫入 JSDoc：Arc.id「`arc-01`～`arc-12`」、Arc.chapters「起訖回（含）」；Chapter.no「1–120」；Character.nickname「string \| null，綽號顯示字串（原樣，含括號說明）」、nicknames「綽號清單（搜尋與 chip 用）；chip 顯示 `nicknames[0]`」、star「非一百單八將為 null」、rank「非一百單八將為 null」、joinChapter「從未上梁山為 null」、fateChapter「無結局回（高俅）為 null」；StoryEvent.id「`ev-01`～`ev-54`」、place「string \| null；無法在示意地圖定位為 null」、characters「參與角色 id（0～多位；Prototype 順序保留）」；Relation.a/b「兩端角色 id（無方向）」；只用可抹除語法（不用 enum／namespace）
 - [ ] T011 [P] 建立 `AP/src/config.ts` 與 `AP/src/config.test.ts`：`dataBaseUrl` = `import.meta.env.VITE_DATA_BASE_URL` 或預設 `${import.meta.env.BASE_URL}data/`（確保結尾 `/`）；`isProduction` 以 `import.meta.env.MODE` 判斷（§CP-3、research R7）；測試涵蓋有設定／未設定／缺結尾斜線
-- [ ] T012 [P] 建立 `AP/src/styles/tokens.css`：依 research.md「設計 token」節逐項定義（色彩 22 個沿用 Prototype 原名、師徒關係色、遮罩、字型、字級、間距、圓角、陰影、尺寸、`--bp-sheet: 720px`、`--bp-map-stack: 900px`、`--size-page-max: 1440px`），淺色值在 `:root`，深色值在 `@media (prefers-color-scheme: dark)`；不提供切換鈕（G-5、FR-020）
+- [ ] T012 [P] 建立 `AP/src/styles/tokens.css`：依 research.md「設計 token」節逐項定義（色彩 21 個、陰影 `--shadow`、字型 `--f-display`／`--f-ui` 沿用 Prototype 原名，師徒關係色、遮罩、字級、間距、圓角、尺寸、`--bp-sheet: 720px`、`--bp-map-stack: 900px`、`--size-page-max: 1440px`），淺色值在 `:root`，深色值在 `@media (prefers-color-scheme: dark)`；不提供切換鈕（G-5、FR-020）
 - [ ] T013 [P] 建立 `AP/src/styles/base.css`：reset、字型堆疊（LXGW WenKai TC／Noto Sans TC 後接系統字型 fallback，HO Q7）、`body` 底色與文字色取 token、內容最大寬 `var(--size-page-max)`；400px 下頁面本身不得水平溢出（不以 `overflow-x: hidden` 掩蓋）；`@media (prefers-reduced-motion: reduce)` 關閉 transition
 
 ### 資料檔與資料存取層（FR-021、FR-022、data-model.md）
@@ -88,8 +88,8 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 - [ ] T033 [P] [S2] [S3] [S4] [S6] 建立 `AP/src/components/Avatar/Avatar.tsx`、`AP/src/components/Avatar/Avatar.css`、`AP/src/components/Avatar/Avatar.test.tsx`：吃 `avatar` 字、`group`（決定 token 色）、`highlighted`（朱色外框）、`size`；`aria-hidden`（文字由外層提供）
 - [ ] T034 [P] [S2] [S5] [S6] 建立 `AP/src/components/EmptyState/EmptyState.tsx`、`AP/src/components/EmptyState/EmptyState.css`、`AP/src/components/EmptyState/EmptyState.test.tsx`：依 `contracts/ui-contracts.md`「S2 時間軸」逐字文案：標題「沒有符合條件的事件」、說明「目前的角色與大節組合下沒有事件。」、按鈕「清除篩選」（`onClear`）；`overlay` prop 供地圖／關係圖覆蓋使用
-- [ ] T035 [P] [S3] [S4] 建立 `AP/src/components/Drawer/Drawer.tsx`、`AP/src/components/Drawer/Drawer.css`、`AP/src/components/Drawer/Drawer.test.tsx`：依 `contracts/ui-contracts.md`「S3」「S4」區塊順序的共用殼：`aside.drawer`，`data-page`／`aria-label`／`data-testid` 由 props 帶入；頁首 `dh` = 類別字 → 關閉鈕「×」（`aria-label="關閉"`）；遮罩點擊與 Escape 觸發 `onClose`；寬 `min(440px, 100%)`，≤720px 為全寬、高 82% 底部抽屜（FR-012、FR-014、FR-020）
-- [ ] T036 [P] 建立 `AP/src/components/Masthead/Masthead.tsx` 與 `AP/src/components/Masthead/Masthead.css`：依 `contracts/ui-contracts.md`「頁首」：印章「水」「滸」「年」「表」2×2（`aria-hidden`）→ `h1`「水滸時間軸」→ 副標「依百二十回本《水滸全傳》章回 · 收錄 <N> 位人物、<M> 件事」（N、M 由 props 帶入，不寫死；`counts` 為 `null` 時不渲染副標）
+- [ ] T035 [P] [S3] [S4] 建立 `AP/src/components/Drawer/Drawer.tsx`、`AP/src/components/Drawer/Drawer.css`、`AP/src/components/Drawer/Drawer.test.tsx`：依 `contracts/ui-contracts.md`「S3」「S4」區塊順序的共用殼：`aside.drawer`，`data-page`／`aria-label`／`data-testid` 由 props 帶入；頁首 `dh` = 類別字 → 關閉鈕「×」（`aria-label="關閉"`）；遮罩點擊與 Escape 觸發 `onClose`（G-10、AC-S24）；寬 `min(440px, 100%)`，≤720px 為全寬、高 82% 底部抽屜（FR-012、FR-014、FR-020）
+- [ ] T036 [P] 建立 `AP/src/components/Masthead/Masthead.tsx` 與 `AP/src/components/Masthead/Masthead.css`（FR-024）：依 `contracts/ui-contracts.md`「頁首」：印章「水」「滸」「年」「表」2×2（`aria-hidden`）→ `h1`「水滸時間軸」→ 副標「依百二十回本《水滸全傳》章回 · 收錄 <N> 位人物、<M> 件事」（N、M 由 props 帶入，不寫死；`counts` 為 `null` 時不渲染副標）
 - [ ] T037 建立 `AP/src/main.tsx`、`AP/src/App.tsx`、`AP/src/App.test.tsx`（依賴 T029、T030、T031、T036）：`main.tsx` 載入 `tokens.css`、`base.css`，渲染 `DatasetProvider` > `AppStateProvider` > `App`；`App` 永遠渲染 `Masthead`，`status` 為 loading／error 時只渲染 `LoadState`（S1～S6 不渲染），ready 時渲染 `<main>`（內容由 US1 起逐步填入）；`App.test.tsx` 以 stub 載入器驗證載入中提示、失敗＋「重試」後成功（元件層的 AC-S4／AC-S5）
 - [ ] T038 [P] 建立 E2E 共用工具 `AP/e2e/fixtures/app.ts`：`gotoApp(page, hash?)`（等 `data-testid="loading"` 消失）、`pickCharacter(name)`（點 chip 的 pick 鈕）、`openCharacterInfo(name)`（`aria-label="<姓名> 角色資料"`）、`selectArc(name)`（`select[aria-label="大節"]`）、`switchView('時間軸'|'地圖'|'關係圖')`（`role="tab"`）、`resultCount()`、`normalizeText(s)`（連續空白壓成一個、移除中文與數字間空白）、`hasNoHorizontalScroll(page)`；定位依 `contracts/ui-contracts.md` 的 `data-page`／`data-testid`／role／label
 
@@ -109,7 +109,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [ ] T040 [P] [US1] 撰寫 `AP/src/state/useHashView.test.ts`：hash 空、`#foo` → `timeline`（AC-S17）；`#map`、`#graph` 對應；`setView` 以 `history.replaceState` 寫回；`hashchange` 事件同步；篩選不寫入網址（FR-005）
 - [ ] T041 [P] [US1] [S2] 撰寫 `AP/src/components/Timeline/Timeline.test.tsx`：依 `contracts/ui-contracts.md`「S2 時間軸」：`section[data-page="S2 時間軸"]`、`data-testid="timeline"` 內順序 色帶 → 刻度 → 車道；`EventCard`（`data-testid="event-card"`）事件名、「第 a–b 回／第 n 回」、單回圓點／跨回色條、頭像最多 3 個＋「+N」（AC-S2）、已選角色頭像排前並帶外框、「（無收錄角色）」；窄螢幕（matchMedia ≤720px）改渲染 `data-testid="timeline-list"` 依大節分組
 - [ ] T042 [P] [US1] [S1] 撰寫 `AP/src/components/FilterBar/FilterBar.test.tsx`：依 `contracts/ui-contracts.md`「S1 角色篩選列」：`section.filter[data-page="S1 角色篩選列"]` 四個區塊順序（row → chars → sel → bar）；`ResultCount`（`data-testid="result-count"`、`aria-live="polite"`）「共 <N> 個事件」；`ViewTabs` `role="tablist"`、三個 `role="tab"`「時間軸」「地圖」「關係圖」、目前視圖 `aria-selected="true"`、點擊呼叫 `onChange`
-- [ ] T043 [P] [US1] [S1] [S2] [S3] 撰寫 `AP/e2e/us1-timeline.spec.ts`：逐條 AC-01、AC-02、AC-P1、AC-P2、AC-P41、AC-P42（400×800：`timeline-list` 顯示且頁面無水平捲動）、AC-S1（車道卡片外框兩兩不相交）、AC-S2、AC-S3（`page.emulateMedia({ colorScheme: 'dark' | 'light' })` 比對 `body` 背景色不同且分別等於 token 值）、AC-S4（`page.route` 延遲 `data/*.json`，見 `loading` 且無 `event-card`）、AC-S5（第一次 abort、按「重試」後放行，見「共 54 個事件」）、AC-S13（切三個視圖時 S1 的 chip 列、大節選單、已選列、結果數、視圖分頁皆可見；地圖／關係圖此時為佔位區塊亦適用）、AC-S17；AC-S6 於 Polish 的 `AP/e2e/responsive.spec.ts`
+- [ ] T043 [P] [US1] [S1] [S2] [S3] 撰寫 `AP/e2e/us1-timeline.spec.ts`：逐條 AC-01、AC-02、AC-P1、AC-P2、AC-P41、AC-P42（400×800：`timeline-list` 顯示且頁面無水平捲動）、AC-S1（車道卡片外框兩兩不相交）、AC-S2、AC-S3（`page.emulateMedia({ colorScheme: 'dark' | 'light' })` 比對 `body` 背景色不同且分別等於 token 值）、AC-S4（`page.route` 延遲 `data/*.json`，見 `loading` 且無 `event-card`）、AC-S5（第一次 abort、按「重試」後放行，見「共 54 個事件」）、AC-S17（共 12 條）；AC-S6 於 Polish 的 `AP/e2e/responsive.spec.ts`；AC-S13 需大節選單（US3 才建），於 US3 的 `AP/e2e/us3-arc-filter.spec.ts`（T078）驗
 
 ### Implementation for User Story 1
 
@@ -138,7 +138,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 **Goal**: 角色多選聯集、搜尋（姓名與綽號清單）、Enter 只選取、天罡／地煞快選（G-7）、已選標籤移除與清除、空狀態。
 
-**Independent Test**: 在時間軸之上加入角色選擇列，驗證多選聯集、搜尋、Enter 選取、快選、標籤移除、清除與空狀態（`AP/e2e/us2-character-filter.spec.ts` 全綠）。
+**Independent Test**: 在時間軸之上加入角色選擇列，驗證多選聯集、搜尋、Enter 選取、快選、標籤移除與清除（`AP/e2e/us2-character-filter.spec.ts` 全綠；空狀態 AC-P13、AC-P14 需大節選單，於 US3 的 `AP/e2e/us3-arc-filter.spec.ts` 驗）。
 
 ### Tests for User Story 2 ⚠️
 
@@ -146,7 +146,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [ ] T061 [P] [US2] [S1] 撰寫 `AP/src/domain/search.test.ts`：`matchCharacters(characters, q)` 比對 `name` 或 `nicknames` 任一包含 q（D-5）：豹子頭→林沖、黑旋風→李逵、孫悟空→空、座次→空、呼保義→宋江；空字串→全部；`enterSelectTarget(matches, selected)`：第一個符合者未選→其 id，已選或無符合→`null`（D-3、AC-S19）
 - [ ] T062 [P] [US2] 修改 `AP/src/state/appReducer.test.ts`：新增 `toggleCharacter`、`addCharacter`（面板維持開啟）、`removeCharacter`、`clearCharacters`、`toggleGroup`、`setQuery`、`submitSearch`（D-3：只選取不取消）、`clearFilters`（清角色與大節）
 - [ ] T063 [P] [US2] [S1] 撰寫 `AP/src/components/FilterBar/CharacterFilter.test.tsx`：依 `contracts/ui-contracts.md`「S1」逐字文案與狀態：`SearchBox` `type="search"`、placeholder「搜尋姓名或綽號，例如：黑旋風」、`aria-label="搜尋角色"`、Enter 呼叫 `onSubmit`；`GroupToggle`「天罡」「地煞」`aria-pressed`；`CharacterChip` pick 鈕 `aria-pressed`、顯示「<頭像字> <姓名> <nicknames[0]>」（高俅只顯示姓名）、提供 `onInfo` 時才渲染「i」鈕（`aria-label="<姓名> 角色資料"`、`title="角色資料"`）；`CharacterList` 無結果顯示「找不到符合的角色」取代整個清單；`SelectedTags` 未選「未選角色，顯示全部角色的事件」、有選「已選」＋「<姓名> ×」（`aria-label="移除 <姓名>"`，依加入順序）＋「清除全部」
-- [ ] T064 [P] [US2] [S1] [S2] 撰寫 `AP/e2e/us2-character-filter.spec.ts`：逐條 AC-03、AC-04、AC-05、AC-06、AC-07、AC-P3、AC-P4、AC-P5、AC-P6、AC-P7、AC-P8、AC-P9、AC-P10、AC-P11、AC-P12、AC-P13、AC-P14、AC-P33（在 `#graph` 以篩選列選 2 位後切回時間軸）、AC-P34、AC-S7、AC-S8、AC-S9、AC-S19、AC-S21（共 24 條）
+- [ ] T064 [P] [US2] [S1] [S2] 撰寫 `AP/e2e/us2-character-filter.spec.ts`：逐條 AC-03、AC-04、AC-05、AC-06、AC-07、AC-P3、AC-P4、AC-P5、AC-P6、AC-P7、AC-P8、AC-P9、AC-P10、AC-P11、AC-P12、AC-P33（在 `#graph` 以篩選列選 2 位後切回時間軸）、AC-P34、AC-S7、AC-S8、AC-S9、AC-S19、AC-S21（共 22 條；AC-P13、AC-P14 需大節選單，移至 T078）
 
 ### Implementation for User Story 2
 
@@ -159,7 +159,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [ ] T071 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/SelectedTags.tsx`
 - [ ] T072 [US2] [S1] 修改 `AP/src/components/FilterBar/FilterBar.tsx` 與 `AP/src/components/FilterBar/FilterBar.css`（依賴 T068–T071）：row 插槽依序 搜尋框 → 天罡 → 地煞（大節選單留給 US3）；chars、sel 插槽；≤720px chip 列改單列橫向捲動
 - [ ] T073 [US2] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`（依賴 T067、T072）：以 `matchCharacters` 篩清單、Enter 以 `enterSelectTarget` dispatch `submitSearch`、群組成員自 `dataset` 依 `group` 算出並判定 `aria-pressed`、標籤移除與清除全部
-- [ ] T074 [US2] [S2] 修改 `AP/src/containers/TimelineContainer.tsx`（依賴 T067）：把 `selected` 傳給 `EventCard`（AC-P5）；結果為 0 時以 `EmptyState` 填 `Timeline` 的 `empty` 插槽，「清除篩選」dispatch `clearFilters`（AC-P13、AC-P14）
+- [ ] T074 [US2] [S2] 修改 `AP/src/containers/TimelineContainer.tsx`（依賴 T067）：把 `selected` 傳給 `EventCard`（AC-P5）；結果為 0 時以 `EmptyState` 填 `Timeline` 的 `empty` 插槽，「清除篩選」dispatch `clearFilters`（AC-P13、AC-P14 的實作；E2E 於 US3 T078 驗）
 - [ ] T075 [US2] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts --project=chrome`，修正至全綠
 
 **Checkpoint**: US1＋US2 皆可獨立運作
@@ -170,13 +170,13 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 **Goal**: 大節單選（選單或點時間軸大節標題），與角色篩選取交集，時間軸只顯示該大節章回與事件。
 
-**Independent Test**: 在時間軸加入大節選單，驗證單選大節、點大節標題、與角色篩選的交集（`AP/e2e/us3-arc-filter.spec.ts` 全綠）。
+**Independent Test**: 在時間軸加入大節選單，驗證單選大節、點大節標題、與角色篩選的交集，以及 US2 的空狀態（AC-P13、AC-P14）與 US1 的篩選區常駐（AC-S13）（`AP/e2e/us3-arc-filter.spec.ts` 全綠）。
 
 ### Tests for User Story 3 ⚠️
 
 - [ ] T076 [P] [US3] 修改 `AP/src/state/appReducer.test.ts`：新增 `selectArc(id | null)`；與既有角色選取並存
 - [ ] T077 [P] [US3] [S1] 撰寫 `AP/src/components/FilterBar/ArcSelect.test.tsx`：依 `contracts/ui-contracts.md`「S1」：`<select aria-label="大節">`，第一項「全部大節（第 1–120 回）」值為空，其餘「<大節名>（第 <a>–<b> 回）」12 項
-- [ ] T078 [P] [US3] [S1] [S2] 撰寫 `AP/e2e/us3-arc-filter.spec.ts`：逐條 AC-08、AC-09、AC-P15、AC-P16、AC-P17（點色帶「武松」後選單值變為該大節）、AC-S14
+- [ ] T078 [P] [US3] [S1] [S2] 撰寫 `AP/e2e/us3-arc-filter.spec.ts`：逐條 AC-08、AC-09、AC-P15、AC-P16、AC-P17（點色帶「武松」後選單值變為該大節）、AC-S14，以及需大節選單、自 US1／US2 移入的 AC-P13、AC-P14（US2 的空狀態與「清除篩選」）、AC-S13（US1：切三個視圖時 S1 的 chip 列、大節選單、已選列、結果數、視圖分頁都渲染於頁面上方，不要求捲動時固定；地圖／關係圖此時為佔位區塊亦適用）（共 9 條）
 
 ### Implementation for User Story 3
 
@@ -195,14 +195,14 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 **Goal**: 事件明細面板完整資訊（章回、回目、大節、地點、參與角色、摘要），頭像加入篩選、名字開角色資料、地點切地圖、上一個／下一個。
 
-**Independent Test**: 從時間軸點事件卡開啟面板，驗證資訊欄位、頭像加入篩選、地點切地圖與上一個／下一個（`AP/e2e/us4-event-detail.spec.ts` 全綠；AC-S15 需 US5 的角色資料入口，於 Phase 7 驗）。
+**Independent Test**: 從時間軸點事件卡開啟面板，驗證資訊欄位、頭像加入篩選、地點切地圖、無法定位地點與上一個／下一個（`AP/e2e/us4-event-detail.spec.ts` 全綠；AC-S15 需 US5 的角色資料入口，於 Phase 7 驗）。
 
 ### Tests for User Story 4 ⚠️
 
 - [ ] T085 [P] [US4] [S3] 撰寫 `AP/src/domain/navigation.test.ts`：`prevNext(id, filtered, all)`：id 在 filtered 中用 filtered，否則用 all（G-2）；林沖＋魯智深篩選中「大鬧野豬林」下一個＝棒打洪教頭（AC-P20）；只選林沖時「大鬧野豬林」前一個＝林沖誤入白虎堂；首／尾回傳 `null`；檔頭附 ISP 分割表
-- [ ] T086 [P] [US4] 修改 `AP/src/state/appReducer.test.ts`：新增 `goToPlace`（關面板、`view='map'`、設 `focusPlace`；payload 的 `inShandong` 為 false 且目前 `mapScope='sd'` 時切回 `all`）；`addCharacter` 不關面板（AC-P19）
+- [ ] T086 [P] [US4] 修改 `AP/src/state/appReducer.test.ts`：新增 `goToPlace`（關面板、`view='map'`、設 `focusPlace`；payload 的 `inShandong` 為 false 且目前 `mapScope='sd'` 時切回 `all`，G-10、AC-S23）；`addCharacter` 不關面板（AC-P19）
 - [ ] T087 [P] [US4] [S3] 撰寫 `AP/src/components/EventDetail/EventDetail.test.tsx`：依 `contracts/ui-contracts.md`「S3」：內容順序 標題區 → 摘要 → 回目 → 地點 → 參與角色；小標「回目」「地點」「參與角色」；回目逐回列出（28–31 回 4 條）；可定位地點為按鈕「<location> · 在地圖上看」、不可定位為徽章「<location>（無法在示意地圖上定位）」；參與角色頭像鈕 `title="加入篩選"`、`aria-label="將 <姓名> 加入篩選"`、已選者外框＋「已在篩選中」、提示「點頭像加入篩選，點名字看角色資料。」、無角色「本事件沒有收錄名單中的角色。」；底部「← <前一事件名>」「<下一事件名> →」，首尾停用並顯示「← 已是第一個」「已是最後一個 →」
-- [ ] T088 [P] [US4] [S3] 撰寫 `AP/e2e/us4-event-detail.spec.ts`：逐條 AC-10、AC-11、AC-P18、AC-P19、AC-P20、AC-P21（本檔驗：點地點後面板關閉、hash `#map`、「地圖」分頁 `aria-selected`；地圖上的標記高亮於 US6 `AP/e2e/us6-map.spec.ts` 補驗）；AC-S15 見 T102
+- [ ] T088 [P] [US4] [S3] 撰寫 `AP/e2e/us4-event-detail.spec.ts`：逐條 AC-10、AC-11、AC-P18、AC-P19、AC-P20、AC-P21（本檔驗：點地點後面板關閉、hash `#map`、「地圖」分頁 `aria-selected`；地圖上的標記高亮於 US6 `AP/e2e/us6-map.spec.ts` 補驗）、AC-S26（已選林沖開「倒拔垂楊柳・林沖結義」：「← 已是第一個」停用、下一個「林沖誤入白虎堂 →」）、AC-S27（「九天玄女授天書」地點為徽章「還道村（無法在示意地圖上定位）」、無「在地圖上看」按鈕）（共 8 條）；AC-S15 見 T102
 
 ### Implementation for User Story 4
 
@@ -229,10 +229,10 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 ### Tests for User Story 5 ⚠️
 
 - [ ] T098 [P] [US5] [S4] 撰寫 `AP/src/domain/status.test.ts`（用 `realDataset`）：`statusAt(c, n)` 依「`fateChapter≠null 且 n≥fateChapter` → 已死亡或離散；否則 `joinChapter≠null 且 n≥joinChapter` → 已上梁山；否則 `n≥firstChapter` → 在野；否則 未登場」（FR-013、D-2）；`statusSegments`：晁蓋 未登場 13／在野 6／已上梁山 40／已死亡或離散 61（AC-P22）、高俅 未登場 1／在野 119（AC-P23）、公孫勝 110–120 為已死亡或離散且最後一段不是已上梁山（AC-S16）；`milestones`：無值者不產生（高俅只有登場 2）；`statusAriaLabel` 產生「未登場 13 回，在野 6 回，已上梁山 40 回，已死亡或離散 61 回」格式；檔頭附 ISP 分割表
-- [ ] T099 [P] [US5] 修改 `AP/src/state/appReducer.test.ts`：新增 `onlyCharacter`（`selected=[id]` 並關面板，AC-P25）
+- [ ] T099 [P] [US5] 修改 `AP/src/state/appReducer.test.ts`：新增 `onlyCharacter`（`selected=[id]` 並關面板，AC-P25、AC-S25）
 - [ ] T100 [P] [US5] [S4] 撰寫 `AP/src/components/CharacterDetail/CharacterDetail.test.tsx`：依 `contracts/ui-contracts.md`「S4」：內容順序 身分區 → 狀態 → 結局 →「只看此角色」→ 參與事件 → 人物關係；「綽號 <nickname 原字串>」（高俅不顯示）、「<星號>・第 <座次> 位・<天罡｜地煞>」或「非一百單八將」；小標「一百二十回中的狀態」；節點標記「登場 <n>」「上梁山 <n>」「結局 <n>」；狀態條 `role="img"` 與 `aria-label`；刻度 1、30、60、90、120；圖例四狀態名；結局「<fate>（第 <n> 回）」或只有 <fate>；「參與事件（<N>）」每列「<a>–<b>回」或「<n>回」＋事件名；人物關係鈕「<頭像> <姓名> <關係類型>」、`title`＝關係說明；無關係「收錄範圍內沒有此角色的關係資料。」
-- [ ] T101 [P] [US5] [S1] [S4] 撰寫 `AP/e2e/us5-character.spec.ts`：逐條 AC-12、AC-13、AC-P22、AC-P23、AC-P24、AC-P25、AC-S12（點林沖「i」後林沖 chip `aria-pressed` 不變）、AC-S16
-- [ ] T102 [P] [US5] [S3] [S4] 撰寫 `AP/e2e/us4-prevnext-from-character.spec.ts`：AC-S15（US4 的驗收，需 S4 入口故於本 phase 撰寫）：已選林沖，自角色資料開啟不在篩選結果中的事件，上一個／下一個依全書順序；第一個與最後一個事件時對應按鈕停用並顯示「已是第一個」「已是最後一個」
+- [ ] T101 [P] [US5] [S1] [S4] 撰寫 `AP/e2e/us5-character.spec.ts`：逐條 AC-12、AC-13、AC-P22、AC-P23、AC-P24、AC-P25、AC-S12（點林沖「i」後林沖 chip `aria-pressed` 不變）、AC-S16、AC-S24（事件明細與角色資料面板各以 Escape 與點遮罩關閉，G-10）、AC-S25（「只看此角色」後角色資料面板關閉、已選只剩魯智深、「共 10 個事件」，G-10）（共 10 條）
+- [ ] T102 [P] [US5] [S3] [S4] 撰寫 `AP/e2e/us4-prevnext-from-character.spec.ts`：AC-S15（US4 的驗收，需 S4 入口故於本 phase 撰寫）：已選林沖，自宋江角色資料開啟不在篩選結果中的「宋公明神聚蓼兒洼」（全書最後一個事件），「已是最後一個 →」停用；按上一個依全書順序切到「眾將散去」
 
 ### Implementation for User Story 5
 
@@ -263,7 +263,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [ ] T114 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.test.ts`（新增）：`buildMarkers(filtered, places, scope)` 只含篩選結果中、在範圍內的地點與事件數（武松全圖 8、山東 4 不含東京）；半徑 `(山東 12｜全圖 9) + min(事件數, 8)·1.3`；標記推開 40 輪、間距 山東 6／全圖 2，只改顯示位置；標籤靠右、近右緣改靠左，山東未篩選時標籤外框兩兩不相交（AC-P37）；`buildTrail(filtered, characterId)`：`place≠null`、依全書順序、連續同地點合併（G-3、AC-S10）；`unlocatedCount`（武松＋宋江＝1）；檔頭附 ISP 分割表
 - [ ] T115 [P] [US6] 修改 `AP/src/state/appReducer.test.ts`：新增 `setMapScope`、`focusPlace`
 - [ ] T116 [P] [US6] [S5] 撰寫 `AP/src/components/MapView/MapView.test.tsx`：依 `contracts/ui-contracts.md`「S5 地圖」：`section[data-page="S5 地圖"]`；地圖欄順序 範圍切換（`role="tablist"`、`aria-label="地圖範圍"`、「全圖」「山東」）→ 地圖框（`data-testid="map"`）→ 刻度＋說明；側欄（`data-testid="map-side"`）地點面板 → 說明面板；SVG `aria-label`「北宋疆域示意地圖」／「山東範圍示意地圖」；山東框「山東 · 點此放大」（`aria-label="放大山東"`，僅全圖）；標記 `aria-label="<地名>，<N> 個事件"`、焦點地點朱色；角落「示意，非精確測繪」／「示意，非精確測繪 · 山東範圍外的地點不顯示」；「<N> 個事件無法標示地點」（N>0）；刻度 `aria-label="章回範圍"` 與說明「章回刻度 · [<大節名>，]第 <a>–<b> 回，共 <N> 個事件，直線標出各事件的起始回」；地點面板三種狀態與「「<地名>」不在目前的篩選結果中。」；說明面板三種文案；結果為 0 時覆蓋 `EmptyState`
-- [ ] T117 [P] [US6] [S5] 撰寫 `AP/e2e/us6-map.spec.ts`：逐條 AC-14、AC-15、AC-16、AC-P26、AC-P27、AC-P28、AC-P35、AC-P36、AC-P37、AC-P38、AC-P39（刻度在地圖正下方、寬度相同）、AC-S10、AC-S11，另加「AC-P21（地圖端）」：自事件明細點地點後該地點標記為焦點色、側欄列出該地點
+- [ ] T117 [P] [US6] [S5] 撰寫 `AP/e2e/us6-map.spec.ts`：逐條 AC-14、AC-15、AC-16、AC-P26、AC-P27、AC-P28、AC-P35、AC-P36、AC-P37、AC-P38、AC-P39（刻度在地圖正下方、寬度相同）、AC-S10、AC-S11、AC-S23（先切「山東」再回時間軸開「醉打蔣門神・血濺鴛鴦樓」點「孟州 · 在地圖上看」：範圍自動改「全圖」、`全圖` 分頁 `aria-selected`、孟州標記為焦點色，G-10）（共 14 條），另加「AC-P21（地圖端）」：自事件明細點地點後該地點標記為焦點色、側欄列出該地點
 
 ### Implementation for User Story 6
 
@@ -314,13 +314,13 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 **Purpose**: Prototype 並列比對（SC-003）、窄螢幕與跨瀏覽器（SC-004）、展示情境（SC-002）、AC 涵蓋核對與 quickstart 驗證
 
 - [ ] T139 [P] [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/fixtures/prototypeStates.ts`：依 `contracts/ui-contracts.md`「21 個狀態的重現步驟與 DOM 斷言」逐列定義 21 個狀態（名稱與順序同 `handoff-notes.md`「截圖索引」）：`file`（截圖檔名）、`steps`（只用 UI 操作，從新頁 `/#timeline` 開始）、`blocks`（要檢查順序的 `data-page`）、`texts`（必含文案）、`asserts`（結果數、已選標籤、`aria-pressed`／`aria-selected`、`data-dim` 數等）
-- [ ] T140 [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/prototype-compare.spec.ts`（依賴 T139）：Chrome 1440×900、`colorScheme: 'light'`；每狀態開新頁 → 執行步驟 → 等動畫結束 → `fullPage` 截圖至 `AP/test-results/compare/<檔名>.png`；DOM 斷言：① 各 `data-page` 區塊直接子區塊依 ui-contracts 順序 ② 必含文案以 `normalizeText` 比對 `innerText` ③ 狀態斷言；#21 圖例說明依 D-4 斷言新文案
+- [ ] T140 [S1] [S2] [S3] [S4] [S5] [S6] 建立 `AP/e2e/prototype-compare.spec.ts`（依賴 T139）：Chrome 1440×900、`colorScheme: 'light'`；每狀態開新頁 → 執行步驟 → 等動畫結束 → `fullPage` 截圖至 `AP/test-results/compare/<檔名>.png`；DOM 斷言：① 各 `data-page` 區塊直接子區塊依 ui-contracts 順序 ② 必含文案以 `normalizeText` 比對 `innerText` ③ 狀態斷言；#20、#21 圖例說明依 D-4 斷言新文案（並列目視時不計逐字一致，SC-003）
 - [ ] T141 [P] 建立 `AP/e2e/responsive.spec.ts`：AC-S6（400×800 依序切地圖、關係圖並開事件明細與角色資料：頁面無水平捲動、兩種面板為全寬底部抽屜、地圖與關係圖寬度不超出視窗）；SC-004（1440×900 與 400×800 下三個視圖與兩種面板 `hasNoHorizontalScroll`）
-- [ ] T142 [P] 建立 `AP/e2e/demo-scenario.spec.ts`：SC-002 展示情境 6 步在同一頁面依序完成不重新整理（進站「共 54 個事件」→ 搜尋「豹子頭」Enter 選林沖 → 開「大鬧野豬林」點魯智深頭像 → 點林沖名字看狀態條 →「只看此角色」切地圖看行跡 → 切關係圖點節點開資料），測試標題含 `@demo` 供 `npm run e2e:browsers` 在 WebKit／Firefox 抽驗
-- [ ] T143 [P] 建立 `AP/scripts/check-ac-coverage.mjs`：掃描 `AP/e2e/*.spec.ts` 的測試名稱，核對 AC-01～AC-18、AC-P1～AC-P42、AC-S1～AC-S22 共 82 個編號全部出現，缺漏列出並非零結束；於 `AP/` 以 `node scripts/check-ac-coverage.mjs` 執行並補齊缺漏
+- [ ] T142 [P] 建立 `AP/e2e/demo-scenario.spec.ts`：SC-002 展示情境 6 步在同一頁面依序完成不重新整理（進站「共 54 個事件」→ 搜尋「豹子頭」Enter 選林沖 → 開「大鬧野豬林」點魯智深頭像 → 點林沖名字看狀態條 →「只看此角色」切地圖看行跡 → 切關係圖點節點開資料），測試標題含 `@demo` 供 `npm run e2e:browsers` 在 WebKit／Firefox／Edge 抽驗；另以 `test.use({ viewport: { width: 400, height: 800 } })` 在 400×800 再跑一次同樣 6 步（SC-004「操作可完成」）
+- [ ] T143 [P] 建立 `AP/scripts/check-ac-coverage.mjs`：掃描 `AP/e2e/*.spec.ts` 的測試名稱，核對 AC-01～AC-18、AC-P1～AC-P42、AC-S1～AC-S27 共 87 個編號全部出現，缺漏列出並非零結束；於 `AP/` 以 `node scripts/check-ac-coverage.mjs` 執行並補齊缺漏
 - [ ] T144 於 `AP/` 執行 `npm run typecheck`、`npm run lint`（含分層與 FR-021 import 限制）、`npm test`、`npm run build`，修正所有錯誤；確認 `AP/dist/data/*.json` 存在、`AP/dist/index.html` 含 CSP meta
-- [ ] T145 [P] 檢查機密與輸出安全（§CP-2、§FE-3／§FE-5）：`AP/.env.example` 只含非機密變數、`AP/src/**` 無 `dangerouslySetInnerHTML`、無寫死的部署路徑或資料 URL（皆經 `AP/src/config.ts`）
-- [ ] T146 依 `specs/001-shuihu-timeline-poc/quickstart.md` 全程驗證：`npm ci` → `npm run data:convert`（重跑結果與已 commit 的 `AP/public/data/*.json` 無差異）→ `npm run dev` 手動走展示情境 6 步 → `npm test` → `npm run build`／`npm run preview` → `npm run e2e` → `npm run e2e:compare`（輸出 21 張截圖到 `AP/test-results/compare/`，供人與 `.specify/context/shuihu-timeline/v2/prototype/screens/` 同名原圖並列目視 SC-003）→ `npm run e2e:browsers`；quickstart 與實際不符處回報（不改 quickstart.md）
+- [ ] T145 [P] 檢查機密與輸出安全（§CP-2、§FE-3／§FE-5）：`AP/.env.example` 只含非機密變數、`AP/src/**` 無 `dangerouslySetInnerHTML`、無寫死的部署路徑或資料 URL（皆經 `AP/src/config.ts`）；網站沒有任何登入、隱藏或防劇透機制（事件、結局、星號直接顯示，FR-023）
+- [ ] T146 依 `specs/001-shuihu-timeline-poc/quickstart.md` 全程驗證：`npm ci` → `npm run data:convert`（重跑結果與已 commit 的 `AP/public/data/*.json` 無差異）→ `npm run dev` 手動走展示情境 6 步 → `npm test` → `npm run build`／`npm run preview` → `npm run e2e` → `npm run e2e:compare`（輸出 21 張截圖到 `AP/test-results/compare/`，供人與 `.specify/context/shuihu-timeline/v2/prototype/screens/` 同名原圖並列目視 SC-003）→ `npm run e2e:browsers`（WebKit／Firefox／Edge）；quickstart 與實際不符處回報（不改 quickstart.md）
 
 ---
 
@@ -443,18 +443,18 @@ T010 types.ts ｜ T011 config.ts ｜ T012 tokens.css ｜ T013 base.css ｜ T014 
 2. US6（地圖）→ US7（關係圖）：P2
 3. Polish：並列比對、窄螢幕／跨瀏覽器、展示情境、AC 涵蓋核對、quickstart
 
-### AC → E2E 對應（82 條）
+### AC → E2E 對應（87 條）
 
 | 檔案 | AC |
 | :---- | :---- |
-| `AP/e2e/us1-timeline.spec.ts` | AC-01、AC-02、AC-P1、AC-P2、AC-P41、AC-P42、AC-S1～S5、AC-S13、AC-S17（13） |
+| `AP/e2e/us1-timeline.spec.ts` | AC-01、AC-02、AC-P1、AC-P2、AC-P41、AC-P42、AC-S1～S5、AC-S17（12） |
 | `AP/e2e/responsive.spec.ts` | AC-S6（US1，需地圖／關係圖／兩種面板）（1） |
-| `AP/e2e/us2-character-filter.spec.ts` | AC-03～07、AC-P3～P14、AC-P33、AC-P34、AC-S7～S9、AC-S19、AC-S21（24） |
-| `AP/e2e/us3-arc-filter.spec.ts` | AC-08、AC-09、AC-P15～P17、AC-S14（6） |
-| `AP/e2e/us4-event-detail.spec.ts` | AC-10、AC-11、AC-P18～P21（6） |
+| `AP/e2e/us2-character-filter.spec.ts` | AC-03～07、AC-P3～P12、AC-P33、AC-P34、AC-S7～S9、AC-S19、AC-S21（22） |
+| `AP/e2e/us3-arc-filter.spec.ts` | AC-08、AC-09、AC-P15～P17、AC-S14；AC-P13、AC-P14（US2，需大節選單）；AC-S13（US1，需大節選單）（9） |
+| `AP/e2e/us4-event-detail.spec.ts` | AC-10、AC-11、AC-P18～P21、AC-S26、AC-S27（8） |
 | `AP/e2e/us4-prevnext-from-character.spec.ts` | AC-S15（US4，需 S4 入口）（1） |
-| `AP/e2e/us5-character.spec.ts` | AC-12、AC-13、AC-P22～P25、AC-S12、AC-S16（8） |
-| `AP/e2e/us6-map.spec.ts` | AC-14～16、AC-P26～P28、AC-P35～P39、AC-S10、AC-S11（13；另補 AC-P21 地圖端） |
+| `AP/e2e/us5-character.spec.ts` | AC-12、AC-13、AC-P22～P25、AC-S12、AC-S16、AC-S24、AC-S25（10） |
+| `AP/e2e/us6-map.spec.ts` | AC-14～16、AC-P26～P28、AC-P35～P39、AC-S10、AC-S11、AC-S23（14；另補 AC-P21 地圖端） |
 | `AP/e2e/us7-graph.spec.ts` | AC-17、AC-18、AC-P29～P32、AC-P40、AC-S18、AC-S20、AC-S22（10） |
 
 ---
@@ -462,7 +462,7 @@ T010 types.ts ｜ T011 config.ts ｜ T012 tokens.css ｜ T013 base.css ｜ T014 
 ## Notes
 
 - `[P]` = 不同檔案、與同組任務無相依；同一 phase 內修改同一檔的任務一律不標 `[P]`
-- 每個任務完成後執行對應測試；每個 story 走一個 PR（§CP-5），PR 連結本 spec
+- 每個任務完成後執行對應測試；每個 story 走一個 PR（§CP-5），PR 連結本 spec；Setup、Foundational、Polish 三個非 story phase 也各自一個 PR
 - 測試名稱帶 AC 編號；單元測試檔頭附 ISP 分割表（§CP-4、§TR-7）
 - 實作必須保留 ui-contracts 列出的 `data-page` 值與 `data-testid`，供 E2E 與 compare 定位
 - 不修改 `.specify/context/`（Prototype 只讀）、spec.md 與 plan 產物

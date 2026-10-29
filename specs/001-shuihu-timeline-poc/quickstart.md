@@ -7,8 +7,8 @@
 ## 前置
 
 - Node.js 24 LTS、npm
-- Chrome（Playwright 以 `channel: 'chrome'` 執行；或 `npx playwright install chromium`）
-- 選用：WebKit／Firefox（SC-004 抽驗）：`npx playwright install webkit firefox`
+- 本機安裝 Chrome 與 Edge 最新版（`chrome`／`compare`／`msedge` project 以 `channel: 'chrome'`／`channel: 'msedge'` 使用本機瀏覽器，Playwright 不下載）
+- Playwright 瀏覽器：`npx playwright install chromium` 與 `npx playwright install webkit firefox`（WebKit／Firefox 供 SC-004 抽驗）
 
 ## 安裝與設定
 
@@ -62,16 +62,16 @@ npm run preview        # 以 dist/ 起本機伺服器，http://localhost:4173/
 ## E2E
 
 ```bash
-npm run e2e            # Playwright：先 build＋preview，再跑 e2e/us*.spec.ts（Chrome，1440×900 與 400×800）
-npm run e2e:compare    # 只跑 e2e/prototype-compare.spec.ts
-npm run e2e:browsers   # SC-004 抽驗：WebKit／Firefox 跑展示情境 6 步
+npm run e2e            # Playwright chrome project：先 build＋preview，再跑 e2e/ 下除 prototype-compare 以外的全部 spec（us1～us7、us4-prevnext-from-character、responsive、demo-scenario；Chrome，1440×900 與 400×800）
+npm run e2e:compare    # compare project：只跑 e2e/prototype-compare.spec.ts
+npm run e2e:browsers   # SC-004 抽驗：WebKit／Firefox／Edge（msedge）最新版跑標 @demo 的展示情境 6 步（D-6）
 npx playwright show-report
 ```
 
 預期：
-- `e2e/us1-timeline.spec.ts`～`us7-graph.spec.ts` 逐條對應 spec 的 AC／AC-P／AC-S（測試名稱帶編號），全數通過即 SC-001。
+- `npm run e2e` 跑的 spec 逐條對應 spec 的 AC／AC-P／AC-S 共 87 條（測試名稱帶編號，對應表見 tasks「AC → E2E 對應」），全數通過即 SC-001。
 - `e2e:compare` 依 [ui-contracts「21 個狀態」](./contracts/ui-contracts.md#21-個狀態的重現步驟與-dom-斷言e2efixturesprototypestatests)重現狀態，DOM 斷言全過，並輸出 21 張同名截圖到 `AP/test-results/compare/`。
-- 並列目視（SC-003）：把 `AP/test-results/compare/<檔名>.png` 與 `.specify/context/shuihu-timeline/v2/prototype/screens/<檔名>.png` 逐張對看區塊順序、相對位置、逐字文案、狀態標籤；#21 圖例說明不同屬偏離 D-4。
+- 並列目視（SC-003）：把 `AP/test-results/compare/<檔名>.png` 與 `.specify/context/shuihu-timeline/v2/prototype/screens/<檔名>.png` 逐張對看區塊順序、相對位置、逐字文案、狀態標籤；#20、#21（S6-02、S6-03）圖例說明不同屬偏離 D-4，不計逐字一致。
 
 ## 疑難
 
