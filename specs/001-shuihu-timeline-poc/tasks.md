@@ -128,7 +128,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [X] T056 [US1] [S1] 建立 `AP/src/containers/FilterBarContainer.tsx`（依賴 T032、T053）：結果數用 `useResultCount`，視圖分頁 dispatch `setView`
 - [X] T057 [US1] [S3] 建立 `AP/src/containers/EventDrawerContainer.tsx`（依賴 T035、T054）：`Drawer`（`data-page="S3 事件明細面板"`、`aria-label="事件明細"`、`data-testid="event-drawer"`、類別字「事件 · <大節名>」）包 `EventDetail`；關閉 dispatch `closeDrawer`
 - [X] T058 [US1] 修改 `AP/src/App.tsx`（依賴 T046、T055、T056、T057）：ready 時渲染 `Masthead`（帶角色數、事件數）→ `FilterBarContainer` → `<main>`（`view` 為 timeline 渲染 `TimelineContainer`；map／graph 暫以空的 `section[data-page="S5 地圖"]`、`section[data-page="S6 關係圖"]` 佔位，US6／US7 取代）→ `drawer.kind === 'event'` 時渲染 `EventDrawerContainer`
-- [ ] T059 [US1] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts --project=chrome`，修正至全綠
+- [X] T059 [US1] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts --project=chrome`，修正至全綠
 
 **Checkpoint**: US1 可獨立展示（MVP）：時間軸、結果數、視圖分頁、hash、載入狀態、事件明細標題
 
