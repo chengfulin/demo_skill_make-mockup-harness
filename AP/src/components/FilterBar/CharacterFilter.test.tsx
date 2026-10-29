@@ -31,7 +31,6 @@
  * 範圍外（一次性宣告）：樣式色值（Prototype 並列比對 E2E 驗）；即打即篩的比對規則（domain/search.test.ts 驗）；
  * IME 組字中的 Enter（不觸發 onSubmit，屬瀏覽器行為，不在 jsdom 驗）。
  */
-import type { ReactElement } from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -41,6 +40,7 @@ import { CharacterChip } from './CharacterChip';
 import { CharacterList } from './CharacterList';
 import { GroupToggle } from './GroupToggle';
 import { SearchBox } from './SearchBox';
+import { SelectedTags } from './SelectedTags';
 
 const byName = (name: string): Character => {
   const c = realDataset.characters.find((ch) => ch.name === name);
@@ -197,30 +197,15 @@ describe('CharacterList', () => {
   });
 });
 
-// SelectedTags 由 T071 實作（與本檔不同波次）。以執行期動態 import 載入：T071 完成前只有本 describe 紅燈，
-// 不讓整檔 import 失敗、也不讓 typecheck 因檔案不存在而失敗；props 介面以下列型別為契約。
-type SelectedTagsProps = {
-  characters: readonly Character[];
-  onRemove: (id: string) => void;
-  onClear: () => void;
-};
-type SelectedTagsComponent = (props: SelectedTagsProps) => ReactElement | null;
-const SELECTED_TAGS_MODULE = './SelectedTags';
-
 describe('SelectedTags', () => {
-  const load = async () =>
-    ((await import(/* @vite-ignore */ SELECTED_TAGS_MODULE)) as { SelectedTags: SelectedTagsComponent }).SelectedTags;
-
-  it('ST-1 nothing selected → 「未選角色，顯示全部角色的事件」 only', async () => {
-    const SelectedTags = await load();
+  it('ST-1 nothing selected → 「未選角色，顯示全部角色的事件」 only', () => {
     render(<SelectedTags characters={[]} onRemove={vi.fn()} onClear={vi.fn()} />);
     expect(screen.getByText('未選角色，顯示全部角色的事件')).toBeInTheDocument();
     expect(screen.queryByText('已選')).toBeNull();
     expect(screen.queryByRole('button', { name: '清除全部' })).toBeNull();
   });
 
-  it('ST-2 selected → 「已選」 + 「<姓名> ×」 tags in insertion order + 「清除全部」', async () => {
-    const SelectedTags = await load();
+  it('ST-2 selected → 「已選」 + 「<姓名> ×」 tags in insertion order + 「清除全部」', () => {
     const songjiang = byName('宋江');
     const likui = byName('李逵');
     const { container } = render(
@@ -239,7 +224,6 @@ describe('SelectedTags', () => {
   });
 
   it('ST-3 × calls onRemove(id); 清除全部 calls onClear', async () => {
-    const SelectedTags = await load();
     const onRemove = vi.fn();
     const onClear = vi.fn();
     const songjiang = byName('宋江');

@@ -160,7 +160,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 - [X] T072 [US2] [S1] 修改 `AP/src/components/FilterBar/FilterBar.tsx` 與 `AP/src/components/FilterBar/FilterBar.css`（依賴 T068–T071）：row 插槽依序 搜尋框 → 天罡 → 地煞（大節選單留給 US3）；chars、sel 插槽；≤720px chip 列改單列橫向捲動
 - [X] T073 [US2] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`（依賴 T067、T072）：以 `matchCharacters` 篩清單、Enter 以 `enterSelectTarget` dispatch `submitSearch`、群組成員自 `dataset` 依 `group` 算出並判定 `aria-pressed`、標籤移除與清除全部
 - [X] T074 [US2] [S2] 修改 `AP/src/containers/TimelineContainer.tsx`（依賴 T067）：把 `selected` 傳給 `EventCard`（AC-P5）；結果為 0 時以 `EmptyState` 填 `Timeline` 的 `empty` 插槽，「清除篩選」dispatch `clearFilters`（AC-P13、AC-P14 的實作；E2E 於 US3 T078 驗）
-- [ ] T075 [US2] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts --project=chrome`，修正至全綠
+- [X] T075 [US2] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts --project=chrome`，修正至全綠
 
 **Checkpoint**: US1＋US2 皆可獨立運作
 

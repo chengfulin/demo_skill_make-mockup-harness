@@ -26,6 +26,11 @@
           "validated": true,
           "reviewed": true,
           "committed": true
+        },
+        "US2": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
         }
       },
       "parallel_plan": {
@@ -56,7 +61,7 @@
         ],
         "plan_file": "specs/001-shuihu-timeline-poc/parallel-plan.json"
       },
-      "waves_done": 10
+      "waves_done": 11
     }
   },
   "brief": {
