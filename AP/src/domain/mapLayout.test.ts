@@ -50,6 +50,8 @@
  * | U1 無法定位事件        | 0（武松）／1（武松＋宋江）                                        | UL-1、UL-2       |
  * | P1 地點事件            | 篩選內（江州 3）／篩選外（0）                                     | EP-1、EP-2       |
  * | R1 刻度位置            | 第 1 回 0%／第 120 回 100%／中間                                  | RU-1             |
+ * | B1 底圖範圍（mapGeometry.basemap） | all（base：860×700、黃河＋長江、3 註記）／sd（860×620、只黃河、2 註記、水域放大） | BM-1、BM-2 |
+ * | B2 山東框（SHANDONG_BOX） | 全圖座標下框住山東範圍四角；標籤在框左上外側         | BM-3             |
  *
  * 範圍外（一次性宣告）：實際字型量測（標籤外框以字級 × 字數估算；E2E 以 getBBox 驗 AC-P37）；
  * 全圖標籤重疊（spec 只要求山東範圍，Prototype 全圖亦有重疊）。
@@ -73,6 +75,7 @@ import {
   unlocatedCount,
   type MapMarker,
 } from './mapLayout';
+import { BASEMAP_LABELS, MARSH, SHANDONG_BOX, basemap } from './mapGeometry';
 
 const at = (lon: number, lat: number): Place => ({ id: 'p', name: 'p', lon, lat });
 
@@ -353,5 +356,47 @@ describe('chapterPercent', () => {
     expect(chapterPercent(120)).toBe(100);
     expect(chapterPercent(60)).toBeCloseTo((59 / 119) * 100);
     expect(RULER_LABELS).toEqual([1, 30, 60, 90, 120]);
+  });
+});
+
+describe('mapGeometry basemap and Shandong box (T118)', () => {
+  it('BM-1 full map: 860x700, Yellow River and Yangtze, 3 labels, small marsh', () => {
+    const b = basemap('all');
+    expect([b.width, b.height]).toEqual([860, 700]);
+    expect(b.rivers).toHaveLength(2);
+    expect(b.labels.map((l) => l.text)).toEqual(BASEMAP_LABELS.all.map((l) => l.text));
+    expect(b.labels.filter((l) => l.sea).map((l) => l.text)).toEqual(['東海']);
+    const c = project('all', MARSH.lon, MARSH.lat);
+    expect(b.marsh).toEqual({ cx: c.x, cy: c.y, rx: 22, ry: 13 });
+    expect(b.sea.split(' ').every((pt) => /^-?\d+\.\d,-?\d+\.\d$/.test(pt))).toBe(true);
+  });
+
+  it('BM-2 Shandong: 860x620, only the Yellow River, 2 labels, enlarged marsh', () => {
+    const b = basemap('sd');
+    expect([b.width, b.height]).toEqual([860, 620]);
+    expect(b.rivers).toHaveLength(1);
+    expect(b.rivers[0]).not.toBe(basemap('all').rivers[0]);
+    expect(b.labels.map((l) => l.text)).toEqual(['黃河（北宋河道示意）', '黃海']);
+    expect(b.marsh).toMatchObject({ rx: 60, ry: 34 });
+  });
+
+  it('BM-3 Shandong box frames the Shandong scope corners in full-map coordinates', () => {
+    const sd = MAP_SCOPES.sd;
+    const tl = project('all', sd.lon[0], sd.lat[1]);
+    const br = project('all', sd.lon[1], sd.lat[0]);
+    expect(SHANDONG_BOX.x).toBeCloseTo(tl.x);
+    expect(SHANDONG_BOX.y).toBeCloseTo(tl.y);
+    expect(SHANDONG_BOX.width).toBeCloseTo(br.x - tl.x);
+    expect(SHANDONG_BOX.height).toBeCloseTo(br.y - tl.y);
+    expect(SHANDONG_BOX.width).toBeGreaterThan(0);
+    expect(SHANDONG_BOX.height).toBeGreaterThan(0);
+    expect(SHANDONG_BOX.labelX).toBeCloseTo(tl.x + 6);
+    expect(SHANDONG_BOX.labelY).toBeCloseTo(tl.y - 6);
+    // 梁山泊在框內
+    const m = project('all', MARSH.lon, MARSH.lat);
+    expect(m.x).toBeGreaterThan(SHANDONG_BOX.x);
+    expect(m.x).toBeLessThan(SHANDONG_BOX.x + SHANDONG_BOX.width);
+    expect(m.y).toBeGreaterThan(SHANDONG_BOX.y);
+    expect(m.y).toBeLessThan(SHANDONG_BOX.y + SHANDONG_BOX.height);
   });
 });

@@ -16,7 +16,7 @@
  * | V1 初始 hash（T046）  | 無 hash（base）／#map／#graph                         | APP-5～6  |
  * | I1 ready 互動（T058） | 切視圖分頁寫回 hash／點事件卡開面板、關閉鈕關面板      | APP-6～7  |
  *
- * ready 時（T058）：S1 篩選列（結果數「共 54 個事件」）→ main（S2 時間軸，或 S5／S6 佔位）→ 事件明細面板。
+ * ready 時（T058）：S1 篩選列（結果數「共 54 個事件」）→ main（S2 時間軸、S5 地圖（T127），或 S6 佔位）→ 事件明細面板。
  *
  * 範圍外（一次性宣告）：重試後再失敗（DatasetProvider.test DP-4 已驗）；
  * 無法辨識 hash 的解析與 hashchange 同步（useHashView.test 已驗）；
@@ -130,7 +130,7 @@ describe('App', () => {
     expect(window.location.hash).toBe('#timeline');
   });
 
-  it('APP-6 initial #map shows the S5 placeholder; switching tabs writes the hash', async () => {
+  it('APP-6 initial #map shows the S5 map; switching tabs writes the hash', async () => {
     setHash('#map');
     const { container } = renderApp(readyLoader);
     const main = await screen.findByRole('main');

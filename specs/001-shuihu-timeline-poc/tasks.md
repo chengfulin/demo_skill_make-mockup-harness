@@ -261,7 +261,7 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 ### Tests for User Story 6 ⚠️
 
 - [X] T114 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.test.ts`（新增）：`buildMarkers(filtered, places, scope)` 只含篩選結果中、在範圍內的地點與事件數（武松全圖 8、山東 4 不含東京）；半徑 `(山東 12｜全圖 9) + min(事件數, 8)·1.3`；標記推開 40 輪、間距 山東 6／全圖 2，只改顯示位置；標籤靠右、近右緣改靠左，山東未篩選時標籤外框兩兩不相交（AC-P37）；`buildTrail(filtered, characterId)`：`place≠null`、依全書順序、連續同地點合併（G-3、AC-S10）；`unlocatedCount`（武松＋宋江＝1）；檔頭附 ISP 分割表
-- [ ] T115 [P] [US6] 修改 `AP/src/state/appReducer.test.ts`：新增 `setMapScope`、`focusPlace`
+- [X] T115 [P] [US6] 修改 `AP/src/state/appReducer.test.ts`：新增 `setMapScope`、`focusPlace`
 - [X] T116 [P] [US6] [S5] 撰寫 `AP/src/components/MapView/MapView.test.tsx`：依 `contracts/ui-contracts.md`「S5 地圖」：`section[data-page="S5 地圖"]`；地圖欄順序 範圍切換（`role="tablist"`、`aria-label="地圖範圍"`、「全圖」「山東」）→ 地圖框（`data-testid="map"`）→ 刻度＋說明；側欄（`data-testid="map-side"`）地點面板 → 說明面板；SVG `aria-label`「北宋疆域示意地圖」／「山東範圍示意地圖」；山東框「山東 · 點此放大」（`aria-label="放大山東"`，僅全圖）；標記 `aria-label="<地名>，<N> 個事件"`、焦點地點朱色；角落「示意，非精確測繪」／「示意，非精確測繪 · 山東範圍外的地點不顯示」；「<N> 個事件無法標示地點」（N>0）；刻度 `aria-label="章回範圍"` 與說明「章回刻度 · [<大節名>，]第 <a>–<b> 回，共 <N> 個事件，直線標出各事件的起始回」；地點面板三種狀態與「「<地名>」不在目前的篩選結果中。」；說明面板三種文案；結果為 0 時覆蓋 `EmptyState`
 - [X] T117 [P] [US6] [S5] 撰寫 `AP/e2e/us6-map.spec.ts`：逐條 AC-14、AC-15、AC-16、AC-P26、AC-P27、AC-P28、AC-P35、AC-P36、AC-P37、AC-P38、AC-P39（刻度在地圖正下方、寬度相同）、AC-S10、AC-S11、AC-S23（先切「山東」再回時間軸開「醉打蔣門神・血濺鴛鴦樓」點「孟州 · 在地圖上看」：範圍自動改「全圖」、`全圖` 分頁 `aria-selected`、孟州標記為焦點色，G-10）（共 14 條），另加「AC-P21（地圖端）」：自事件明細點地點後該地點標記為焦點色、側欄列出該地點
 
@@ -269,15 +269,15 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 - [X] T118 [P] [US6] [S5] 建立 `AP/src/domain/mapGeometry.ts`：自 Prototype（唯讀 `.specify/context/shuihu-timeline/v2/prototype/index.html`）取出示意底圖折線常數（陸地、海、遼東、黃河、長江）、地名註記座標、梁山泊水域橢圓、山東框（全圖座標）
 - [X] T119 [P] [US6] [S5] 修改 `AP/src/domain/mapLayout.ts`：加入 `buildMarkers`、推開演算法、標籤側別、`buildTrail`、`unlocatedCount`
-- [ ] T120 [US6] 修改 `AP/src/state/appReducer.ts`：加入 `setMapScope`、`focusPlace`
+- [X] T120 [US6] 修改 `AP/src/state/appReducer.ts`：加入 `setMapScope`、`focusPlace`
 - [X] T121 [P] [US6] [S5] 建立 `AP/src/components/MapView/ScopeSwitch.tsx`
 - [X] T122 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapSvg.tsx` 與 `AP/src/components/MapView/MapMarker.tsx`：圖層順序 陸地底 → 海、遼東 → 黃河（全圖另有長江）→ 地名註記 → 梁山泊水域 → 山東框（僅全圖、可點）→ 行跡（紅色虛線、各段中點順序號 1…n，只選一位且 ≥2 點）→ 標記；標記為 `role="button"`＋`tabindex="0"` 的 SVG 群組，Enter／Space 觸發
 - [X] T123 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapRuler.tsx`（與地圖同寬的精簡刻度 1、30、60、90、120，直線標出各事件起始回，FR-018）
 - [X] T124 [P] [US6] [S5] 建立 `AP/src/components/MapView/MapSidePanel.tsx`（地點面板＋說明面板；點事件 `onOpenEvent`）
 - [X] T125 [US6] [S5] 建立 `AP/src/components/MapView/MapView.tsx` 與 `AP/src/components/MapView/MapView.css`（依賴 T121–T124）：`mapgrid` 寬 ≥900px 為「地圖欄｜側欄 280px」、以下單欄；SVG 寬 100% 自動縮放；結果為 0 時以 `EmptyState overlay` 覆蓋地圖框
-- [ ] T126 [US6] [S5] 建立 `AP/src/containers/MapContainer.tsx`（依賴 T118–T120、T125）：以 `useFilteredEvents`、`mapScope`、`focusPlace` 呼叫 `mapLayout.*`；行跡只在 `selected.length === 1` 時計算；dispatch `setMapScope`、`focusPlace`、`openEvent`、`clearFilters`
-- [ ] T127 [US6] 修改 `AP/src/App.tsx`（依賴 T126）：`view === 'map'` 改渲染 `MapContainer`，移除 S5 佔位
-- [ ] T128 [US6] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test --project=chrome`（含 us1～us6 全部），修正至全綠
+- [X] T126 [US6] [S5] 建立 `AP/src/containers/MapContainer.tsx`（依賴 T118–T120、T125）：以 `useFilteredEvents`、`mapScope`、`focusPlace` 呼叫 `mapLayout.*`；行跡只在 `selected.length === 1` 時計算；dispatch `setMapScope`、`focusPlace`、`openEvent`、`clearFilters`
+- [X] T127 [US6] 修改 `AP/src/App.tsx`（依賴 T126）：`view === 'map'` 改渲染 `MapContainer`，移除 S5 佔位
+- [X] T128 [US6] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test --project=chrome`（含 us1～us6 全部），修正至全綠
 
 **Checkpoint**: US1～US6 皆可獨立運作
 

@@ -2,7 +2,7 @@
  * App 狀態 reducer（plan「狀態（React Context + useReducer）」）。
  *
  * 純函式：不持有資料內容（資料由 DatasetProvider 提供），篩選結果不存 state（由 selectors 即時算出）。
- * Action 聯集由本 phase 的基礎 action 起步，US2～US6 依序擴充（在 `Action` 加成員、在 switch 加分支）。
+ * Action 聯集由本 phase 的基礎 action 起步，US2～US6 依序擴充（US6：`setMapScope`、`focusPlace`）（在 `Action` 加成員、在 switch 加分支）。
  */
 import * as selection from '../domain/selection';
 
@@ -68,6 +68,12 @@ export type GoToPlaceAction = { type: 'goToPlace'; placeId: string; inShandong: 
 /** 「只看此角色」：選取改為僅此人並關閉面板 */
 export type OnlyCharacterAction = { type: 'onlyCharacter'; id: string };
 
+// US6 地圖（FR-015～FR-018、AC-P26、AC-P28、AC-P36）
+/** 地圖範圍切換（範圍分頁、全圖上的山東框）；焦點地點保留（Prototype `setScope`） */
+export type SetMapScopeAction = { type: 'setMapScope'; scope: MapScope };
+/** 點地圖標記：設焦點地點（高亮與側欄地點面板） */
+export type FocusPlaceAction = { type: 'focusPlace'; placeId: string };
+
 export type Action =
   | SetViewAction
   | OpenEventAction
@@ -83,7 +89,9 @@ export type Action =
   | ClearFiltersAction
   | SelectArcAction
   | GoToPlaceAction
-  | OnlyCharacterAction;
+  | OnlyCharacterAction
+  | SetMapScopeAction
+  | FocusPlaceAction;
 
 /** 初始狀態；`view` 由呼叫端（hash 解析結果）提供。 */
 export function createInitialState(view: View): AppState {
@@ -143,6 +151,10 @@ export function appReducer(state: AppState, action: Action): AppState {
       };
     case 'onlyCharacter':
       return { ...state, selected: selection.only(action.id), drawer: null };
+    case 'setMapScope':
+      return state.mapScope === action.scope ? state : { ...state, mapScope: action.scope };
+    case 'focusPlace':
+      return state.focusPlace === action.placeId ? state : { ...state, focusPlace: action.placeId };
     default: {
       const unhandled: never = action;
       return unhandled;

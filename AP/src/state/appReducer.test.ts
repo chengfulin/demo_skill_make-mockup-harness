@@ -70,8 +70,21 @@
  * | O3 其他欄位               | 大節、query、view、mapScope、focusPlace 保留                  | ONL-4          |
  * | P1 純度                   | 不修改輸入狀態                                                | PURE-5         |
  *
+ * US6 擴充（T115；FR-015～FR-018、AC-P26、AC-P28、AC-P36）：
+ *   setMapScope {scope}：切換地圖範圍；focusPlace 保留（Prototype setScope 只改範圍）。
+ *   focusPlace {placeId}：設焦點地點（標記高亮、側欄地點面板）；不切視圖、不動範圍。
+ *   地點是否在篩選結果／範圍內由容器與 domain/mapLayout 處理；reducer 只記錄 id。
+ *
+ * | 特徵                      | blocks（非 base 者各為一案）                                  | 對應案例       |
+ * | :------------------------ | :------------------------------------------------------------ | :------------- |
+ * | M1 setMapScope 前後範圍   | all→sd（base）／sd→all／同範圍（冪等）                        | MAP-1～MAP-3   |
+ * | M2 setMapScope 其他欄位   | focusPlace、選取、大節、view 保留                             | MAP-4          |
+ * | F1 focusPlace 前焦點      | null（base）／他地點（取代）／同地點（冪等）                  | FOC-1～FOC-3   |
+ * | F2 focusPlace 其他欄位    | view、mapScope、選取、面板保留                                | FOC-4          |
+ * | P1 純度                   | 不修改輸入狀態                                                | PURE-6         |
+ *
  * 範圍外（一次性宣告）：未知 action type（TypeScript 聯集排除）；面板 id 不存在（由容器自資料產生）；
- * 大節 id 不存在（選項由 arcs.json 產生）；地圖範圍切換與標記類 action（US6 擴充時補測）；
+ * 大節 id 不存在（選項由 arcs.json 產生）；
  * toggleGroup members 為空（由資料保證非空）。
  */
 import { describe, expect, it } from 'vitest';
@@ -391,6 +404,60 @@ describe('onlyCharacter (US5, FR-014, G-10(c))', () => {
     const s = charOpen(['linchong', 'wusong']);
     const snapshot = structuredClone(s);
     appReducer(s, { type: 'onlyCharacter', id: 'luzhishen' });
+    expect(s).toEqual(snapshot);
+  });
+});
+
+describe('map actions (US6, FR-015～FR-018)', () => {
+  const onMap = (extra: Partial<AppState> = {}): AppState => withSel([], { view: 'map', ...extra });
+
+  it('MAP-1 setMapScope switches all → sd (AC-P36)', () => {
+    const next = appReducer(onMap(), { type: 'setMapScope', scope: 'sd' });
+    expect(next).toEqual({ ...onMap(), mapScope: 'sd' });
+  });
+
+  it('MAP-2 setMapScope switches sd → all', () => {
+    const next = appReducer(onMap({ mapScope: 'sd' }), { type: 'setMapScope', scope: 'all' });
+    expect(next.mapScope).toBe('all');
+  });
+
+  it('MAP-3 setMapScope with the current scope is idempotent', () => {
+    const s = onMap({ mapScope: 'sd' });
+    expect(appReducer(s, { type: 'setMapScope', scope: 'sd' })).toBe(s);
+  });
+
+  it('MAP-4 setMapScope keeps focus place, selection, arc and view', () => {
+    const s = onMap({ selected: ['wusong'], arcId: 'arc-05', focusPlace: '東京' });
+    const next = appReducer(s, { type: 'setMapScope', scope: 'sd' });
+    expect(next).toEqual({ ...s, mapScope: 'sd' });
+  });
+
+  it('FOC-1 focusPlace sets the focus place (AC-P28)', () => {
+    const next = appReducer(onMap(), { type: 'focusPlace', placeId: '梁山泊' });
+    expect(next).toEqual({ ...onMap(), focusPlace: '梁山泊' });
+  });
+
+  it('FOC-2 focusPlace replaces a previous focus place', () => {
+    const next = appReducer(onMap({ focusPlace: '東京' }), { type: 'focusPlace', placeId: '孟州' });
+    expect(next.focusPlace).toBe('孟州');
+  });
+
+  it('FOC-3 focusPlace on the current focus place is idempotent', () => {
+    const s = onMap({ focusPlace: '孟州' });
+    expect(appReducer(s, { type: 'focusPlace', placeId: '孟州' })).toBe(s);
+  });
+
+  it('FOC-4 focusPlace keeps view, scope, selection and drawer', () => {
+    const s = onMap({ mapScope: 'sd', selected: ['wusong'], drawer: { kind: 'event', id: 'ev-09' } });
+    const next = appReducer(s, { type: 'focusPlace', placeId: '梁山泊' });
+    expect(next).toEqual({ ...s, focusPlace: '梁山泊' });
+  });
+
+  it('PURE-6 map actions do not mutate the input state', () => {
+    const s = onMap({ focusPlace: '東京', selected: ['wusong'] });
+    const snapshot = structuredClone(s);
+    appReducer(s, { type: 'setMapScope', scope: 'sd' });
+    appReducer(s, { type: 'focusPlace', placeId: '孟州' });
     expect(s).toEqual(snapshot);
   });
 });
