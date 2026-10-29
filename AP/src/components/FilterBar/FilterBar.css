@@ -31,12 +31,155 @@
   gap: var(--space-3);
 }
 
+/* 工具列：搜尋框（左側放大鏡）、天罡／地煞快選 */
+.filter .search {
+  position: relative;
+  flex: 1 1 240px;
+  min-width: 0;
+  max-width: 360px;
+}
+
+.filter .search input {
+  width: 100%;
+  padding: var(--space-4) var(--space-6) var(--space-4) 34px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.filter .search svg {
+  position: absolute;
+  left: var(--space-5);
+  top: 50%;
+  translate: 0 -50%;
+  width: 16px;
+  height: 16px;
+  stroke: var(--ink-2);
+}
+
+.filter .tog {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-7);
+  font-size: var(--text-md);
+}
+
+.filter .tog[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.filter .tog .dot {
+  display: inline-block;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: 50%;
+  margin-right: var(--space-3);
+  vertical-align: 1px;
+}
+
+.filter .label {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  letter-spacing: .08em;
+}
+
+/* 角色 chip（pick ＋ info）；已選 .on 外框與底色換 accent */
+.filter .chip {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.filter .chip .pick {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: none;
+  padding: 3px var(--space-5) 3px 3px;
+}
+
+.filter .chip .nm {
+  font-size: var(--text-base);
+}
+
+.filter .chip .nk {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+
+.filter .chip .info {
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: none;
+  padding: 0 9px;
+  align-self: stretch;
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  font-family: var(--f-display);
+}
+
+.filter .chip.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.filter .chip.on .info {
+  border-color: var(--accent);
+}
+
+.filter .empty-note {
+  color: var(--ink-2);
+  font-size: var(--text-md);
+  padding: var(--space-3) 0;
+}
+
 .filter .sel {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
   min-height: 30px;
+}
+
+/* 已選列：標籤（姓名 ＋ ×）與「清除全部」 */
+.filter .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-pill);
+  padding: 3px var(--space-2) 3px var(--space-5);
+  font-size: var(--text-md);
+}
+
+.filter .tag button {
+  border: 0;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  color: inherit;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+  padding: 0;
+}
+
+.filter .link {
+  border: 0;
+  background: none;
+  color: var(--accent);
+  padding: var(--space-1) var(--space-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: var(--text-md);
 }
 
 .filter .bar {
