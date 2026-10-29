@@ -1,0 +1,47 @@
+/*
+ * 頁首（Prototype `.wrap`、`.mast`、`.seal`、`.mast h1`、`.mast p`）。
+ * 數值取自 tokens.css；印章 46px／17px／內距 3px、站名字距 .06em、副標字距 .04em 無對應 token，保留字面值。
+ */
+.mast {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-8);
+  max-width: var(--size-page-max);
+  margin: 0 auto;
+  padding-block: var(--space-10) var(--space-5);
+  padding-left: max(var(--space-8), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--space-8), env(safe-area-inset-right, 0px));
+}
+
+.seal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  padding: 3px;
+  border: 2px solid var(--seal);
+  border-radius: var(--radius-sm);
+  color: var(--seal);
+  font-family: var(--f-display);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.mast h1 {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-display);
+  letter-spacing: .06em;
+  text-wrap: balance;
+}
+
+.mast p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: var(--text-md);
+  letter-spacing: .04em;
+}

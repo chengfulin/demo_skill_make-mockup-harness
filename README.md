@@ -75,3 +75,12 @@ make-mockups/shuihu-timeline/
 3. 讀 [`storyboard.md`](make-mockups/shuihu-timeline/storyboard.md)，看需求怎麼寫成「可以直接轉成 Mockup」的 User Story。
 4. 比較 [`reviews/v1-consistency.md`](make-mockups/shuihu-timeline/reviews/v1-consistency.md) 與 v2 的 Story Board，看檢核結果怎麼回寫成新版需求。
 5. 讀 [`handoff/v2/index.md`](make-mockups/shuihu-timeline/handoff/v2/index.md)，看 Mockup 定稿後怎麼打包交接給開發。
+
+## SDD 導入宣告
+
+| 項目 | 值 |
+|------|-----|
+| 目前導入階段 | 第 1 階段（對齊基礎）|
+| 服務風險分級 | 未分級（階段一）；POC，依對照表初判 Experimental |
+| 應用類型 | 前端網頁應用 |
+| 憲章基線 | chengfulin/sdd-baseline v5.6.0@4a4b2be |

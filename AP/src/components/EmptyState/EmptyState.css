@@ -1,0 +1,40 @@
+/*
+ * 空狀態（Prototype `.empty`、`.empty h3`、`.primary`；地圖覆蓋層為 S5 的 inline style）。
+ * LoadState 沿用本檔類別（ui-contracts「載入狀態」）。
+ * 數值取自 tokens.css（按鈕上下內距 9px 無 token，保留字面值）；Prototype 的 `p` 保留瀏覽器預設 1em 上下邊界，base.css 已歸零，故於此補回。
+ */
+.empty {
+  padding: var(--space-12) var(--space-8);
+  text-align: center;
+  color: var(--ink-2);
+}
+
+.empty h3 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--f-display);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-xl);
+  color: var(--ink);
+}
+
+.empty p {
+  margin-block: 1em;
+}
+
+.empty .primary {
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 9px var(--space-7);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: var(--text-base);
+}
+
+/* 地圖／關係圖全部淡出時覆蓋在圖上（父層需為定位容器） */
+.empty-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+}

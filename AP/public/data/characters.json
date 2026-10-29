@@ -1,0 +1,353 @@
+[
+  {
+    "id": "songjiang",
+    "name": "宋江",
+    "nickname": "及時雨（座次綽號：呼保義）",
+    "nicknames": [
+      "及時雨",
+      "呼保義"
+    ],
+    "group": "天罡",
+    "star": "天魁星",
+    "rank": 1,
+    "firstChapter": 18,
+    "joinChapter": 41,
+    "fateChapter": 120,
+    "fate": "受招安後任楚州安撫使，飲高俅、楊戩等所賜藥酒中毒而死，葬楚州蓼兒洼",
+    "avatar": "宋"
+  },
+  {
+    "id": "lujunyi",
+    "name": "盧俊義",
+    "nickname": "玉麒麟",
+    "nicknames": [
+      "玉麒麟"
+    ],
+    "group": "天罡",
+    "star": "天罡星",
+    "rank": 2,
+    "firstChapter": 61,
+    "joinChapter": 67,
+    "fateChapter": 120,
+    "fate": "御膳中被高俅、楊戩暗下水銀，乘船回廬州途中醉後失足落淮河而死",
+    "avatar": "盧"
+  },
+  {
+    "id": "wuyong",
+    "name": "吳用",
+    "nickname": "智多星",
+    "nicknames": [
+      "智多星"
+    ],
+    "group": "天罡",
+    "star": "天機星",
+    "rank": 3,
+    "firstChapter": 14,
+    "joinChapter": 20,
+    "fateChapter": 120,
+    "fate": "與花榮同到蓼兒洼宋江墳前自縊而死",
+    "avatar": "吳"
+  },
+  {
+    "id": "gongsunsheng",
+    "name": "公孫勝",
+    "nickname": "入雲龍",
+    "nicknames": [
+      "入雲龍"
+    ],
+    "group": "天罡",
+    "star": "天閒星",
+    "rank": 4,
+    "firstChapter": 15,
+    "joinChapter": 20,
+    "fateChapter": 110,
+    "fate": "征王慶後、宋江還京時依羅真人囑咐拜別眾人，回薊州從師學道、侍養老母",
+    "avatar": "公"
+  },
+  {
+    "id": "linchong",
+    "name": "林沖",
+    "nickname": "豹子頭",
+    "nicknames": [
+      "豹子頭"
+    ],
+    "group": "天罡",
+    "star": "天雄星",
+    "rank": 6,
+    "firstChapter": 7,
+    "joinChapter": 11,
+    "fateChapter": 119,
+    "fate": "征方臘後染風病癱瘓，留杭州六和寺由武松看視，半載後亡",
+    "avatar": "林"
+  },
+  {
+    "id": "luzhishen",
+    "name": "魯智深",
+    "nickname": "花和尚",
+    "nicknames": [
+      "花和尚"
+    ],
+    "group": "天罡",
+    "star": "天孤星",
+    "rank": 13,
+    "firstChapter": 3,
+    "joinChapter": 58,
+    "fateChapter": 119,
+    "fate": "生擒方臘後，於杭州六和寺聽潮信坐化",
+    "avatar": "魯"
+  },
+  {
+    "id": "wusong",
+    "name": "武松",
+    "nickname": "行者",
+    "nicknames": [
+      "行者"
+    ],
+    "group": "天罡",
+    "star": "天傷星",
+    "rank": 14,
+    "firstChapter": 22,
+    "joinChapter": 58,
+    "fateChapter": 119,
+    "fate": "征方臘時被包道乙砍斷左臂，後於六和寺出家，八十善終",
+    "avatar": "武"
+  },
+  {
+    "id": "yangzhi",
+    "name": "楊志",
+    "nickname": "青面獸",
+    "nicknames": [
+      "青面獸"
+    ],
+    "group": "天罡",
+    "star": "天暗星",
+    "rank": 17,
+    "firstChapter": 12,
+    "joinChapter": 58,
+    "fateChapter": 119,
+    "fate": "征方臘途中患病寄留丹徒縣，後病故葬於當地",
+    "avatar": "志"
+  },
+  {
+    "id": "likui",
+    "name": "李逵",
+    "nickname": "黑旋風",
+    "nicknames": [
+      "黑旋風"
+    ],
+    "group": "天罡",
+    "star": "天殺星",
+    "rank": 22,
+    "firstChapter": 38,
+    "joinChapter": 41,
+    "fateChapter": 120,
+    "fate": "被宋江召至楚州同飲藥酒，回潤州後毒發身亡，遺囑與宋江同葬蓼兒洼",
+    "avatar": "李"
+  },
+  {
+    "id": "yanqing",
+    "name": "燕青",
+    "nickname": "浪子",
+    "nicknames": [
+      "浪子"
+    ],
+    "group": "天罡",
+    "star": "天巧星",
+    "rank": 36,
+    "firstChapter": 61,
+    "joinChapter": 67,
+    "fateChapter": 119,
+    "fate": "征方臘後勸盧俊義歸隱不成，拜辭後挑金珠不知所往",
+    "avatar": "燕"
+  },
+  {
+    "id": "chaogai",
+    "name": "晁蓋",
+    "nickname": "托塔天王",
+    "nicknames": [
+      "托塔天王"
+    ],
+    "group": "其他",
+    "star": null,
+    "rank": null,
+    "firstChapter": 14,
+    "joinChapter": 20,
+    "fateChapter": 60,
+    "fate": "攻打曾頭市時中史文恭毒箭，回山寨後身亡（不在一百單八將之列）",
+    "avatar": "晁"
+  },
+  {
+    "id": "huarong",
+    "name": "花榮",
+    "nickname": "小李廣",
+    "nicknames": [
+      "小李廣"
+    ],
+    "group": "天罡",
+    "star": "天英星",
+    "rank": 9,
+    "firstChapter": 33,
+    "joinChapter": 35,
+    "fateChapter": 120,
+    "fate": "與吳用同在蓼兒洼宋江墳前自縊而死",
+    "avatar": "花"
+  },
+  {
+    "id": "chaijin",
+    "name": "柴進",
+    "nickname": "小旋風",
+    "nicknames": [
+      "小旋風"
+    ],
+    "group": "天罡",
+    "star": "天貴星",
+    "rank": 10,
+    "firstChapter": 9,
+    "joinChapter": 54,
+    "fateChapter": 120,
+    "fate": "見戴宗納還官誥、阮小七遭追奪官誥，亦託病辭官，回滄州為民",
+    "avatar": "柴"
+  },
+  {
+    "id": "ruanxiaoer",
+    "name": "阮小二",
+    "nickname": "立地太歲",
+    "nicknames": [
+      "立地太歲"
+    ],
+    "group": "天罡",
+    "star": "天劍星",
+    "rank": 27,
+    "firstChapter": 15,
+    "joinChapter": 20,
+    "fateChapter": 116,
+    "fate": "征方臘時於烏龍嶺水戰被撓鉤搭住，怕受辱自刎而亡",
+    "avatar": "二"
+  },
+  {
+    "id": "ruanxiaoqi",
+    "name": "阮小七",
+    "nickname": "活閻羅",
+    "nicknames": [
+      "活閻羅"
+    ],
+    "group": "天罡",
+    "star": "天敗星",
+    "rank": 31,
+    "firstChapter": 15,
+    "joinChapter": 20,
+    "fateChapter": 120,
+    "fate": "因曾穿戴方臘衣冠被追奪官誥，回石碣村打魚奉母，壽至六十",
+    "avatar": "七"
+  },
+  {
+    "id": "daizong",
+    "name": "戴宗",
+    "nickname": "神行太保",
+    "nicknames": [
+      "神行太保"
+    ],
+    "group": "天罡",
+    "star": "天速星",
+    "rank": 20,
+    "firstChapter": 38,
+    "joinChapter": 41,
+    "fateChapter": 120,
+    "fate": "納還官誥，往泰安州嶽廟陪堂出家，數月後大笑而終",
+    "avatar": "戴"
+  },
+  {
+    "id": "shixiu",
+    "name": "石秀",
+    "nickname": "拚命三郎",
+    "nicknames": [
+      "拚命三郎"
+    ],
+    "group": "天罡",
+    "star": "天慧星",
+    "rank": 33,
+    "firstChapter": 44,
+    "joinChapter": 47,
+    "fateChapter": 118,
+    "fate": "隨盧俊義攻昱嶺關，與史進等六人被亂箭射死關下",
+    "avatar": "石"
+  },
+  {
+    "id": "yangxiong",
+    "name": "楊雄",
+    "nickname": "病關索",
+    "nicknames": [
+      "病關索"
+    ],
+    "group": "天罡",
+    "star": "天牢星",
+    "rank": 32,
+    "firstChapter": 44,
+    "joinChapter": 47,
+    "fateChapter": 119,
+    "fate": "征方臘後於杭州發背瘡而死",
+    "avatar": "雄"
+  },
+  {
+    "id": "husanniang",
+    "name": "扈三娘",
+    "nickname": "一丈青",
+    "nicknames": [
+      "一丈青"
+    ],
+    "group": "地煞",
+    "star": "地慧星",
+    "rank": 59,
+    "firstChapter": 48,
+    "joinChapter": 50,
+    "fateChapter": 117,
+    "fate": "征方臘時欲為丈夫王英報仇，被鄭彪以鍍金銅磚打落馬下而死",
+    "avatar": "扈"
+  },
+  {
+    "id": "wangying",
+    "name": "王英",
+    "nickname": "矮腳虎",
+    "nicknames": [
+      "矮腳虎"
+    ],
+    "group": "地煞",
+    "star": "地微星",
+    "rank": 58,
+    "firstChapter": 32,
+    "joinChapter": 35,
+    "fateChapter": 117,
+    "fate": "征方臘時被鄭彪戳死",
+    "avatar": "王"
+  },
+  {
+    "id": "shiqian",
+    "name": "時遷",
+    "nickname": "鼓上蚤",
+    "nicknames": [
+      "鼓上蚤"
+    ],
+    "group": "地煞",
+    "star": "地賊星",
+    "rank": 107,
+    "firstChapter": 46,
+    "joinChapter": 50,
+    "fateChapter": 119,
+    "fate": "征方臘後於杭州感攪腸痧而死",
+    "avatar": "時"
+  },
+  {
+    "id": "gaoqiu",
+    "name": "高俅",
+    "nickname": null,
+    "nicknames": [],
+    "group": "其他",
+    "star": null,
+    "rank": null,
+    "firstChapter": 2,
+    "joinChapter": null,
+    "fateChapter": null,
+    "fate": "書中未受懲處：毒害宋江、盧俊義事後僅被徽宗當朝責罵，俯伏謝罪",
+    "avatar": "高"
+  }
+]

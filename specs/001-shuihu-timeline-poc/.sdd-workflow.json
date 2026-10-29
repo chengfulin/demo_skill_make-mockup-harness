@@ -1,0 +1,95 @@
+{
+  "feature": "001-shuihu-timeline-poc",
+  "steps": {
+    "specify": {
+      "done": true
+    },
+    "clarify": {
+      "done": true,
+      "clarifier_findings": 13
+    },
+    "plan": {
+      "done": true
+    },
+    "tasks": {
+      "done": true
+    },
+    "analyze": {
+      "done": true,
+      "findings": 19,
+      "remediated": 17
+    },
+    "implement": {
+      "done": true,
+      "stories": {
+        "US1": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        },
+        "US2": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        },
+        "US3": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        },
+        "US4": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        },
+        "US5": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        },
+        "US6": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        },
+        "US7": {
+          "validated": true,
+          "reviewed": true,
+          "committed": true
+        }
+      },
+      "parallel_plan": {
+        "mode": "parallel",
+        "mode_reason": "使用者指定：驗證並行波次流程（腳本判定 sequential：greenfield、波次估計加速 1.3x）",
+        "granularity": "task",
+        "basis": "greenfield",
+        "tasks": 146,
+        "conflict_pairs": 1595,
+        "pairs": 10585,
+        "by_type": {
+          "相依": 879,
+          "寫入": 389,
+          "未定": 299,
+          "宣告": 17,
+          "資源": 11
+        },
+        "batches": 51,
+        "max_width": 14,
+        "phases": 10,
+        "waves": 19,
+        "est_speedup": 1.3,
+        "low_conf": [
+          "T059",
+          "T097",
+          "T143",
+          "T144"
+        ],
+        "plan_file": "specs/001-shuihu-timeline-poc/parallel-plan.json"
+      },
+      "waves_done": 19
+    }
+  },
+  "brief": {
+    "artifact_url": "https://claude.ai/artifact/XCfBHQdduHQuWr4iH17CLK"
+  }
+}

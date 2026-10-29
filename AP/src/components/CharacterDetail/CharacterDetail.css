@@ -1,0 +1,118 @@
+/*
+ * S4 角色資料內容（Prototype 身分區 inline style、`.meta`、`.summary`、`.sec h4`、`.elist`、`.rlist`、`.rt`、
+ * `.primary`、`.hint`）。數值取自 tokens.css；無對應 token 者保留字面值並註明：事件回次欄寬 72px、
+ * 小標字距 .12em、行高 1.75、關係鈕頭像 22px（Prototype `.rlist .av`，介於 avatar-sm 與 avatar-md 之間）。
+ * 內容區 `.db` 與 `.db h2` 由 Drawer.css 提供；`.character-detail` 只作為樣式範圍，
+ * 以 display: contents 讓各區塊成為 `.db` grid 的直接子項。
+ */
+.character-detail {
+  display: contents;
+}
+
+/* 身分 */
+.character-detail .cd-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+.character-detail .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-7);
+  font-size: var(--text-md);
+  color: var(--ink-2);
+}
+.character-detail .meta b { color: var(--ink); font-weight: var(--weight-medium); }
+
+.character-detail .sec h4 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: .12em;
+  color: var(--ink-2);
+}
+
+/* 結局（Prototype `.summary` 以 inline 14px 覆寫） */
+.character-detail .summary {
+  max-width: 60ch;
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.75;
+}
+
+/* 只看此角色 */
+.character-detail .primary {
+  justify-self: start;
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 9px var(--space-7);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: var(--text-base);
+}
+
+/* 參與事件 */
+.character-detail .elist {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.character-detail .elist button {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: var(--space-4);
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 5px var(--space-3);
+  background: none;
+  text-align: left;
+}
+.character-detail .elist button:hover { background: var(--paper-2); }
+.character-detail .elist span {
+  padding-top: 1px;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+.character-detail .elist b {
+  font-family: var(--f-display);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+}
+
+/* 人物關係 */
+.character-detail .rlist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.character-detail .rlist button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 3px var(--space-5) 3px var(--space-2);
+  background: var(--paper-2);
+  font-size: var(--text-md);
+}
+.character-detail .rlist .av {
+  width: 22px;
+  height: 22px;
+  font-size: var(--text-sm);
+}
+.character-detail .rt {
+  border: 1px solid currentColor;
+  border-radius: var(--radius-xs);
+  padding: 1px var(--space-3);
+  font-size: var(--text-2xs);
+}
+
+.character-detail .hint {
+  margin: 1em 0; /* Prototype `.hint` 為 p，沿用瀏覽器預設段落間距 */
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
