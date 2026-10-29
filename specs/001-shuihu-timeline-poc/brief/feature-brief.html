@@ -52,6 +52,7 @@ code{font-size:.9em;background:var(--th);padding:1px 4px;border-radius:3px}
 .shots img{display:block;width:100%;height:auto;border-radius:6px;border:1px solid var(--line)}
 .shots figcaption{font-size:.8rem;color:var(--sub);margin-top:4px}
 .tblw{overflow-x:auto;margin:8px 0}
+.mermaid{min-width:600px}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -68,7 +69,7 @@ code{font-size:.9em;background:var(--th);padding:1px 4px;border-radius:3px}
 </svg>
 <main>
 <h1>水滸傳角色事件時間軸（一頁式前端 POC）</h1>
-<div class="meta">001-shuihu-timeline-poc · clarify · 第 1 輪 · 2026-10-29</div>
+<div class="meta">001-shuihu-timeline-poc · plan · 第 1 輪 · 2026-10-29</div>
 <div class="note">本頁為理解參照；spec.md 為唯一權威，兩者不一致時以 spec 為準</div>
 
 <h2>一、看懂它</h2>
@@ -146,11 +147,11 @@ code{font-size:.9em;background:var(--th);padding:1px 4px;border-radius:3px}
     <text x="410" y="232" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">結果數即時更新</text>
     <rect x="580" y="40" width="260" height="140" rx="12" fill="var(--green-soft)" stroke="var(--green)" stroke-width="3"/>
     <use href="#check" x="595" y="70" width="60" height="60" color="var(--green)"/>
-    <text x="670" y="95" font-size="18" font-weight="900" fill="var(--green)">79 條驗收情境</text>
+    <text x="670" y="95" font-size="18" font-weight="900" fill="var(--green)">80 條驗收情境</text>
     <g font-size="16" fill="var(--ink)"><text x="670" y="124">全數通過</text><text x="670" y="150">才算完成</text></g>
     <text x="710" y="215" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">怎麼算成功</text>
   </svg></div>
-  <p class="cap">成功＝<b>79 條驗收情境全數通過</b>（驗收原文 18＋Prototype 操作 42＋spec 補充 19）；本站為展示／學習性質，無量化指標。<small>來源：Success Criteria SC-001、Clarifications PM 補問 Q1</small></p>
+  <p class="cap">成功＝<b>80 條驗收情境全數通過</b>（驗收原文 18＋Prototype 操作 42＋spec 補充 20）；本站為展示／學習性質，無量化指標。<small>來源：Success Criteria SC-001、Clarifications PM 補問 Q1</small></p>
 </section>
 
 <h3>流程圖：訪客的主要操作</h3>
@@ -183,7 +184,30 @@ code{font-size:.9em;background:var(--th);padding:1px 4px;border-radius:3px}
   <li>人物與大節篩選在三種看法間共用並保留（<b>大節也作用於關係圖</b>，D-1）；網址只記「目前是哪個看法」，不記篩選。<small>FR-004、FR-005、FR-019</small></li>
   <li>所有資料來自隨站台發布的靜態檔（22 角色、54 事件、12 大節、13 關係、32 地點）。<small>FR-021、來源缺口 G-1</small></li>
 </ul>
-<div class="note"><b>釐清已定案：</b>前輪標記的 K1／K2／K4 已於本輪定案，分別為 D-2（狀態條邊界）、D-1（大節篩選作用於關係圖）、D-3（搜尋 Enter 只選取）；詳見「二、本輪變更」。</div>
+<h3>架構圖：資料怎麼流到畫面（plan）</h3>
+<div class="box"><div class="mermaid">
+flowchart LR
+  J[("public/data<br/>6 個靜態 JSON")]
+  D["data 資料存取層<br/>讀檔、驗證、建索引"]
+  P["DatasetProvider<br/>loading／error／ready"]
+  S["AppStateProvider<br/>Context + useReducer"]
+  H["useHashView<br/>網址 hash 記視圖"]
+  C["containers 容器<br/>讀狀態、組裝畫面"]
+  DM["domain 純函式<br/>篩選、狀態、版面"]
+  U["components 展示元件<br/>時間軸、SVG 地圖、SVG 關係圖、面板"]
+  F["Google Fonts<br/>失敗退回系統字型"]
+  J -->|"fetch ×6"| D --> P --> C
+  S --> C
+  H <--> S
+  C -->|"呼叫"| DM
+  C -->|"props／callback"| U
+  F -.-> U
+</div></div>
+<ul>
+  <li>資料只經 data 層：一次讀六個靜態檔，任一檔讀失敗或驗證不過就整體失敗，不顯示部分資料。<small>FR-021、FR-022；plan「資料存取層」</small></li>
+  <li>業務規則與版面計算全在不依賴 React 的 domain 純函式；容器接線，元件只負責畫。<small>§CP-4、§FE-4；plan「元件分層」</small></li>
+  <li>篩選結果不存進狀態、由 selector 即時算出；網址 hash 只記目前視圖，不記篩選。<small>FR-004、FR-005；plan「狀態」「路由」</small></li>
+</ul>
 
 <h3>七個 User Story 一覽</h3>
 <div class="tblw"><table>
@@ -222,99 +246,110 @@ code{font-size:.9em;background:var(--th);padding:1px 4px;border-radius:3px}
 <figure><img loading="lazy" alt="S6-03 點節點開角色資料 · US7" src="data:image/jpeg;base64,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AooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAKrOzHjpSo5ztNNKlDinRqS249KoRZoooqRhRRRQAUUUUAFFFFABRRRQAUUUUAFQz7/LwnUkDn0J5/SpqhkDmWMKeBkt+WB+poGtyaiiigQUUUUAFFFFADcEdKUHNLSEdxQAtFID2paACmtTqa1AGhobZvnHYIf5iuqY7VLHtzXKaGpF857FD/ADFdYQGBU8g8UMZVN7AFDHPOO3qMirKsHUOOhGR+NQvbQOdzLkn+nFTKoRQq9AMCgB1RyypDGZJDhRj9TipKhnhWeIxMSAfSgCi2r2axJKScP0456A/1px1S0E/kZOfXHHTNRSaNayqqyliFyB2xkYqQaZEJBJuOQuz8MY/lQAn9r2flvLk4Tbnj+90qQanaFUfcQJOnH1/wpn9k2mxkwcNjP4DFA0u3VERSwEYAXHbHIP50AaVLSUtABRRRQAUUUUAFFFFABRRRQAUUUUAf/9Dqf8RU9Qf4ip6QgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBhJoBbPtT6KACiiigAooooAKKKKACiiigAooooAKKKKACoVVjOz54ChQPfkn+lYuoeIrSxkMCgyOOuOgqLS9etLqVonyjyNkbunpj9KLPcpLodLRRRQSFFFFABRRRQAUUUUAIRmkzjg06igAprUcj6UHmgDT0X/j8b/cP8xXSysyRM6DJAyBXNaL/wAfbf7h/mK6mgZkm9usDMeCcfyrSiYvGrtwSATUlFABVa7leG2klTG5VJGfarNIQGGGGR70AYbanNHBHIyhmO8t2xs4x+f6VOdTVZdpHtjvnOP5VpeVGRgoPypTHGTkqM/SgDmbfWry4tmnEY++FXAz1zW3p1xLdWaTzDDNnjGOM8VbCIoCqAAOwpwAAwKAFooooAKKKKACiiigAooooAKKKKACiiigD//R6n/EVPUH+IqekIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooqKViF470AP3L60uapcfjVmIlhz2p2AlooopAFFFFABRRRQAUUUUAFFFFABUU7MkEjJ94KSPripaKBo8gtUSeVvPP8LHJ9cUl0scNx/o54ABBHrium1Tw4yzmWyYYc/cJxjPp7Uul+G2M4lvWUhOdgOc/Wt/aLlI9m+fmu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"><figcaption>S6-03 點節點開角色資料 · US7</figcaption></figure>
 </div>
 
-<h2>二、本輪變更（clarify · 第 1 輪）</h2>
-<div class="note">本輪釐清 3 項裁決（K2／K1／K4 → D-1／D-2／D-3）、2 項依 StoryBoard 明文補齊、1 項依 Prototype 操作結果補齊；新增 AC-S12～AC-S19 共 8 條，驗收總數由 71 條增為 <b>79 條</b>（AC 18＋AC-P 42＋AC-S 19）。</div>
+<h2>二、本輪變更（plan · 第 1 輪）</h2>
+<div class="note">技術選型已由使用者確認；偏離 tech-standards 4 項（皆 SHOULD 層級，無憲章 MUST 例外）；spec 偏離登記新增 D-4、D-5（plan 階段操作 Prototype 發現）。驗收總數維持 <b>80 條</b>（AC 18＋AC-P 42＋AC-S 20）。</div>
+
+<h3>技術選型</h3>
 <div class="tblw"><table>
-<tr><th>小節</th><th>變更前</th><th>變更後</th><th>影響 story</th></tr>
-<tr><td>D-1／G-9／FR-004／FR-019（K2）</td><td>關係圖忽略大節篩選（Prototype 現況；交接建議沿用）</td><td>依 StoryBoard 全域規則 1：關係圖也套大節篩選；在該大節沒有參與事件的角色淡出，並與角色篩選的一層關係取交集；Prototype 需同步修改</td><td>US7（AC-S18）、US3、US1（切換保留）</td></tr>
-<tr><td>D-2／FR-013／Edge Cases（K1）</td><td>StoryBoard 邊界 1（末段為已上梁山）與邊界 2 矛盾，收錄資料中從不成立</td><td>刪邊界 1；有結局回即從該回起為「已死亡或離散」，無結局回者維持最後狀態</td><td>US5（AC-S16）</td></tr>
-<tr><td>D-3／FR-009（K4）</td><td>Prototype：Enter 遇已選會改為取消；StoryBoard 只寫「選取」</td><td>Enter 只選取、不取消；已選時與無符合時皆不動作（原次要疑點「Enter 無符合」一併定案）</td><td>US2（AC-S19）</td></tr>
-<tr><td>FR-005／FR-014（H1、H2）</td><td>「資料」圖示入口、三視圖常駐區塊無對應驗收</td><td>依 StoryBoard 明文：點「資料」圖示開角色資料且不改選取；篩選區與視圖切換三視圖皆可見</td><td>US5（AC-S12）、US1（AC-S13）</td></tr>
-<tr><td>G-6 撤銷／FR-012／FR-014／FR-020</td><td>400px 下地圖、關係圖、面板呈現列為來源缺口</td><td>確認 Prototype 已定義（≤720px 全寬底部抽屜、地圖與關係圖縮放），G-6 撤銷，依 Prototype 實作</td><td>US1（AC-S6）、US4、US5、US6、US7</td></tr>
-<tr><td>FR-007／012／016／019、Edge Cases（Prototype 操作結果）</td><td>多處文案與邊角行為未寫</td><td>補「（無收錄角色）」「已在篩選中」「（無法在示意地圖上定位）」、首尾「已是第一個／最後一個」、無或無效 hash 進時間軸、行跡順序號、已選節點不顯示「＋」</td><td>US1（AC-S17）、US4（AC-S15）、US6、US7</td></tr>
-<tr><td>錨點慣例（G-8）／範圍對照／G-7 補註</td><td>index.md 未列全域規則與資料關聯；US5 未對到 S1</td><td>以 AGENTS.md 錨點表解析；US5 補 S1；G-7 註記需回寫 SA 追認</td><td>全部 story（僅錨點，行為不變）、US5</td></tr>
-<tr><td>SC-001～SC-004</td><td>SC-001 為 71 條；SC-003 只寫「一致（像素差異不計）」；SC-004 要求四種瀏覽器最新兩版皆驗</td><td>SC-001 為 79 條；SC-003 以 21 張截圖逐張檢核區塊順序、相對位置、逐字文案、狀態標籤；SC-004 縮為 Chrome 最新版全驗，其餘瀏覽器最新版以展示 6 步抽驗</td><td>全部 story</td></tr>
+<tr><th>項目</th><th>選用</th><th>理由或備註</th><th>出處</th></tr>
+<tr><td>框架與建置</td><td>React 19 + TypeScript，Vite 8 純靜態一頁式 SPA；程式全放專案根 <code>AP/</code>（自成 npm 專案）</td><td>使用者指定；不引入元件庫、圖表／地圖套件、路由與狀態管理套件。TypeScript 7.x，工具鏈不相容時退回 5.9</td><td>plan Technical Context、R1</td></tr>
+<tr><td>狀態與網址</td><td>Context + useReducer；資料與 UI 狀態分兩個 Provider；自寫 <code>useHashView</code></td><td>狀態量小；reducer 只呼叫純函式</td><td>R2、R3</td></tr>
+<tr><td>地圖與關係圖</td><td>手寫 SVG，照 Prototype 固定座標、投影、環序；版面計算放 domain</td><td>固定排版才能對上截圖；排除 Leaflet、D3-force、Cytoscape</td><td>R4、FR-015～FR-019</td></tr>
+<tr><td>資料</td><td>6 個靜態 JSON；轉換腳本一次性自 Prototype 內嵌資料轉出</td><td>驗證失敗視同載入失敗</td><td>R5、FR-021、FR-022</td></tr>
+<tr><td>視覺</td><td>設計系統模式 B：萃取 token（淺／深兩套），不用元件庫；沿用 Google Fonts 並保留系統字型退路</td><td>token 命名方式見判斷點 1</td><td>research「設計 token」、R8</td></tr>
+<tr><td>測試</td><td>Vitest + React Testing Library 測純函式與元件；Playwright 測 AC 並做 21 個截圖狀態的 Prototype 並列比對（Chrome）；Safari／Firefox 手動抽驗</td><td>ISP 採 Experimental 主要流程範圍、Base Choice</td><td>R6、SC-003、SC-004</td></tr>
+<tr><td>設定與部署</td><td><code>VITE_BASE_PATH</code>、<code>VITE_DATA_BASE_URL</code>（皆非機密）；建置 <code>dist/</code> 發布靜態網站</td><td>符合 §CP-3、§FE-3</td><td>R7、quickstart</td></tr>
 </table></div>
 
-<h3>漣漪：新增驗收落在哪些 story</h3>
+<h3>偏離 tech-standards</h3>
 <div class="tblw"><table>
-<tr><th>Story</th><th>本輪新增 AC</th><th>受動的 FR</th></tr>
-<tr><td>US1</td><td>AC-S13、AC-S17（AC-S6 改寫為窄螢幕全貌）</td><td>FR-005、FR-020</td></tr>
-<tr><td>US2</td><td>AC-S19</td><td>FR-009（G-7 待追認）</td></tr>
-<tr><td>US3</td><td>AC-S14</td><td>FR-011；並因 D-1 成為關係圖的篩選來源</td></tr>
-<tr><td>US4</td><td>AC-S15</td><td>FR-012</td></tr>
-<tr><td>US5</td><td>AC-S12、AC-S16</td><td>FR-013、FR-014</td></tr>
-<tr><td>US6</td><td>無新增</td><td>FR-015、FR-016（文案與窄螢幕）</td></tr>
-<tr><td>US7</td><td>AC-S18</td><td>FR-019（D-1／G-9）</td></tr>
+<tr><th>項目</th><th>規範建議</th><th>本 feature</th><th>理由</th></tr>
+<tr><td>前端框架（§FE-1）</td><td>Vue 3 + Nuxt 3</td><td>React 19 + TypeScript + Vite</td><td>使用者指定 React + TypeScript，驗證 SDD 流程用 POC；純靜態一頁式不需 Nuxt 路由與 runtimeConfig</td></tr>
+<tr><td>共用狀態</td><td>Pinia</td><td>Context + useReducer</td><td>隨框架改變；狀態只有一組篩選與 UI 狀態</td></tr>
+<tr><td>元件測試</td><td>Vitest + Vue Test Utils</td><td>Vitest + React Testing Library</td><td>隨框架改變</td></tr>
+<tr><td>安全標頭與 CSP（§FE-2）</td><td>production 具安全標頭、導入 CSP</td><td>依 Experimental 預設豁免；index.html 以 meta CSP 限 self＋Google Fonts</td><td>GitHub Pages 無法自訂回應標頭</td></tr>
 </table></div>
+
+<h3>spec 本輪新增偏離（偏離登記 D-4、D-5）</h3>
+<div class="tblw"><table>
+<tr><th>ID</th><th>來源矛盾</th><th>spec 處置</th><th>驗收影響</th></tr>
+<tr><td>D-4</td><td>Prototype S6 圖例說明「；未選角色時以宋江為中心」只在第一次畫圖時決定（S6-03 已選林沖仍顯示）</td><td>依目前狀態切換：未選角色顯示全句，已選角色只顯示前半句</td><td>無新增 AC；S6-03 並列的圖例說明與原圖不同，不計為不一致（SC-003）</td></tr>
+<tr><td>D-5</td><td>Prototype 搜尋比對整段綽號字串，輸入「座次」「綽號」也找到宋江；StoryBoard 為「依姓名或綽號」</td><td>只比對姓名與綽號清單，說明字不列入；角色資料面板仍原樣顯示</td><td>無新增 AC（FR-009 已涵蓋）</td></tr>
+</table></div>
+<p class="meta">D-4、D-5 的「回寫來源」皆為「是」，須回寫 SA 追認（與 D-1～D-3、G-7、G-8 同批），不列判斷點。</p>
 
 <h2>三、工程師要決定的事</h2>
-<h3>本輪裁決（clarify review 2026-10-29）</h3>
+<h3>本輪裁決（plan review 2026-10-29）</h3>
 <div class="tblw"><table>
 <tr><th>#</th><th>問題</th><th>裁決</th><th>落點</th></tr>
-<tr><td>1</td><td>關係圖選了大節、已選角色在該大節沒有事件時，本人也淡出嗎</td><td>一律淡出；全部淡出時顯示與時間軸相同的空狀態與「清除篩選」</td><td>G-9、FR-019、AC-S20（驗收共 80 條）</td></tr>
-<tr><td>2</td><td>「選了大節的關係圖」沒有截圖，視覺基準怎麼處理</td><td>維持 21 張截圖；AC-S18、AC-S20 以文字條件驗收，淡出沿用 S6-02 樣式</td><td>G-9、SC-003</td></tr>
+<tr><td>P3</td><td>設計 token 命名</td><td>混合命名：Prototype 有原名者（色彩、陰影共 22 個，如 <code>--paper</code>、<code>--seal</code>）沿用原名；無原名者（師徒關係色、遮罩、字型、字級、間距、圓角、尺寸）依用途命名；符合權威劃分第 4 條，不需例外</td><td>research「設計 token」、ui-contracts</td></tr>
+<tr><td>P4</td><td>D-4、D-5 補驗收條件</td><td>各補 1 條：AC-S21（輸入「座次」找不到角色）、AC-S22（已選林沖時圖例不含宋江中心句）；驗收共 <b>82 條</b></td><td>spec US2、US7、SC-001</td></tr>
+<tr><td>P5</td><td>載入中／載入失敗文案</td><td>接受開發端自訂文案，只記在 ui-contracts；AC-S4、AC-S5 不綁字面</td><td>ui-contracts「載入狀態」</td></tr>
 </table></div>
 <details><summary>當時提出的判斷點與方案</summary>
 <div class="tblw"><table>
 <tr><th>#</th><th>問題</th><th>方案（建議標 ★）</th><th>影響</th><th>出處</th></tr>
-<tr><td>1</td><td>關係圖選了大節、又選了在該大節沒有事件的角色（例：大節「誤走妖魔・魯智深與林沖」＋王英，同 AC-P13）時，已選角色本人也淡出嗎？G-9 字面讀法是「不符合者淡出」，但 FR-019 又以已選角色為中心；AC-S18 只涵蓋未選角色</td><td>★A 照 G-9 字面：不符者一律淡出，全數淡出時沿用時間軸的「沒有符合條件的事件」與「清除篩選」，與時間軸同一結果<br>B 已選角色永不淡出，只過濾其一層鄰居<br>C 已選角色不符大節時關係圖忽略大節篩選</td><td>A、B 都要補 AC（已選角色＋大節）；A 另需定義關係圖空狀態（Prototype 沒有）；B 時結果數 0 但中心仍清楚，與時間軸訊號不一致；C 違反 D-1</td><td>G-9、FR-019、AC-S18</td></tr>
-<tr><td>2</td><td>D-1 要求 Prototype 同步修改，但 21 張截圖沒有「選大節的關係圖」，SC-003 的視覺基準怎麼辦？</td><td>★A 維持 21 張；AC-S18 以文字條件驗收，淡出沿用 S6-02 既有樣式<br>B 請 Prototype 補第 22 張 S6 截圖並納入 SC-003<br>C 待 Prototype 修改完成再實作關係圖的大節作用</td><td>B 需 SA／設計端產圖並走來源升版（sha256 重鎖）；C 延後 US7 的 D-1 部分；A 由實作端自行呈現</td><td>D-1、SC-003、AC-S18</td></tr>
+<tr><td>1</td><td>設計 token 命名：spec 權威劃分第 4 條（模式 B）寫「命名沿用 Prototype」，plan 改採「依用途命名（如 <code>--color-bg-page</code>）並附 Prototype 原名欄（<code>--paper</code>）」，兩者衝突，怎麼收斂？</td><td>A 全部改回 Prototype 原名；但 Prototype 只有 23 個 CSS 變數（色彩、字型、陰影），間距、圓角、字級、尺寸本來就無原名，仍須另取名<br>B 維持依用途命名，並在 spec「權威劃分例外」登記 X-1（提出者與裁決日期須填）<br>★C 混合：有原名者（色彩、字型、陰影）沿用原名，無原名者（間距、圓角、字級、尺寸）依用途新命名；字面符合第 4 條，不需例外</td><td>A、C 要改 research.md 的 token 表與 ui-contracts 引用的 token 名，spec 不動；B 改 spec、plan 不動，但程式內 token 名與 Prototype 對不上，靠對照欄維護</td><td>權威劃分第 4 條、權威劃分例外；research「設計 token」</td></tr>
+<tr><td>2</td><td>D-4（圖例說明依狀態切換）、D-5（搜尋不比對「座次綽號」說明字）spec 登記為「無新增 AC」：D-4 只被並列比對 #20／#21 的 DOM 斷言涵蓋，D-5 沒有 E2E；要補驗收條件嗎？</td><td>★A 各補 1 條 AC-S（D-5：輸入「座次」找不到宋江；D-4：已選林沖進關係圖，圖例不含「未選角色時以宋江為中心」），SC-001 由 80 增為 82 條<br>B 維持無 AC，D-5 只由 Vitest 的搜尋純函式把關</td><td>A 改 spec（US2、US7 各 +1、SC-001），tasks 多 2 條 E2E，簡報與盤點總數變 82；B 不動 spec，但改變搜尋結果的業務規則（D-5）無驗收條件</td><td>D-4、D-5、FR-009、FR-019、SC-001</td></tr>
+<tr><td>3</td><td>載入中／載入失敗文案（「資料載入中…」「資料載入失敗，請稍後再試。」按鈕「重試」）為開發端依 G-4 自訂，spec 只寫「載入提示」「錯誤訊息與重試入口」，是否接受？</td><td>★A 接受，文案只記在 ui-contracts（權威劃分第 5 條；AC-S4、AC-S5 不綁字面）<br>B 把逐字文案寫進 G-4／FR-022，成為驗收字面</td><td>A 不動 spec；B 改 spec，E2E 改斷言字面；兩者都無 Prototype 畫面可對照</td><td>G-4、FR-022、AC-S4、AC-S5；ui-contracts「載入狀態」</td></tr>
 </table></div>
-<p class="meta">候選僅 2 個，不湊數。兩點皆影響 US7 的驗收是否寫得完整；其餘疑點見文末「次要疑點」。</p>
+<p class="meta">spec 未定義項（載入文案）已與其他候選同列排序。其餘疑點見文末「次要疑點」。</p>
 </details>
 
 <h3>驗收條件盤點</h3>
-<div class="note">spec 共 <b>79 條</b>驗收情境（US1:14、US2:23、US3:6、US4:7、US5:8、US6:13、US7:8）。可驗證＝輸入、預期輸出與資料樣本明確；前輪「缺」項中，地煞快選、快選互動、全部大節、重疊錯開、「+N」、深色、載入中／失敗、同點合併、400px 各視圖皆已補成 AC-S。</div>
+<div class="note">spec 共 <b>80 條</b>驗收情境（US1:14、US2:23、US3:6、US4:7、US5:8、US6:13、US7:9）。可驗證＝輸入、預期輸出與資料樣本明確。</div>
 <div class="tblw"><table>
 <tr><th>Story</th><th>可驗證</th><th>不可驗證／缺（出處）</th></tr>
-<tr><td>US1</td><td class="ok">13／14</td><td class="no">條件式：AC-S6「縮放在寬度內」未寫量測方式（FR-020）</td></tr>
-<tr><td>US2</td><td class="ok">23／23（含 AC-S7～S9、S19）</td><td>無；AC-P10 的前提為只選天罡（G-7）</td></tr>
+<tr><td>US1</td><td class="ok">13／14</td><td class="no">條件式：AC-S6「縮放在寬度內」未寫量測方式（FR-020）；AC-S4、AC-S5 的載入文案 spec 未定義（G-4，判斷點 3）</td></tr>
+<tr><td>US2</td><td class="ok">23／23（含 AC-S7～S9、S19）</td><td>無；AC-P10 的前提為只選天罡（G-7）。D-5 無對應 AC（判斷點 2）</td></tr>
 <tr><td>US3</td><td class="ok">6／6（含 AC-S14）</td><td>無</td></tr>
-<tr><td>US4</td><td class="ok">7／7（含 AC-S15）</td><td class="no">缺：點名字開角色資料、點地點在事件不在篩選結果或無法定位時的行為（FR-012）；「已是第一個／最後一個」文案見次要疑點</td></tr>
+<tr><td>US4</td><td class="ok">7／7（含 AC-S15）</td><td class="no">缺：點名字開角色資料、點地點在事件不在篩選結果或無法定位時的行為（FR-012）</td></tr>
 <tr><td>US5</td><td class="ok">8／8（含 AC-S12、S16）</td><td class="no">缺：三節點（登場、上梁山、結局）標示、參與事件點擊開明細（FR-014）；AC-S16 的結局回數字取自資料檔，spec 未寫</td></tr>
-<tr><td>US6</td><td class="ok">11／13</td><td class="no">條件式：AC-16、AC-P37「標籤互不重疊」未定義量測方式；缺：刻度顯示目前篩選範圍（FR-018）</td></tr>
-<tr><td>US7</td><td class="ok">8／8（含 AC-S18）</td><td class="no">缺：已選角色＋大節（判斷點 1）；已選兩位以上的居中排版、節點依星號分色（FR-019）</td></tr>
+<tr><td>US6</td><td class="ok">11／13</td><td class="no">條件式：AC-16、AC-P37「標籤互不重疊」spec 未定義量測方式（plan 僅對山東放大以外框兩兩不相交斷言）；缺：刻度顯示目前篩選範圍（FR-018）</td></tr>
+<tr><td>US7</td><td class="ok">9／9（含 AC-S18、S20）</td><td class="no">缺：已選兩位以上的居中排版、節點依星號分色（FR-019）；D-4 圖例切換無 AC（判斷點 2）</td></tr>
 <tr><td>全站</td><td class="ok">AC-P41、P42、S3～S6</td><td class="no">缺：不做防劇透（FR-023）無對應條件</td></tr>
 </table></div>
 
 <h3>tech-standards 缺漏或變更</h3>
 <div class="tblw"><table>
 <tr><th>項目</th><th>狀況</th></tr>
-<tr><td>本輪變更</td><td>無。仍待 plan 階段：前端框架（規範建議 Vue 3 + Nuxt 3，本功能為純靜態 POC）、地圖與關係圖繪製方式、設計系統（來源 B 模式）、靜態資料檔格式</td></tr>
-<tr><td>來源回寫</td><td>D-1～D-3、G-7、G-8 皆待回寫 SA；StoryBoard／Prototype 修訂後需走「來源升版」重鎖 sha256（非技術規範，屬流程風險）</td></tr>
+<tr><td>本輪變更</td><td>偏離 4 項（見「二」）；§FE-1 要求在 spec／PR 說明理由，目前記於 plan「偏離紀錄」，PR 描述須引用</td></tr>
+<tr><td>規範未涵蓋</td><td>(1) React 對應的建議（元件測試、狀態管理）只有 Vue 版；(2) 靜態站台（如 GitHub Pages）部署：「執行期設定注入」僅針對微服務前端容器，本案用建置期的非機密 <code>VITE_*</code>（§FE-3 允許）</td></tr>
+<tr><td>meta CSP 的限制</td><td>meta 形式無法涵蓋 frame-ancestors、report-to；Google Fonts 來源寫在 index.html，與 §FE-2「允許來源不得寫死」精神有落差，Experimental 豁免下接受</td></tr>
+<tr><td>未採用的建議工具</td><td>fast-check、Stryker（SHOULD；Experimental 為 MAY），plan 未提及</td></tr>
+<tr><td>風險分級</td><td><code>sdd-adoption.json</code> 的 risk_tier 為 null；spec 與 plan 皆「初判 Experimental」，§FE-2 豁免與 ISP 範圍依此</td></tr>
 </table></div>
 
 <h3>CRITICAL／HIGH 衝突與影響</h3>
-<p>無（clarify 輪未跑 analyze）。須留意：D-1 與交接 K2 的建議定案（沿用 Prototype，關係圖不受大節影響）相反，屬 SA 追認事項；若不被追認，FR-004、FR-019、G-9、AC-S18 須撤回，波及 US3、US7。風險分級初判 Experimental（POC）。</p>
+<p>無（憲章 §CP-1～6、§GV 最小審查全數 PASS，無 MUST 例外；plan 輪未跑 analyze）。唯一的規則衝突在 spec 內部：權威劃分第 4 條 vs research.md 的 token 命名，不屬憲章條款（判斷點 1）。</p>
 
 <h3>已決事項</h3>
 <div class="tblw"><table>
 <tr><th>#</th><th>問題</th><th>裁決</th><th>落點</th></tr>
+<tr><td>P1</td><td>技術選型（plan，使用者確認）</td><td>React + TypeScript、Vite 純靜態一頁式 SPA 於 <code>AP/</code>；Vitest + RTL；Playwright；Context + useReducer；手寫 SVG；設計系統模式 B 不用元件庫；靜態 JSON；靜態網站部署</td><td>plan、research R1～R8</td></tr>
+<tr><td>P2</td><td>偏離 tech-standards（plan，使用者確認）</td><td>§FE-1 改 React（使用者指定、純靜態不需 Nuxt）；§FE-2 依 Experimental 豁免，改 meta CSP</td><td>plan「偏離紀錄」</td></tr>
 <tr><td>C1</td><td>大節篩選作用於關係圖嗎（K2）</td><td>是，依 StoryBoard 全域規則 1</td><td>D-1、G-9、FR-004、FR-019、AC-S18</td></tr>
 <tr><td>C2</td><td>角色狀態條邊界矛盾（K1）</td><td>刪除邊界 1；有結局回即從該回起為已死亡或離散</td><td>D-2、FR-013、AC-S16</td></tr>
 <tr><td>C3</td><td>搜尋 Enter 遇已選第一個符合者（K4）</td><td>只選取、不取消</td><td>D-3、FR-009、AC-S19</td></tr>
-<tr><td>1</td><td>手機 400px 要做到什麼程度（spec review 2026-10-29）</td><td>頁面本身不水平捲動；地圖、關係圖可在自身容器內橫向捲動；兩種面板改全寬抽屜。clarify 確認 Prototype 已定義，G-6 撤銷</td><td>FR-020、SC-004、AC-S6</td></tr>
-<tr><td>2</td><td>沒有驗收條件的需求怎麼驗證（spec review）</td><td>補成驗收情境 AC-S 系列並納入 SC-001（現為 AC-S1～AC-S19，共 79 條）</td><td>US1、US2、US6、SC-001</td></tr>
-<tr><td>3</td><td>天罡／地煞快選遇到已有選取（spec review）</td><td>群組未全選時加入並保留既有選取；已全選時再按只取消該群組（業務決策，需回寫 SA）</td><td>G-7、FR-010、AC-S8、AC-S9</td></tr>
+<tr><td>C4</td><td>關係圖選大節、已選角色在該大節沒有事件時，本人也淡出嗎</td><td>一律淡出；全部淡出時顯示與時間軸相同的空狀態與「清除篩選」</td><td>G-9、FR-019、AC-S20</td></tr>
+<tr><td>C5</td><td>「選了大節的關係圖」沒有截圖，視覺基準怎麼處理</td><td>維持 21 張；AC-S18、AC-S20 以文字條件驗收，淡出沿用 S6-02 樣式</td><td>G-9、SC-003</td></tr>
+<tr><td>S1</td><td>手機 400px 要做到什麼程度（spec review）</td><td>頁面本身不水平捲動；地圖、關係圖可在自身容器內橫向捲動；兩種面板改全寬抽屜。Prototype 已定義，G-6 撤銷</td><td>FR-020、SC-004、AC-S6</td></tr>
+<tr><td>S2</td><td>沒有驗收條件的需求怎麼驗證（spec review）</td><td>補成驗收情境 AC-S 系列並納入 SC-001（現為 AC-S1～AC-S20，共 80 條）</td><td>US1、US2、US6、SC-001</td></tr>
+<tr><td>S3</td><td>天罡／地煞快選遇到已有選取（spec review）</td><td>群組未全選時加入並保留既有選取；已全選時再按只取消該群組（業務決策，需回寫 SA）</td><td>G-7、FR-010、AC-S8、AC-S9</td></tr>
 </table></div>
-
-<details><summary>當時提出的判斷點與方案</summary>
-<div class="tblw"><table>
-<tr><th>#</th><th>問題</th><th>方案（建議標 ★）</th><th>影響</th><th>出處</th></tr>
-<tr><td>1</td><td>手機 400px 要做到什麼程度？SC-004 要求「所有視圖」無水平捲動，但 FR-020／AC-P42 只定義時間軸，地圖、關係圖、兩種面板的手機版 spec 未定義</td><td>★A 依 SC-004 字面：所有視圖與面板都要在 400px 可用，補 AC<br>B 縮減 SC-004，只保證時間軸（AC-P42），其餘視圖以桌機為準<br>C 地圖／關係圖可在自己的容器內橫向捲動，只要頁面本身不捲</td><td>A 工作量最大（地圖標籤不重疊、關係圖排版都要在窄幅成立），B、C 需改 spec 措辭</td><td>SC-004、FR-020、FR-012、Clarifications Q5</td></tr>
-<tr><td>2</td><td>沒有驗收條件的需求（深色模式、載入中／失敗、地煞快選、行跡同點合併、重疊錯開）要怎麼驗證？SC-001「全數通過」不涵蓋它們</td><td>★A 補進 Acceptance Scenarios，納入 SC-001<br>B 只當實作需求，以截圖對照與人工檢視，不新增條件<br>C 明列「POC 不驗證」並寫入 Assumptions</td><td>決定 tasks 的測試範圍；Experimental 分級允許 B，但載入失敗無 Prototype 畫面可對照</td><td>FR-010、FR-020、FR-022、SC-001、Assumptions</td></tr>
-<tr><td>3</td><td>「天罡／地煞」快選遇到已有選取時怎麼處理？FR-010 只寫「全選、再按取消」，AC 只涵蓋「未選角色」的情況（屬業務規則，須 SA／PM 裁決）</td><td>★A 補齊：未全選時加入該群組並保留既有選取；全選時才取消該群組（符合聯集規則）<br>B 取代：按下即把已選改為該群組<br>C 先操作 Prototype 取證其現行行為，再寫進 spec</td><td>改變篩選結果與結果數，影響 AC-07、P9、P10 之外的新增條件</td><td>FR-010、FR-003、US2 驗收</td></tr>
-</table></div>
-</details>
 
 <h3>次要疑點（留給下一輪或 analyze）</h3>
 <div class="tblw"><table>
 <tr><th>疑點</th><th>出處</th></tr>
-<tr><td>事件卡「主要角色頭像（最多 3 位）」的「主要」如何判定，spec 未定義（前輪遺留）</td><td>FR-007</td></tr>
+<tr><td>事件卡「主要角色頭像（最多 3 位）」的「主要」如何判定，spec 未定義；plan 只寫「已選角色排前」（前輪遺留）</td><td>FR-007</td></tr>
 <tr><td>事件明細點地點切到地圖時，若事件不在目前篩選結果或地點無法定位，高亮對象不存在，spec 未定義（前輪遺留）</td><td>FR-012、FR-015、G-2</td></tr>
-<tr><td>瀏覽器版本：Q5 與 FR-020 寫「最新兩版」，SC-004 寫「最新版」（前輪遺留）</td><td>FR-020、SC-004</td></tr>
+<tr><td>瀏覽器版本：Q5、FR-020 與 plan 寫「最新兩版」，SC-004 寫「最新版」（前輪遺留）</td><td>FR-020、SC-004</td></tr>
+<tr><td>SC-004 要抽驗 Edge，但 quickstart 的 <code>e2e:browsers</code> 只涵蓋 WebKit、Firefox（Edge 為 Chromium，可用 msedge channel）</td><td>SC-004；quickstart「E2E」</td></tr>
 <tr><td>「標籤互不重疊」「縮放在寬度內」未定義量測方式</td><td>AC-16、AC-P37、AC-S6</td></tr>
-<tr><td>首尾按鈕文案：spec 寫「已是第一個／最後一個」，Prototype 為兩個獨立文案（已是第一個、已是最後一個）；逐字檢核時需明示</td><td>FR-012、AC-S15、SC-003</td></tr>
+<tr><td>首尾按鈕文案：plan 已在 ui-contracts 逐字採 Prototype 兩個獨立文案，spec 仍寫「已是第一個／最後一個」</td><td>FR-012、AC-S15、SC-003</td></tr>
+<tr><td>TypeScript 7.x「工具鏈相容性不足退回 5.9」的判準未定，tasks 的專案初始化需先固定版本</td><td>plan Technical Context</td></tr>
+<tr><td>risk_tier 在 <code>sdd-adoption.json</code> 為 null，尚未寫入 Experimental</td><td>spec Assumptions；plan §FE-2 列</td></tr>
 </table></div>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'default'});</script>
