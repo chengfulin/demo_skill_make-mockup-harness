@@ -1,0 +1,928 @@
+[
+  {
+    "id": "ev-01",
+    "title": "洪太尉誤走妖魔",
+    "chapters": [
+      1,
+      1
+    ],
+    "arc": "arc-01",
+    "location": "信州龍虎山伏魔殿",
+    "place": "龍虎山",
+    "characters": [],
+    "summary": "洪太尉奉旨祈禳瘟疫，強開伏魔殿，放走三十六天罡、七十二地煞。"
+  },
+  {
+    "id": "ev-02",
+    "title": "高俅發跡",
+    "chapters": [
+      2,
+      2
+    ],
+    "arc": "arc-01",
+    "location": "東京",
+    "place": "東京",
+    "characters": [
+      "gaoqiu"
+    ],
+    "summary": "浮浪子弟高二因踢得好氣毬得端王賞識，發跡為殿帥府太尉，逼走王進。"
+  },
+  {
+    "id": "ev-03",
+    "title": "魯提轄拳打鎮關西",
+    "chapters": [
+      3,
+      4
+    ],
+    "arc": "arc-01",
+    "location": "渭州／五台山",
+    "place": "渭州",
+    "characters": [
+      "luzhishen"
+    ],
+    "summary": "魯達三拳打死鄭屠，逃往五台山出家為魯智深，又大鬧五台山。"
+  },
+  {
+    "id": "ev-04",
+    "title": "倒拔垂楊柳・林沖結義",
+    "chapters": [
+      7,
+      7
+    ],
+    "arc": "arc-01",
+    "location": "東京大相國寺菜園",
+    "place": "東京",
+    "characters": [
+      "luzhishen",
+      "linchong"
+    ],
+    "summary": "魯智深倒拔垂楊柳，與林沖相識結義。"
+  },
+  {
+    "id": "ev-05",
+    "title": "林沖誤入白虎堂",
+    "chapters": [
+      7,
+      8
+    ],
+    "arc": "arc-01",
+    "location": "東京殿帥府",
+    "place": "東京",
+    "characters": [
+      "linchong",
+      "gaoqiu"
+    ],
+    "summary": "高俅設計誘林沖帶刀入白虎堂，林沖被刺配滄州。"
+  },
+  {
+    "id": "ev-06",
+    "title": "大鬧野豬林",
+    "chapters": [
+      8,
+      8
+    ],
+    "arc": "arc-01",
+    "location": "野豬林",
+    "place": "野豬林",
+    "characters": [
+      "luzhishen",
+      "linchong"
+    ],
+    "summary": "公人欲在野豬林謀害林沖，魯智深暗中跟隨及時相救。"
+  },
+  {
+    "id": "ev-07",
+    "title": "棒打洪教頭",
+    "chapters": [
+      9,
+      9
+    ],
+    "arc": "arc-01",
+    "location": "滄州橫海郡柴進莊",
+    "place": "滄州",
+    "characters": [
+      "linchong",
+      "chaijin"
+    ],
+    "summary": "林沖途經柴進莊上，棒打洪教頭。"
+  },
+  {
+    "id": "ev-08",
+    "title": "風雪山神廟",
+    "chapters": [
+      10,
+      11
+    ],
+    "arc": "arc-01",
+    "location": "滄州草料場／梁山泊",
+    "place": "滄州",
+    "characters": [
+      "linchong"
+    ],
+    "summary": "陸虞候火燒草料場，林沖殺仇人後雪夜投奔梁山。"
+  },
+  {
+    "id": "ev-09",
+    "title": "楊志賣刀",
+    "chapters": [
+      12,
+      12
+    ],
+    "arc": "arc-01",
+    "location": "梁山泊／汴京",
+    "place": "東京",
+    "characters": [
+      "yangzhi",
+      "linchong",
+      "gaoqiu"
+    ],
+    "summary": "林沖納投名狀遇楊志；楊志復職遭高俅不容，賣刀殺牛二。"
+  },
+  {
+    "id": "ev-10",
+    "title": "七星聚義",
+    "chapters": [
+      14,
+      15
+    ],
+    "arc": "arc-02",
+    "location": "東溪村／石碣村",
+    "place": "鄆城縣",
+    "characters": [
+      "chaogai",
+      "wuyong",
+      "gongsunsheng",
+      "ruanxiaoer",
+      "ruanxiaoqi"
+    ],
+    "summary": "吳用說三阮入夥，公孫勝來投，七人聚義謀劫生辰綱。"
+  },
+  {
+    "id": "ev-11",
+    "title": "智取生辰綱",
+    "chapters": [
+      16,
+      16
+    ],
+    "arc": "arc-02",
+    "location": "黃泥岡",
+    "place": "黃泥岡",
+    "characters": [
+      "yangzhi",
+      "chaogai",
+      "wuyong",
+      "gongsunsheng",
+      "ruanxiaoer",
+      "ruanxiaoqi"
+    ],
+    "summary": "吳用以蒙汗藥酒劫走楊志押送的生辰綱。"
+  },
+  {
+    "id": "ev-12",
+    "title": "雙奪寶珠寺",
+    "chapters": [
+      17,
+      17
+    ],
+    "arc": "arc-02",
+    "location": "青州二龍山",
+    "place": "二龍山",
+    "characters": [
+      "luzhishen",
+      "yangzhi"
+    ],
+    "summary": "失陷生辰綱的楊志與魯智深合力奪下二龍山寶珠寺。"
+  },
+  {
+    "id": "ev-13",
+    "title": "宋江私放晁天王",
+    "chapters": [
+      18,
+      18
+    ],
+    "arc": "arc-02",
+    "location": "鄆城縣",
+    "place": "鄆城縣",
+    "characters": [
+      "songjiang",
+      "chaogai"
+    ],
+    "summary": "押司宋江得知緝捕消息，飛馬報信放走晁蓋。"
+  },
+  {
+    "id": "ev-14",
+    "title": "晁蓋梁山小奪泊",
+    "chapters": [
+      19,
+      20
+    ],
+    "arc": "arc-02",
+    "location": "梁山泊",
+    "place": "梁山泊",
+    "characters": [
+      "chaogai",
+      "linchong",
+      "wuyong",
+      "gongsunsheng",
+      "ruanxiaoer",
+      "ruanxiaoqi"
+    ],
+    "summary": "林沖火併王倫，眾人推晁蓋為山寨之主。"
+  },
+  {
+    "id": "ev-15",
+    "title": "宋江怒殺閻婆惜",
+    "chapters": [
+      21,
+      22
+    ],
+    "arc": "arc-02",
+    "location": "鄆城縣",
+    "place": "鄆城縣",
+    "characters": [
+      "songjiang"
+    ],
+    "summary": "閻婆惜以招文袋要挾，宋江怒殺之後出逃。"
+  },
+  {
+    "id": "ev-16",
+    "title": "柴進莊上會武松",
+    "chapters": [
+      22,
+      23
+    ],
+    "arc": "arc-02",
+    "location": "滄州橫海郡柴進莊",
+    "place": "滄州",
+    "characters": [
+      "songjiang",
+      "wusong",
+      "chaijin"
+    ],
+    "summary": "宋江投奔柴進，與武松相識並結為兄弟。"
+  },
+  {
+    "id": "ev-17",
+    "title": "景陽岡打虎",
+    "chapters": [
+      23,
+      23
+    ],
+    "arc": "arc-03",
+    "location": "景陽岡",
+    "place": "景陽岡",
+    "characters": [
+      "wusong"
+    ],
+    "summary": "武松酒後赤手空拳打死景陽岡大蟲，任陽穀縣都頭。"
+  },
+  {
+    "id": "ev-18",
+    "title": "武松殺嫂祭兄",
+    "chapters": [
+      24,
+      26
+    ],
+    "arc": "arc-03",
+    "location": "陽穀縣",
+    "place": "陽穀縣",
+    "characters": [
+      "wusong"
+    ],
+    "summary": "武大郎遭潘金蓮與西門慶毒殺，武松殺二人祭兄。"
+  },
+  {
+    "id": "ev-19",
+    "title": "醉打蔣門神・血濺鴛鴦樓",
+    "chapters": [
+      28,
+      31
+    ],
+    "arc": "arc-03",
+    "location": "孟州",
+    "place": "孟州",
+    "characters": [
+      "wusong"
+    ],
+    "summary": "武松醉打蔣門神，遭張都監陷害後血濺鴛鴦樓，扮行者出逃。"
+  },
+  {
+    "id": "ev-20",
+    "title": "清風寨之變",
+    "chapters": [
+      32,
+      34
+    ],
+    "arc": "arc-04",
+    "location": "清風山／清風寨",
+    "place": "清風寨",
+    "characters": [
+      "songjiang",
+      "huarong",
+      "wangying"
+    ],
+    "summary": "宋江在清風山遇王英等，後投花榮於清風寨，遭劉高陷害引發大鬧。"
+  },
+  {
+    "id": "ev-21",
+    "title": "小李廣梁山射雁",
+    "chapters": [
+      35,
+      35
+    ],
+    "arc": "arc-04",
+    "location": "梁山泊",
+    "place": "梁山泊",
+    "characters": [
+      "huarong"
+    ],
+    "summary": "花榮等上梁山，當眾一箭射中雁頭。"
+  },
+  {
+    "id": "ev-22",
+    "title": "江州結識戴宗・李逵",
+    "chapters": [
+      38,
+      38
+    ],
+    "arc": "arc-04",
+    "location": "江州",
+    "place": "江州",
+    "characters": [
+      "songjiang",
+      "daizong",
+      "likui"
+    ],
+    "summary": "刺配江州的宋江結識神行太保戴宗與黑旋風李逵。"
+  },
+  {
+    "id": "ev-23",
+    "title": "潯陽樓吟反詩",
+    "chapters": [
+      39,
+      39
+    ],
+    "arc": "arc-04",
+    "location": "江州潯陽樓",
+    "place": "江州",
+    "characters": [
+      "songjiang",
+      "daizong",
+      "wuyong"
+    ],
+    "summary": "宋江醉題反詩被告發；戴宗帶回吳用所造假信敗露。"
+  },
+  {
+    "id": "ev-24",
+    "title": "江州劫法場",
+    "chapters": [
+      40,
+      41
+    ],
+    "arc": "arc-04",
+    "location": "江州／白龍廟／無為軍",
+    "place": "江州",
+    "characters": [
+      "songjiang",
+      "likui",
+      "daizong",
+      "chaogai",
+      "huarong"
+    ],
+    "summary": "梁山好漢劫法場救宋江、戴宗，白龍廟小聚義，智取無為軍後上梁山。"
+  },
+  {
+    "id": "ev-25",
+    "title": "九天玄女授天書",
+    "chapters": [
+      42,
+      42
+    ],
+    "arc": "arc-04",
+    "location": "還道村",
+    "place": null,
+    "characters": [
+      "songjiang"
+    ],
+    "summary": "宋江避難還道村，夢遇九天玄女受三卷天書。"
+  },
+  {
+    "id": "ev-26",
+    "title": "沂嶺殺四虎",
+    "chapters": [
+      43,
+      43
+    ],
+    "arc": "arc-05",
+    "location": "沂州沂嶺",
+    "place": "沂嶺",
+    "characters": [
+      "likui"
+    ],
+    "summary": "李逵接母上山，途中母親被虎所食，李逵連殺四虎。"
+  },
+  {
+    "id": "ev-27",
+    "title": "楊雄石秀結義・翠屏山",
+    "chapters": [
+      44,
+      46
+    ],
+    "arc": "arc-05",
+    "location": "薊州翠屏山",
+    "place": "薊州",
+    "characters": [
+      "yangxiong",
+      "shixiu",
+      "daizong"
+    ],
+    "summary": "石秀與楊雄結義，揭破潘巧雲私情，二人殺之於翠屏山。"
+  },
+  {
+    "id": "ev-28",
+    "title": "火燒祝家店",
+    "chapters": [
+      46,
+      46
+    ],
+    "arc": "arc-05",
+    "location": "獨龍岡祝家店",
+    "place": "祝家莊",
+    "characters": [
+      "shixiu",
+      "yangxiong",
+      "shiqian"
+    ],
+    "summary": "時遷偷雞惹禍被擒，石秀放火燒祝家店。"
+  },
+  {
+    "id": "ev-29",
+    "title": "三打祝家莊",
+    "chapters": [
+      47,
+      50
+    ],
+    "arc": "arc-05",
+    "location": "獨龍岡祝家莊",
+    "place": "祝家莊",
+    "characters": [
+      "songjiang",
+      "wuyong",
+      "linchong",
+      "husanniang",
+      "wangying",
+      "shixiu",
+      "yangxiong",
+      "shiqian"
+    ],
+    "summary": "宋江三打祝家莊，林沖活捉一丈青，吳用以連環計破莊。"
+  },
+  {
+    "id": "ev-30",
+    "title": "一丈青配王英",
+    "chapters": [
+      51,
+      51
+    ],
+    "arc": "arc-06",
+    "location": "梁山泊",
+    "place": "梁山泊",
+    "characters": [
+      "husanniang",
+      "wangying",
+      "songjiang"
+    ],
+    "summary": "宋江主張扈三娘與王英配為夫婦。"
+  },
+  {
+    "id": "ev-31",
+    "title": "柴進失陷高唐州",
+    "chapters": [
+      52,
+      54
+    ],
+    "arc": "arc-06",
+    "location": "高唐州",
+    "place": "高唐州",
+    "characters": [
+      "chaijin",
+      "likui",
+      "gongsunsheng",
+      "daizong"
+    ],
+    "summary": "李逵打死殷天賜累柴進入獄；戴宗、李逵請公孫勝破高廉，李逵下井救柴進。"
+  },
+  {
+    "id": "ev-32",
+    "title": "時遷盜甲・大破連環馬",
+    "chapters": [
+      56,
+      57
+    ],
+    "arc": "arc-06",
+    "location": "東京／梁山泊",
+    "place": "梁山泊",
+    "characters": [
+      "shiqian",
+      "wuyong",
+      "songjiang"
+    ],
+    "summary": "時遷盜徐寧寶甲賺其上山，以鉤鐮槍破呼延灼連環馬。"
+  },
+  {
+    "id": "ev-33",
+    "title": "三山聚義打青州",
+    "chapters": [
+      58,
+      58
+    ],
+    "arc": "arc-06",
+    "location": "青州",
+    "place": "青州",
+    "characters": [
+      "luzhishen",
+      "wusong",
+      "yangzhi",
+      "songjiang"
+    ],
+    "summary": "二龍山、桃花山、白虎山三山聯合梁山攻青州，魯智深等歸水泊。"
+  },
+  {
+    "id": "ev-34",
+    "title": "晁天王曾頭市中箭",
+    "chapters": [
+      60,
+      60
+    ],
+    "arc": "arc-07",
+    "location": "曾頭市",
+    "place": "曾頭市",
+    "characters": [
+      "chaogai",
+      "songjiang"
+    ],
+    "summary": "晁蓋夜打曾頭市中史文恭毒箭，遺言捉得射死他者為梁山泊主。"
+  },
+  {
+    "id": "ev-35",
+    "title": "智賺玉麒麟",
+    "chapters": [
+      61,
+      62
+    ],
+    "arc": "arc-07",
+    "location": "大名府",
+    "place": "大名府",
+    "characters": [
+      "lujunyi",
+      "yanqing",
+      "wuyong",
+      "shixiu",
+      "yangxiong"
+    ],
+    "summary": "吳用賺盧俊義出門，盧遭陷入獄；燕青放冷箭救主，石秀跳樓劫法場。"
+  },
+  {
+    "id": "ev-36",
+    "title": "火燒翠雲樓・智取大名府",
+    "chapters": [
+      66,
+      67
+    ],
+    "arc": "arc-07",
+    "location": "大名府",
+    "place": "大名府",
+    "characters": [
+      "shiqian",
+      "wuyong",
+      "lujunyi",
+      "yanqing"
+    ],
+    "summary": "元宵時遷火燒翠雲樓為號，梁山攻破大名府，救出盧俊義上山。"
+  },
+  {
+    "id": "ev-37",
+    "title": "忠義堂排座次",
+    "chapters": [
+      71,
+      71
+    ],
+    "arc": "arc-08",
+    "location": "梁山泊忠義堂",
+    "place": "梁山泊",
+    "characters": [
+      "songjiang",
+      "lujunyi",
+      "wuyong",
+      "gongsunsheng",
+      "linchong",
+      "luzhishen",
+      "wusong",
+      "yangzhi",
+      "likui",
+      "yanqing",
+      "huarong",
+      "chaijin",
+      "ruanxiaoer",
+      "ruanxiaoqi",
+      "daizong",
+      "shixiu",
+      "yangxiong",
+      "husanniang",
+      "wangying",
+      "shiqian"
+    ],
+    "summary": "石碣天書現世，一百單八將依天罡地煞排定座次。"
+  },
+  {
+    "id": "ev-38",
+    "title": "燕青智撲擎天柱",
+    "chapters": [
+      74,
+      74
+    ],
+    "arc": "arc-08",
+    "location": "泰安州",
+    "place": "泰安州",
+    "characters": [
+      "yanqing",
+      "likui"
+    ],
+    "summary": "燕青在泰安州相撲擂台摔敗擎天柱任原；李逵壽張縣喬坐衙。"
+  },
+  {
+    "id": "ev-39",
+    "title": "三敗高太尉",
+    "chapters": [
+      78,
+      80
+    ],
+    "arc": "arc-08",
+    "location": "梁山泊",
+    "place": "梁山泊",
+    "characters": [
+      "songjiang",
+      "gaoqiu",
+      "wuyong"
+    ],
+    "summary": "高俅親率十節度征剿，三戰皆敗，最終被活捉上山。"
+  },
+  {
+    "id": "ev-40",
+    "title": "燕青月夜遇道君",
+    "chapters": [
+      81,
+      81
+    ],
+    "arc": "arc-08",
+    "location": "東京",
+    "place": "東京",
+    "characters": [
+      "yanqing",
+      "daizong"
+    ],
+    "summary": "燕青經李師師面見徽宗陳情；戴宗定計救出樂和。"
+  },
+  {
+    "id": "ev-41",
+    "title": "全夥受招安",
+    "chapters": [
+      82,
+      82
+    ],
+    "arc": "arc-08",
+    "location": "梁山泊",
+    "place": "梁山泊",
+    "characters": [
+      "songjiang",
+      "lujunyi",
+      "wuyong"
+    ],
+    "summary": "梁山分金大買市，全夥接受朝廷招安。"
+  },
+  {
+    "id": "ev-42",
+    "title": "征遼",
+    "chapters": [
+      83,
+      89
+    ],
+    "arc": "arc-09",
+    "location": "薊州／幽州",
+    "place": "幽州",
+    "characters": [
+      "songjiang",
+      "lujunyi",
+      "wuyong",
+      "gongsunsheng"
+    ],
+    "summary": "宋江奉詔破大遼，破混天象陣，遼國投降。"
+  },
+  {
+    "id": "ev-43",
+    "title": "五台山參禪",
+    "chapters": [
+      90,
+      90
+    ],
+    "arc": "arc-09",
+    "location": "五台山／雙林鎮",
+    "place": "五台山",
+    "characters": [
+      "songjiang",
+      "luzhishen",
+      "yanqing"
+    ],
+    "summary": "宋江隨魯智深上五台山參禪，燕青於雙林鎮遇故人。"
+  },
+  {
+    "id": "ev-44",
+    "title": "征田虎",
+    "chapters": [
+      91,
+      100
+    ],
+    "arc": "arc-10",
+    "location": "河北（威勝等地）",
+    "place": "河北威勝",
+    "characters": [
+      "songjiang",
+      "lujunyi",
+      "gongsunsheng",
+      "wuyong",
+      "likui",
+      "luzhishen"
+    ],
+    "summary": "宋江兵渡黃河征田虎；公孫勝鬥法喬道清，張清擒田虎。"
+  },
+  {
+    "id": "ev-45",
+    "title": "征王慶",
+    "chapters": [
+      101,
+      110
+    ],
+    "arc": "arc-10",
+    "location": "淮西",
+    "place": "淮西",
+    "characters": [
+      "songjiang",
+      "lujunyi",
+      "gongsunsheng"
+    ],
+    "summary": "宋江征淮西王慶，王慶渡江被捉，押赴東京凌遲。"
+  },
+  {
+    "id": "ev-46",
+    "title": "公孫勝辭別歸山",
+    "chapters": [
+      110,
+      110
+    ],
+    "arc": "arc-10",
+    "location": "東京",
+    "place": "東京",
+    "characters": [
+      "gongsunsheng",
+      "songjiang"
+    ],
+    "summary": "公孫勝依羅真人囑咐，送宋江還京後拜別歸山學道。"
+  },
+  {
+    "id": "ev-47",
+    "title": "楊志病留丹徒",
+    "chapters": [
+      111,
+      112
+    ],
+    "arc": "arc-11",
+    "location": "潤州丹徒縣",
+    "place": "丹徒",
+    "characters": [
+      "yangzhi"
+    ],
+    "summary": "征方臘之初楊志患病，寄留丹徒不能征進。"
+  },
+  {
+    "id": "ev-48",
+    "title": "阮小二烏龍嶺自刎",
+    "chapters": [
+      116,
+      116
+    ],
+    "arc": "arc-11",
+    "location": "烏龍嶺",
+    "place": "烏龍嶺",
+    "characters": [
+      "ruanxiaoer"
+    ],
+    "summary": "烏龍嶺水戰遭火排夾攻，阮小二被撓鉤搭住，自刎而亡。"
+  },
+  {
+    "id": "ev-49",
+    "title": "睦州血戰",
+    "chapters": [
+      117,
+      117
+    ],
+    "arc": "arc-11",
+    "location": "睦州／烏龍嶺",
+    "place": "睦州",
+    "characters": [
+      "wusong",
+      "luzhishen",
+      "husanniang",
+      "wangying"
+    ],
+    "summary": "包道乙飛劍斬斷武松左臂；鄭彪戳死王英、銅磚打死扈三娘。"
+  },
+  {
+    "id": "ev-50",
+    "title": "昱嶺關之戰",
+    "chapters": [
+      118,
+      118
+    ],
+    "arc": "arc-11",
+    "location": "昱嶺關",
+    "place": "昱嶺關",
+    "characters": [
+      "shixiu",
+      "lujunyi"
+    ],
+    "summary": "盧俊義攻昱嶺關，史進、石秀等六將中伏被亂箭射死。"
+  },
+  {
+    "id": "ev-51",
+    "title": "魯智深擒方臘・浙江坐化",
+    "chapters": [
+      119,
+      119
+    ],
+    "arc": "arc-11",
+    "location": "杭州六和寺",
+    "place": "杭州",
+    "characters": [
+      "luzhishen",
+      "wusong",
+      "linchong"
+    ],
+    "summary": "魯智深禪杖打翻方臘，後聽潮信坐化；武松出家，林沖風癱留寺。"
+  },
+  {
+    "id": "ev-52",
+    "title": "燕青辭主・凱旋還京",
+    "chapters": [
+      119,
+      119
+    ],
+    "arc": "arc-11",
+    "location": "杭州／東京",
+    "place": "杭州",
+    "characters": [
+      "yanqing",
+      "lujunyi",
+      "yangxiong",
+      "shiqian",
+      "songjiang"
+    ],
+    "summary": "楊雄、時遷病故，燕青辭別盧俊義不知所往，宋江衣錦還鄉。"
+  },
+  {
+    "id": "ev-53",
+    "title": "眾將散去",
+    "chapters": [
+      120,
+      120
+    ],
+    "arc": "arc-12",
+    "location": "泰安州／石碣村／滄州",
+    "place": "泰安州",
+    "characters": [
+      "daizong",
+      "ruanxiaoqi",
+      "chaijin"
+    ],
+    "summary": "戴宗納還官誥出家，阮小七被追奪官誥回鄉，柴進辭官為民。"
+  },
+  {
+    "id": "ev-54",
+    "title": "宋公明神聚蓼兒洼",
+    "chapters": [
+      120,
+      120
+    ],
+    "arc": "arc-12",
+    "location": "楚州蓼兒洼",
+    "place": "楚州",
+    "characters": [
+      "songjiang",
+      "likui",
+      "wuyong",
+      "huarong",
+      "lujunyi",
+      "gaoqiu"
+    ],
+    "summary": "高俅、楊戩以水銀害盧俊義、藥酒毒宋江；宋江鴆李逵，吳用、花榮自縊，同葬蓼兒洼。"
+  }
+]

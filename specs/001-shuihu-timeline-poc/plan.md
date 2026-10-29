@@ -190,7 +190,7 @@ AppState = {
 ```
 
 Actions：`toggleCharacter`、`addCharacter`、`removeCharacter`、`clearCharacters`、`onlyCharacter`、`toggleGroup`（payload 帶群組成員 id，由容器自資料算出；reducer 呼叫 `selection.groupToggle`，G-7）、`submitSearch`（D-3：只選取不取消）、`setQuery`、`selectArc`、`clearFilters`（角色＋大節）、`setView`、`setMapScope`、`focusPlace`、`goToPlace`（關面板、切地圖、地點不在山東範圍時切回全圖，G-10）、`openEvent`、`openCharacter`、`closeDrawer`。
-reducer 只呼叫 `domain/selection.ts` 等純函式；篩選結果不存 state，由 selector 以 `filterEvents(dataset, selected, arcId)` 即時算出（`useMemo`）。
+reducer 只呼叫 `domain/selection.ts` 等純函式；篩選結果不存 state，由 selector 以 `filterEvents(dataset.events, selected, arcId)` 即時算出（`useMemo`）。
 
 ### 路由（hash）
 

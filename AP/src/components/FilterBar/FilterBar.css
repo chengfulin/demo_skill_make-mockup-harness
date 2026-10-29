@@ -1,0 +1,96 @@
+/*
+ * S1 角色篩選列樣式（Prototype `[P S1-01]` 對應規則）。
+ * 數值一律取自 tokens.css；@media 無法用 var()，斷點寫字面值 720px（--bp-sheet）。
+ */
+
+.filter {
+  border-block: 1px solid var(--line);
+  background: var(--paper-2);
+}
+
+.filter .wrap {
+  display: grid;
+  gap: var(--space-5);
+  max-width: var(--size-page-max);
+  margin: 0 auto;
+  padding-block: var(--space-6);
+  padding-left: max(var(--space-8), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--space-8), env(safe-area-inset-right, 0px));
+}
+
+.filter .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.filter .chars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.filter .sel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  min-height: 30px;
+}
+
+.filter .bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-8);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter .count {
+  font-family: var(--f-display);
+  font-size: var(--text-lg);
+}
+
+.filter .count b {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-size: var(--text-2xl);
+  padding: 0 3px;
+}
+
+.filter .tabs {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--card);
+}
+
+.filter .tabs button {
+  border: 0;
+  background: none;
+  padding: 7px var(--space-8);
+  font: inherit;
+  font-size: var(--text-base);
+  color: inherit;
+  cursor: pointer;
+}
+
+.filter .tabs button[aria-selected="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+@media (max-width: 720px) {
+  .filter .chars {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--space-3);
+    scrollbar-width: thin;
+  }
+
+  .filter .chars > * {
+    flex: none;
+  }
+}
