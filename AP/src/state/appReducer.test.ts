@@ -20,8 +20,25 @@
  * | D3 closeDrawer 前狀態 | 已開面板／未開（冪等）                                         | DRW-5～DRW-6   |
  * | P1 純度               | 不修改輸入狀態；其他欄位保留                                   | PURE-1         |
  *
+ * US2 擴充（T062；FR-003、FR-009、FR-010、G-7、D-3）：
+ *   toggleCharacter {id}、addCharacter {id}（面板維持開啟）、removeCharacter {id}、clearCharacters、
+ *   toggleGroup {members}（群組成員 id 由容器自資料算出）、setQuery {query}、
+ *   submitSearch {id: string | null}（容器以 enterSelectTarget 算出；只選取不取消）、clearFilters（清角色與大節）。
+ *   選取規則本身由 domain/selection.test.ts 驗；此處驗 reducer 接線、冪等與其他欄位保留。
+ *
+ * | 特徵                      | blocks（非 base 者各為一案）                                  | 對應案例       |
+ * | :------------------------ | :------------------------------------------------------------ | :------------- |
+ * | U1 toggleCharacter 對象   | 未選／已選                                                    | CHR-1～CHR-2   |
+ * | U2 addCharacter 前狀態    | 未選且面板開啟（面板保留）／已選（冪等）                      | CHR-3～CHR-4   |
+ * | U3 removeCharacter 對象   | 已選／未選（冪等）                                            | CHR-5～CHR-6   |
+ * | U4 clearCharacters 前狀態 | 有選取（大節保留）／已空（冪等）                              | CHR-7～CHR-8   |
+ * | U5 toggleGroup 成員選取   | 未全選（加入並保留其他）／已全選（只移除成員）                | GRP-1～GRP-2   |
+ * | U6 setQuery               | 新值（選取不變）／相同值（冪等）                              | QRY-1～QRY-2   |
+ * | U7 submitSearch payload   | 未選 id（加入）／已選 id（不動作）／null（不動作）            | SUB-1～SUB-3   |
+ * | U8 clearFilters 前狀態    | 有角色與大節（query 保留）／皆空（冪等）                      | CLR-1～CLR-2   |
+ *
  * 範圍外（一次性宣告）：未知 action type（TypeScript 聯集排除）；面板 id 不存在（由容器自資料產生）；
- * 篩選、地圖、搜尋類 action（US2～US6 擴充時各自補測）。
+ * 大節、地圖類 action（US3～US6 擴充時各自補測）；toggleGroup members 為空（由資料保證非空）。
  */
 import { describe, expect, it } from 'vitest';
 import { appReducer, createInitialState, type AppState } from './appReducer';
@@ -104,6 +121,121 @@ describe('purity', () => {
     const snapshot = structuredClone(s);
     appReducer(s, { type: 'openEvent', id: 'ev-08' });
     appReducer(s, { type: 'setView', view: 'graph' });
+    expect(s).toEqual(snapshot);
+  });
+});
+
+const withSel = (selected: string[], extra: Partial<AppState> = {}): AppState => ({ ...base(), selected, ...extra });
+
+describe('character selection actions (US2)', () => {
+  it('CHR-1 toggleCharacter selects an unselected character (appended)', () => {
+    const next = appReducer(withSel(['wusong']), { type: 'toggleCharacter', id: 'luzhishen' });
+    expect(next.selected).toEqual(['wusong', 'luzhishen']);
+  });
+
+  it('CHR-2 toggleCharacter deselects a selected character', () => {
+    const next = appReducer(withSel(['wusong', 'luzhishen']), { type: 'toggleCharacter', id: 'wusong' });
+    expect(next.selected).toEqual(['luzhishen']);
+  });
+
+  it('CHR-3 addCharacter keeps the drawer open (AC-P19)', () => {
+    const s = withSel([], { drawer: { kind: 'event', id: 'ev-08' } });
+    const next = appReducer(s, { type: 'addCharacter', id: 'luzhishen' });
+    expect(next.selected).toEqual(['luzhishen']);
+    expect(next.drawer).toEqual({ kind: 'event', id: 'ev-08' });
+  });
+
+  it('CHR-4 addCharacter on an already selected character is idempotent', () => {
+    const s = withSel(['linchong']);
+    expect(appReducer(s, { type: 'addCharacter', id: 'linchong' })).toBe(s);
+  });
+
+  it('CHR-5 removeCharacter removes only that tag (AC-P11)', () => {
+    const next = appReducer(withSel(['songjiang', 'likui']), { type: 'removeCharacter', id: 'songjiang' });
+    expect(next.selected).toEqual(['likui']);
+  });
+
+  it('CHR-6 removeCharacter of a non-selected id is idempotent', () => {
+    const s = withSel(['likui']);
+    expect(appReducer(s, { type: 'removeCharacter', id: 'songjiang' })).toBe(s);
+  });
+
+  it('CHR-7 clearCharacters empties selection and keeps the arc', () => {
+    const next = appReducer(withSel(['wusong', 'likui'], { arcId: 'arc-05' }), { type: 'clearCharacters' });
+    expect(next.selected).toEqual([]);
+    expect(next.arcId).toBe('arc-05');
+  });
+
+  it('CHR-8 clearCharacters when empty is idempotent', () => {
+    const s = base();
+    expect(appReducer(s, { type: 'clearCharacters' })).toBe(s);
+  });
+});
+
+describe('toggleGroup (G-7)', () => {
+  const members = ['songjiang', 'linchong', 'wusong'];
+
+  it('GRP-1 not all selected → adds members and keeps others', () => {
+    const next = appReducer(withSel(['chaogai', 'linchong']), { type: 'toggleGroup', members });
+    expect(next.selected).toEqual(['chaogai', 'linchong', 'songjiang', 'wusong']);
+  });
+
+  it('GRP-2 all selected → removes only the members', () => {
+    const s = withSel(['chaogai', 'songjiang', 'linchong', 'wusong']);
+    expect(appReducer(s, { type: 'toggleGroup', members }).selected).toEqual(['chaogai']);
+  });
+});
+
+describe('search actions (FR-009, D-3)', () => {
+  it('QRY-1 setQuery stores the text and keeps the selection', () => {
+    const next = appReducer(withSel(['linchong']), { type: 'setQuery', query: '黑旋風' });
+    expect(next.query).toBe('黑旋風');
+    expect(next.selected).toEqual(['linchong']);
+  });
+
+  it('QRY-2 setQuery with the same text is idempotent', () => {
+    const s = withSel([], { query: '豹子頭' });
+    expect(appReducer(s, { type: 'setQuery', query: '豹子頭' })).toBe(s);
+  });
+
+  it('SUB-1 submitSearch with an unselected id selects it (AC-P34)', () => {
+    const next = appReducer(withSel(['wusong'], { query: '黑旋風' }), { type: 'submitSearch', id: 'likui' });
+    expect(next.selected).toEqual(['wusong', 'likui']);
+    expect(next.query).toBe('黑旋風');
+  });
+
+  it('SUB-2 submitSearch with an already selected id does not deselect (AC-S19)', () => {
+    const s = withSel(['linchong']);
+    expect(appReducer(s, { type: 'submitSearch', id: 'linchong' })).toBe(s);
+  });
+
+  it('SUB-3 submitSearch with null (no match) does nothing (AC-S19)', () => {
+    const s = withSel(['linchong']);
+    expect(appReducer(s, { type: 'submitSearch', id: null })).toBe(s);
+  });
+});
+
+describe('clearFilters', () => {
+  it('CLR-1 clears characters and arc, keeps query and view (AC-P14)', () => {
+    const s = withSel(['wangying'], { arcId: 'arc-01', query: '王', view: 'graph' });
+    const next = appReducer(s, { type: 'clearFilters' });
+    expect(next).toEqual({ ...s, selected: [], arcId: null });
+  });
+
+  it('CLR-2 clearFilters with nothing to clear is idempotent', () => {
+    const s = base();
+    expect(appReducer(s, { type: 'clearFilters' })).toBe(s);
+  });
+});
+
+describe('purity (US2 actions)', () => {
+  it('PURE-2 selection actions do not mutate the input state', () => {
+    const s = withSel(['wusong', 'linchong'], { arcId: 'arc-05' });
+    const snapshot = structuredClone(s);
+    appReducer(s, { type: 'toggleCharacter', id: 'wusong' });
+    appReducer(s, { type: 'addCharacter', id: 'likui' });
+    appReducer(s, { type: 'toggleGroup', members: ['wusong', 'likui'] });
+    appReducer(s, { type: 'clearFilters' });
     expect(s).toEqual(snapshot);
   });
 });

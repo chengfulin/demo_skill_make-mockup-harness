@@ -142,20 +142,20 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T060 [P] [US2] [S1] 撰寫 `AP/src/domain/selection.test.ts`：`toggle`、`add`（不重複、保留加入順序）、`remove`、`clear`、`only`、`groupToggle(selected, members)`：未全選→加入全部並保留其他、已全選→只移除成員（G-7）；以真實資料驗 天罡 17 位不含晁蓋（AC-P9）、再按清空（AC-P10）、地煞（AC-S7）、晁蓋＋天罡＝18（AC-S8）、再按只剩晁蓋（AC-S9）；檔頭附 ISP 分割表
-- [ ] T061 [P] [US2] [S1] 撰寫 `AP/src/domain/search.test.ts`：`matchCharacters(characters, q)` 比對 `name` 或 `nicknames` 任一包含 q（D-5）：豹子頭→林沖、黑旋風→李逵、孫悟空→空、座次→空、呼保義→宋江；空字串→全部；`enterSelectTarget(matches, selected)`：第一個符合者未選→其 id，已選或無符合→`null`（D-3、AC-S19）
-- [ ] T062 [P] [US2] 修改 `AP/src/state/appReducer.test.ts`：新增 `toggleCharacter`、`addCharacter`（面板維持開啟）、`removeCharacter`、`clearCharacters`、`toggleGroup`、`setQuery`、`submitSearch`（D-3：只選取不取消）、`clearFilters`（清角色與大節）
-- [ ] T063 [P] [US2] [S1] 撰寫 `AP/src/components/FilterBar/CharacterFilter.test.tsx`：依 `contracts/ui-contracts.md`「S1」逐字文案與狀態：`SearchBox` `type="search"`、placeholder「搜尋姓名或綽號，例如：黑旋風」、`aria-label="搜尋角色"`、Enter 呼叫 `onSubmit`；`GroupToggle`「天罡」「地煞」`aria-pressed`；`CharacterChip` pick 鈕 `aria-pressed`、顯示「<頭像字> <姓名> <nicknames[0]>」（高俅只顯示姓名）、提供 `onInfo` 時才渲染「i」鈕（`aria-label="<姓名> 角色資料"`、`title="角色資料"`）；`CharacterList` 無結果顯示「找不到符合的角色」取代整個清單；`SelectedTags` 未選「未選角色，顯示全部角色的事件」、有選「已選」＋「<姓名> ×」（`aria-label="移除 <姓名>"`，依加入順序）＋「清除全部」
-- [ ] T064 [P] [US2] [S1] [S2] 撰寫 `AP/e2e/us2-character-filter.spec.ts`：逐條 AC-03、AC-04、AC-05、AC-06、AC-07、AC-P3、AC-P4、AC-P5、AC-P6、AC-P7、AC-P8、AC-P9、AC-P10、AC-P11、AC-P12、AC-P33（在 `#graph` 以篩選列選 2 位後切回時間軸）、AC-P34、AC-S7、AC-S8、AC-S9、AC-S19、AC-S21（共 22 條；AC-P13、AC-P14 需大節選單，移至 T078）
+- [X] T060 [P] [US2] [S1] 撰寫 `AP/src/domain/selection.test.ts`：`toggle`、`add`（不重複、保留加入順序）、`remove`、`clear`、`only`、`groupToggle(selected, members)`：未全選→加入全部並保留其他、已全選→只移除成員（G-7）；以真實資料驗 天罡 17 位不含晁蓋（AC-P9）、再按清空（AC-P10）、地煞（AC-S7）、晁蓋＋天罡＝18（AC-S8）、再按只剩晁蓋（AC-S9）；檔頭附 ISP 分割表
+- [X] T061 [P] [US2] [S1] 撰寫 `AP/src/domain/search.test.ts`：`matchCharacters(characters, q)` 比對 `name` 或 `nicknames` 任一包含 q（D-5）：豹子頭→林沖、黑旋風→李逵、孫悟空→空、座次→空、呼保義→宋江；空字串→全部；`enterSelectTarget(matches, selected)`：第一個符合者未選→其 id，已選或無符合→`null`（D-3、AC-S19）
+- [X] T062 [P] [US2] 修改 `AP/src/state/appReducer.test.ts`：新增 `toggleCharacter`、`addCharacter`（面板維持開啟）、`removeCharacter`、`clearCharacters`、`toggleGroup`、`setQuery`、`submitSearch`（D-3：只選取不取消）、`clearFilters`（清角色與大節）
+- [X] T063 [P] [US2] [S1] 撰寫 `AP/src/components/FilterBar/CharacterFilter.test.tsx`：依 `contracts/ui-contracts.md`「S1」逐字文案與狀態：`SearchBox` `type="search"`、placeholder「搜尋姓名或綽號，例如：黑旋風」、`aria-label="搜尋角色"`、Enter 呼叫 `onSubmit`；`GroupToggle`「天罡」「地煞」`aria-pressed`；`CharacterChip` pick 鈕 `aria-pressed`、顯示「<頭像字> <姓名> <nicknames[0]>」（高俅只顯示姓名）、提供 `onInfo` 時才渲染「i」鈕（`aria-label="<姓名> 角色資料"`、`title="角色資料"`）；`CharacterList` 無結果顯示「找不到符合的角色」取代整個清單；`SelectedTags` 未選「未選角色，顯示全部角色的事件」、有選「已選」＋「<姓名> ×」（`aria-label="移除 <姓名>"`，依加入順序）＋「清除全部」
+- [X] T064 [P] [US2] [S1] [S2] 撰寫 `AP/e2e/us2-character-filter.spec.ts`：逐條 AC-03、AC-04、AC-05、AC-06、AC-07、AC-P3、AC-P4、AC-P5、AC-P6、AC-P7、AC-P8、AC-P9、AC-P10、AC-P11、AC-P12、AC-P33（在 `#graph` 以篩選列選 2 位後切回時間軸）、AC-P34、AC-S7、AC-S8、AC-S9、AC-S19、AC-S21（共 22 條；AC-P13、AC-P14 需大節選單，移至 T078）
 
 ### Implementation for User Story 2
 
-- [ ] T065 [P] [US2] [S1] 實作 `AP/src/domain/selection.ts`：`toggle`、`add`、`remove`、`clear`、`only`（US5「只看此角色」使用）、`groupToggle`
-- [ ] T066 [P] [US2] [S1] 實作 `AP/src/domain/search.ts`：`matchCharacters`、`enterSelectTarget`
-- [ ] T067 [US2] 修改 `AP/src/state/appReducer.ts`（依賴 T065、T066）：加入 T062 所列 actions；`toggleGroup` payload 帶群組成員 id（由容器自資料算出，reducer 不持有資料）；`submitSearch` payload 帶 `enterSelectTarget` 結果
-- [ ] T068 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/SearchBox.tsx`（左側放大鏡 SVG、即打即篩 `onChange`、Enter `onSubmit`）
-- [ ] T069 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/GroupToggle.tsx`（前置群組色圓點、`aria-pressed`＝群組已全選、全選時底色反白）
-- [ ] T070 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/CharacterChip.tsx` 與 `AP/src/components/FilterBar/CharacterList.tsx`（chip 用 `Avatar`；已選外框與底色換 accent；清單依 `characters.json` 順序；無結果文案）
+- [X] T065 [P] [US2] [S1] 實作 `AP/src/domain/selection.ts`：`toggle`、`add`、`remove`、`clear`、`only`（US5「只看此角色」使用）、`groupToggle`
+- [X] T066 [P] [US2] [S1] 實作 `AP/src/domain/search.ts`：`matchCharacters`、`enterSelectTarget`
+- [X] T067 [US2] 修改 `AP/src/state/appReducer.ts`（依賴 T065、T066）：加入 T062 所列 actions；`toggleGroup` payload 帶群組成員 id（由容器自資料算出，reducer 不持有資料）；`submitSearch` payload 帶 `enterSelectTarget` 結果
+- [X] T068 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/SearchBox.tsx`（左側放大鏡 SVG、即打即篩 `onChange`、Enter `onSubmit`）
+- [X] T069 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/GroupToggle.tsx`（前置群組色圓點、`aria-pressed`＝群組已全選、全選時底色反白）
+- [X] T070 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/CharacterChip.tsx` 與 `AP/src/components/FilterBar/CharacterList.tsx`（chip 用 `Avatar`；已選外框與底色換 accent；清單依 `characters.json` 順序；無結果文案）
 - [ ] T071 [P] [US2] [S1] 建立 `AP/src/components/FilterBar/SelectedTags.tsx`
 - [ ] T072 [US2] [S1] 修改 `AP/src/components/FilterBar/FilterBar.tsx` 與 `AP/src/components/FilterBar/FilterBar.css`（依賴 T068–T071）：row 插槽依序 搜尋框 → 天罡 → 地煞（大節選單留給 US3）；chars、sel 插槽；≤720px chip 列改單列橫向捲動
 - [ ] T073 [US2] [S1] 修改 `AP/src/containers/FilterBarContainer.tsx`（依賴 T067、T072）：以 `matchCharacters` 篩清單、Enter 以 `enterSelectTarget` dispatch `submitSearch`、群組成員自 `dataset` 依 `group` 算出並判定 `aria-pressed`、標籤移除與清除全部
@@ -199,20 +199,20 @@ description: "Task list for 001-shuihu-timeline-poc（水滸傳角色事件時�
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T085 [P] [US4] [S3] 撰寫 `AP/src/domain/navigation.test.ts`：`prevNext(id, filtered, all)`：id 在 filtered 中用 filtered，否則用 all（G-2）；林沖＋魯智深篩選中「大鬧野豬林」下一個＝棒打洪教頭（AC-P20）；只選林沖時「大鬧野豬林」前一個＝林沖誤入白虎堂；首／尾回傳 `null`；檔頭附 ISP 分割表
+- [X] T085 [P] [US4] [S3] 撰寫 `AP/src/domain/navigation.test.ts`：`prevNext(id, filtered, all)`：id 在 filtered 中用 filtered，否則用 all（G-2）；林沖＋魯智深篩選中「大鬧野豬林」下一個＝棒打洪教頭（AC-P20）；只選林沖時「大鬧野豬林」前一個＝林沖誤入白虎堂；首／尾回傳 `null`；檔頭附 ISP 分割表
 - [ ] T086 [P] [US4] 修改 `AP/src/state/appReducer.test.ts`：新增 `goToPlace`（關面板、`view='map'`、設 `focusPlace`；payload 的 `inShandong` 為 false 且目前 `mapScope='sd'` 時切回 `all`，G-10、AC-S23）；`addCharacter` 不關面板（AC-P19）
-- [ ] T087 [P] [US4] [S3] 撰寫 `AP/src/components/EventDetail/EventDetail.test.tsx`：依 `contracts/ui-contracts.md`「S3」：內容順序 標題區 → 摘要 → 回目 → 地點 → 參與角色；小標「回目」「地點」「參與角色」；回目逐回列出（28–31 回 4 條）；可定位地點為按鈕「<location> · 在地圖上看」、不可定位為徽章「<location>（無法在示意地圖上定位）」；參與角色頭像鈕 `title="加入篩選"`、`aria-label="將 <姓名> 加入篩選"`、已選者外框＋「已在篩選中」、提示「點頭像加入篩選，點名字看角色資料。」、無角色「本事件沒有收錄名單中的角色。」；底部「← <前一事件名>」「<下一事件名> →」，首尾停用並顯示「← 已是第一個」「已是最後一個 →」
+- [X] T087 [P] [US4] [S3] 撰寫 `AP/src/components/EventDetail/EventDetail.test.tsx`：依 `contracts/ui-contracts.md`「S3」：內容順序 標題區 → 摘要 → 回目 → 地點 → 參與角色；小標「回目」「地點」「參與角色」；回目逐回列出（28–31 回 4 條）；可定位地點為按鈕「<location> · 在地圖上看」、不可定位為徽章「<location>（無法在示意地圖上定位）」；參與角色頭像鈕 `title="加入篩選"`、`aria-label="將 <姓名> 加入篩選"`、已選者外框＋「已在篩選中」、提示「點頭像加入篩選，點名字看角色資料。」、無角色「本事件沒有收錄名單中的角色。」；底部「← <前一事件名>」「<下一事件名> →」，首尾停用並顯示「← 已是第一個」「已是最後一個 →」
 - [ ] T088 [P] [US4] [S3] 撰寫 `AP/e2e/us4-event-detail.spec.ts`：逐條 AC-10、AC-11、AC-P18、AC-P19、AC-P20、AC-P21（本檔驗：點地點後面板關閉、hash `#map`、「地圖」分頁 `aria-selected`；地圖上的標記高亮於 US6 `AP/e2e/us6-map.spec.ts` 補驗）、AC-S26（已選林沖開「倒拔垂楊柳・林沖結義」：「← 已是第一個」停用、下一個「林沖誤入白虎堂 →」）、AC-S27（「九天玄女授天書」地點為徽章「還道村（無法在示意地圖上定位）」、無「在地圖上看」按鈕）（共 8 條）；AC-S15 見 T102
 
 ### Implementation for User Story 4
 
-- [ ] T089 [P] [US4] [S3] 實作 `AP/src/domain/navigation.ts`：`prevNext`
+- [X] T089 [P] [US4] [S3] 實作 `AP/src/domain/navigation.ts`：`prevNext`
 - [ ] T090 [US4] 修改 `AP/src/state/appReducer.ts`：加入 `goToPlace`（payload `{ placeId, inShandong }`，`inShandong` 由容器以 `mapLayout.inScope('sd', place)` 算出）
-- [ ] T091 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventChapters.tsx`（「<第八回> <回目>」逐回）
-- [ ] T092 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventPlace.tsx`（可定位按鈕／不可定位徽章）
-- [ ] T093 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventParticipants.tsx`（頭像鈕 `onAdd`、名字鈕 `onOpenCharacter`、「已在篩選中」、提示與無角色文案）
-- [ ] T094 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/PrevNextNav.tsx`（`pn` 區塊；停用時透明度 .4）
-- [ ] T095 [US4] [S3] 修改 `AP/src/components/EventDetail/EventDetail.tsx` 與 `AP/src/components/EventDetail/EventDetail.css`（依賴 T091–T094）：依序組合 標題區 → 摘要 → `EventChapters` → `EventPlace` → `EventParticipants`，底部 `PrevNextNav`
+- [X] T091 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventChapters.tsx`（「<第八回> <回目>」逐回）
+- [X] T092 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventPlace.tsx`（可定位按鈕／不可定位徽章）
+- [X] T093 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/EventParticipants.tsx`（頭像鈕 `onAdd`、名字鈕 `onOpenCharacter`、「已在篩選中」、提示與無角色文案）
+- [X] T094 [P] [US4] [S3] 建立 `AP/src/components/EventDetail/PrevNextNav.tsx`（`pn` 區塊；停用時透明度 .4）
+- [X] T095 [US4] [S3] 修改 `AP/src/components/EventDetail/EventDetail.tsx` 與 `AP/src/components/EventDetail/EventDetail.css`（依賴 T091–T094）：依序組合 標題區 → 摘要 → `EventChapters` → `EventPlace` → `EventParticipants`，底部 `PrevNextNav`
 - [ ] T096 [US4] [S3] 修改 `AP/src/containers/EventDrawerContainer.tsx`（依賴 T089、T090、T095）：`prevNext(id, useFilteredEvents(), dataset.events)`，切換 dispatch `openEvent`；頭像 dispatch `addCharacter`；名字 dispatch `openCharacter`（US5 起顯示角色面板）；地點 dispatch `goToPlace`
 - [ ] T097 [US4] 於 `AP/` 執行 `npm test`、`npm run typecheck`、`npm run lint`、`npx playwright test e2e/us1-timeline.spec.ts e2e/us2-character-filter.spec.ts e2e/us3-arc-filter.spec.ts e2e/us4-event-detail.spec.ts --project=chrome`，修正至全綠
 

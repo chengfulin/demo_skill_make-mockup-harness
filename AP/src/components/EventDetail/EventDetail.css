@@ -1,11 +1,14 @@
 /*
- * S3 事件明細內容（Prototype `.meta`）。數值取自 tokens.css。
- * 內容區 `.db` 與 `.db h2` 由 Drawer.css 提供；`.event-detail` 只作為樣式範圍，
+ * S3 事件明細內容（Prototype `.meta`、`.summary`、`.sec h4`、`.huimu`、`.place`、`.badge`、
+ * `.people`、`.person`、`.hint`）。數值取自 tokens.css；回次欄寬 58px、頭像 hover 亮度 1.12、
+ * 小標字距 .12em（tokens 註明需要者自行覆寫）無 token，保留字面值。
+ * 內容區 `.db` 與 `.db h2`、底部 `.pn` 由 Drawer.css 提供；`.event-detail` 只作為樣式範圍，
  * 以 display: contents 讓各區塊成為 `.db` grid 的直接子項。
  */
 .event-detail {
   display: contents;
 }
+
 .event-detail .meta {
   display: flex;
   flex-wrap: wrap;
@@ -15,3 +18,99 @@
   color: var(--ink-2);
 }
 .event-detail .meta b { color: var(--ink); font-weight: var(--weight-medium); }
+
+.event-detail .summary {
+  max-width: 60ch;
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.75;
+}
+
+.event-detail .sec h4 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: .12em;
+  color: var(--ink-2);
+}
+
+/* 回目 */
+.event-detail .huimu {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--f-display);
+  font-size: var(--text-body);
+}
+.event-detail .huimu li {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: var(--space-4);
+}
+.event-detail .huimu span {
+  padding-top: var(--space-1);
+  font-family: var(--f-ui);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+
+/* 地點 */
+.event-detail .place {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+  background: var(--paper-2);
+  font-size: var(--text-base);
+}
+.event-detail .badge {
+  display: inline-block;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+/* 參與角色 */
+.event-detail .people {
+  display: grid;
+  gap: var(--space-3);
+}
+.event-detail .person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+.event-detail .person .add {
+  display: grid;
+  flex: none;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: none;
+}
+.event-detail .person .add:hover .av { filter: brightness(1.12); }
+.event-detail .person .nmb {
+  border: 0;
+  padding: 0;
+  background: none;
+  font-size: var(--text-body);
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.event-detail .person small { color: var(--ink-2); }
+.event-detail .person .added {
+  margin-left: auto;
+  font-size: var(--text-2xs);
+  color: var(--ink-2);
+}
+
+.event-detail .hint {
+  margin: 1em 0; /* Prototype `.hint` 為 p，沿用瀏覽器預設段落間距 */
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
